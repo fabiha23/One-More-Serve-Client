@@ -4,9 +4,10 @@ import { useNavigate, useLocation, Link } from 'react-router';
 import Swal from 'sweetalert2';
 import loginBanner from '../../assets/banner1.jpg'; // Replace with your image path
 import useAuth from '../../hooks/useAuth';
+import SocialLogin from './SocialLogin';
 
 const Login = () => {
-    const { loginUser, signInWithGoogle } = useAuth();
+    const { loginUser } = useAuth();
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
@@ -39,20 +40,6 @@ const Login = () => {
             });
     };
 
-    const handleGoogleLogin = () => {
-        signInWithGoogle()
-            .then(() => {
-                setError('');
-                Swal.fire({
-                    title: 'Logged In!',
-                    icon: 'success',
-                    timer: 3000,
-                    confirmButtonColor: '#10B981'
-                });
-                navigate(location?.state || '/');
-            })
-            .catch(console.error);
-    };
 
     return (
         <div 
@@ -106,20 +93,7 @@ const Login = () => {
                             Login
                         </button>
                     </form>
-                    
-                    <div className="flex items-center my-6">
-                        <div className="flex-1 border-t border-neutral/20"></div>
-                        <span className="px-3 text-neutral/70 text-sm">or continue with</span>
-                        <div className="flex-1 border-t border-neutral/20"></div>
-                    </div>
-                    
-                    <button
-                        onClick={handleGoogleLogin}
-                        className="w-full py-2.5 bg-neutral/10 hover:bg-neutral/20 border border-neutral/20 text-neutral font-medium rounded-lg flex items-center justify-center gap-2 transition duration-200 cursor-pointer"
-                    >
-                        <FcGoogle size={18} />
-                        Google
-                    </button>
+                    <SocialLogin></SocialLogin>
                     
                     <p className="text-center mt-6 text-neutral/80 text-sm">
                         Don't have an account?
