@@ -1,31 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+
 @import "tailwindcss";
 @plugin "daisyui";
 
 @plugin "daisyui" {
-    themes: ["light", "dark"];
+  themes: [ "light", "dark"];
 }
 
 @plugin "daisyui/theme" {
-    name: "light";
-    default: true;
-    --color-primary: #4B2840;
-    --color-secondary: 	#A8C3A6;
-    --color-base-100: #FFFFFF;
-    --color-base-200: #FAF9F6;
-    --color-accent: #2B2B2B,
-    --color-neutral: #E2E8F0;
-    --color-error: #F43F5E;
+  name: "light";
+  default: true;
+  --color-primary: #4b2840; /* Dark Plum for Navbar, Headings */
+  --color-secondary: #a8c3a6; /* Sage for Buttons, Accents */
+  --color-base-100: #ffffff; /* White Base */
+  --color-base-200: #faf9f6; /* Ivory Background */
+  --color-accent: #2b2b2b; /* Dark Text Color */
+  --color-neutral: #e2e8f0; /* Neutral Borders */
+  --color-error: #f43f5e; /* Error */
 }
 
 @plugin "daisyui/theme" {
-    name: "dark";
-    default: false;
+  name: "dark";
+  default: false;
 
-     --color-primary: #E2E2DC;
-    --color-secondary: 	#9FC8B2;
-    --color-base-100: #FFFFFF;
-    --color-base-200: #2A1B27;
-    --color-accent: #F0F0F0,
-    --color-neutral: #E2E8F0;
-    --color-error: #F43F5E;
+  --color-primary: #2a1b27; /* Dark Plum for Navbar, Headings */
+  --color-secondary: #9fc8b2; /* Mint for Buttons, Accents */
+  --color-base-100: #2a1b27; /* Plum Background */
+  --color-base-200: #1e1e1e; /* Darker Base */
+  --color-accent: #e2e2dc; /* Light Text Color */
+  --color-neutral: #e2e8f0; /* Neutral Borders */
+  --color-error: #f43f5e; /* Error */
+}
+
+* {
+  font-family: "DM Sans", sans-serif;
 }

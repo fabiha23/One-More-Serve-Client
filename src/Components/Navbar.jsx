@@ -27,27 +27,27 @@ const Navbar = () => {
     const links = <>
         <li>
             <NavLink className={({ isActive }) =>
-                `hover:text-info duration-100 ${isActive && 'border-l-3 text-info pl-1 border-info'}`
+                `hover:text-secondary duration-100 ${isActive && 'border-l-3 text-secondary pl-1 border-secondary'}`
             } to='/'>Home</NavLink>
         </li>
         <li>
             <NavLink className={({ isActive }) =>
-                `hover:text-info duration-100 ${isActive && 'border-l-3 text-info pl-1 border-info'}`
+                `hover:text-secondary duration-100 ${isActive && 'border-l-3 text-secondary pl-1 border-secondary'}`
             } to='/all-articles'>All Articles</NavLink>
         </li>
         <li>
             <NavLink className={({ isActive }) =>
-                ` hover:text-info duration-100 ${isActive && 'border-l-3 text-info pl-1 border-info'}`
+                ` hover:text-secondary duration-100 ${isActive && 'border-l-3 text-secondary pl-1 border-secondary'}`
             } to='/my-articles'>My Articles</NavLink>
         </li>
         <li>
             <NavLink className={({ isActive }) =>
-                ` hover:text-info duration-100 ${isActive && 'border-l-3 text-info pl-1 border-info'}`
+                ` hover:text-secondary duration-100 ${isActive && 'border-l-3 text-secondary pl-1 border-secondary'}`
             } to='/post-article'>Post Article</NavLink>
         </li>
         <li>
             <NavLink className={({ isActive }) =>
-                ` hover:text-info duration-100 ${isActive && 'border-l-3 text-info pl-1 border-info'}`
+                ` hover:text-secondary duration-100 ${isActive && 'border-l-3 text-secondary pl-1 border-secondary'}`
             } to='/about-us'>About Us</NavLink>
         </li>
         {/* {user ? (<></>) : (
@@ -84,13 +84,13 @@ const Navbar = () => {
         <nav>
             <div className='flex justify-between py-4 items-center'>
                 <div>
-                    {/* <Link to='/'>
-                        <h1 className="text-xl font-semibold flex gap-2 items-center bg-gradient-to-r from-secondary via-info-content to-info bg-clip-text text-transparent">
-                            <img className='w-6 h-5' src={wave} alt="" /> <span>ShareWave</span></h1>
-                    </Link> */}
+                    <Link to='/'>
+                        <h1 className="text-2xl font-bold flex gap-2 items-center text-neutral">
+                             <span>OneMoreServe</span></h1>
+                    </Link>
                 </div>
                 <div>
-                    <ul className='hidden xl:flex gap-16 text-neutral text-sm font-medium'>
+                    <ul className='hidden xl:flex gap-16 text-neutral font-semibold'>
                         {links}
                     </ul>
                 </div>
@@ -98,7 +98,7 @@ const Navbar = () => {
                     <div>
                         {
                             user ? <></> : <Link to='/login'>
-                                <button className='text-neutral font-medium mr-1 text-sm hover:text-info cursor-pointer duration-100 border hover:border-info border-neutral px-3 py-1 will-change-transform rounded-sm'>Login</button>
+                                <button className='text-neutral font-medium mr-1 hover:text-secondary cursor-pointer duration-100 border hover:border-secondary border-neutral px-3 py-1 will-change-transform rounded-sm'>Login</button>
                             </Link>
                         }
                     </div>
