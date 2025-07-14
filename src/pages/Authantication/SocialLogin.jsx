@@ -2,14 +2,14 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import { FcGoogle } from "react-icons/fc";
-// import useAxios from '../../../hooks/useAxios';
+import useAxios from "../../hooks/useAxios";
 
 const SocialLogin = () => {
   const { signInWithGoogle } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from || "/";
-  // const axiosInstance = useAxios();
+  const axiosInstance = useAxios();
 
   const handleGoogleSignIn = () => {
     signInWithGoogle()
@@ -24,8 +24,8 @@ const SocialLogin = () => {
           last_log_in: new Date().toISOString(),
         };
 
-        // const res = await axiosInstance.post('/users', userInfo);
-        // console.log('user update info', res.data)
+        const res = await axiosInstance.post('/users', userInfo);
+        console.log('user update info', res.data)
 
         navigate(from);
       })
