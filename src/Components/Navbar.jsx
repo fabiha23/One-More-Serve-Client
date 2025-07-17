@@ -20,10 +20,6 @@ const Navbar = () => {
         setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
     };
 
-    //     if (loading) {
-    //     return <div className='text-center py-5'>Loading...</div>; // or your spinner
-    // }
-
     const links = <>
         <li>
             <NavLink className={({ isActive }) =>
@@ -33,32 +29,18 @@ const Navbar = () => {
         <li>
             <NavLink className={({ isActive }) =>
                 `hover:text-secondary duration-100 ${isActive && 'border-l-3 text-secondary pl-1 border-secondary'}`
-            } to='/all-articles'>All Articles</NavLink>
+            } to='/all-donations'>All Donations</NavLink>
         </li>
         <li>
             <NavLink className={({ isActive }) =>
                 ` hover:text-secondary duration-100 ${isActive && 'border-l-3 text-secondary pl-1 border-secondary'}`
-            } to='/my-articles'>My Articles</NavLink>
-        </li>
-        <li>
-            <NavLink className={({ isActive }) =>
-                ` hover:text-secondary duration-100 ${isActive && 'border-l-3 text-secondary pl-1 border-secondary'}`
-            } to='/post-article'>Post Article</NavLink>
+            } to='/dashboard'>Dashboard</NavLink>
         </li>
         <li>
             <NavLink className={({ isActive }) =>
                 ` hover:text-secondary duration-100 ${isActive && 'border-l-3 text-secondary pl-1 border-secondary'}`
             } to='/about-us'>About Us</NavLink>
         </li>
-        {/* {user ? (<></>) : (
-            <>
-                <li>
-                    <NavLink className={({ isActive }) =>
-                        `mr-3 ${isActive ? 'text-primary' : 'text-accent hover:text-primary'}`
-                    } to='/login'>Login</NavLink>
-                </li>
-            </>)
-        } */}
     </>
 
     const handleSignOut = () => {

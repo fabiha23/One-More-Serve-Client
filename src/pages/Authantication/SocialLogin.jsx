@@ -14,11 +14,13 @@ const SocialLogin = () => {
   const handleGoogleSignIn = () => {
     signInWithGoogle()
       .then(async (result) => {
-        const user = result.user;
+        const user = result?.user;
         console.log(result.user);
         // update userinfo in the database
         const userInfo = {
-          email: user.email,
+          name:user?.displayName,
+          email: user?.email,
+          photoURL: user?.photoURL,
           role: "user", // default role
           created_at: new Date().toISOString(),
           last_log_in: new Date().toISOString(),

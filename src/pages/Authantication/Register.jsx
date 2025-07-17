@@ -49,7 +49,9 @@ const Register = () => {
       const result = await registerUser(email, password, name);
 
       const userInfo = {
-        email: result.email,
+        name,
+        email,
+        photoURL: profilePic,
         role: "user",
         created_at: new Date().toISOString(),
         last_log_in: new Date().toISOString(),

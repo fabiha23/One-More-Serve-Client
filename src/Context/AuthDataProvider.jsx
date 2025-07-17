@@ -36,18 +36,18 @@ const AuthDataProvider = ({ children }) => {
         const unSubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser)
             setLoading(false)
-            if (currentUser?.email) {
-                const userData = { email: currentUser.email }
-                axios.post(`${import.meta.env.VITE_API_URL}/jwt`, userData, {
-                    withCredentials: true
-                })
-                    .then(res => {
-                        console.log('token after jwt', res.data);
-                        // const token = res.data.token;
-                        // localStorage.setItem('token', token) 
-                    })
-                    .catch(err => console.log(err))
-            }
+            // if (currentUser?.email) {
+            //     const userData = { email: currentUser.email }
+            //     axios.post(`${import.meta.env.VITE_API_URL}/jwt`, userData, {
+            //         withCredentials: true
+            //     })
+            //         .then(res => {
+            //             console.log('token after jwt', res.data);
+            //             // const token = res.data.token;
+            //             // localStorage.setItem('token', token) 
+            //         })
+            //         .catch(err => console.log(err))
+            // }
             console.log('user in onAuth', currentUser);
         })
         return () => {
