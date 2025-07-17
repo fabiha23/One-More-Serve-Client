@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import { FaUserCircle, FaSignOutAlt} from 'react-icons/fa';
+import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import { AiOutlineBars } from 'react-icons/ai';
 import useAuth from '../hooks/useAuth';
 import UserMenu from '../pages/Dashboard/User/UserMenu';
 import useRole from '../hooks/UseRole';
+import Loading from './Loading';
+import CharityMenu from '../pages/Dashboard/Charity/CharityMenu';
+import AdminMenu from '../pages/Dashboard/Admin/AdminMenu';
+import RestaurantMenu from '../pages/Dashboard/Restaurent/RestaurantMenu';
 
 const Sidebar = () => {
   const { user, signOutUser } = useAuth();
-    const [role, isRoleLoading] = useRole()
+  const [role, isRoleLoading] = useRole();
   const [isOpen, setIsOpen] = useState(false);
+
+  if (isRoleLoading) return <Loading />;
 
   const handleToggle = () => setIsOpen(!isOpen);
 
@@ -34,7 +40,8 @@ const Sidebar = () => {
   return (
     <>
       {/* Mobile Navbar */}
-      <div className=" flex justify-between items-center md:hidden p-4 shadow">
+      <div className="flex justify-between items-center md:hidden p-4 shadow bg-base-100">
+        <h2 className="text-xl font-bold text-primary">OneMoreServe</h2>
         <button onClick={handleToggle} className="text-primary">
           <AiOutlineBars className="w-6 h-6" />
         </button>
@@ -42,11 +49,13 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`z-10 md:fixed flex flex-col justify-between w-64 h-screen p-4 shadow-lg shadow-accent transition-transform duration-200 ease-in-out ${
+        className={`z-10 md:fixed flex flex-col justify-between w-64 h-screen p-4 shadow-lg shadow-accent transition-transform duration-200 ease-in-out bg-base-100 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } md:translate-x-0 absolute md:static`}
       >
         <div>
+          <h2 className="text-2xl font-bold text-primary mb-6 hidden md:block">OneMoreServe</h2>
+
           <div className="flex gap-2 items-center mb-6">
             {user?.photoURL ? (
               <img src={user.photoURL} alt="User Avatar" className="w-8 h-8 rounded-full" />
@@ -56,10 +65,16 @@ const Sidebar = () => {
             <h3 className="text-lg font-bold text-accent">{user?.displayName || 'Guest User'}</h3>
           </div>
 
-          {role==='user'&& <UserMenu></UserMenu>}
+          {role === 'user' && <UserMenu />}
+          {role === 'charity' && <CharityMenu />}
+          {role === 'admin' && <AdminMenu />}
+          {role === 'restaurant' && <RestaurantMenu />}
         </div>
 
-        <button onClick={handleSignOut} className="flex items-center gap-2 text-error hover:underline font-semibold">
+        <button
+          onClick={handleSignOut}
+          className="flex items-center gap-2 text-error hover:underline font-semibold"
+        >
           <FaSignOutAlt /> Logout
         </button>
       </div>
