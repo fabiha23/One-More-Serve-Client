@@ -3,6 +3,7 @@ import { Outlet } from "react-router";
 import Banner from "./Banner";
 import FeaturedDonations from "./FeaturedDonations";
 import LatestCharityRequests from "./LatestCharityRequests";
+import Footer from "../../Components/Footer";
 
 const Home = () => {
   return (

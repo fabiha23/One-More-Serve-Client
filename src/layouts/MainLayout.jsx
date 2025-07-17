@@ -1,6 +1,7 @@
-import React from 'react';
-import { Outlet } from 'react-router';
-import Navbar from '../Components/Navbar';
+import React from "react";
+import { Outlet } from "react-router";
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 const MainLayout = () => {
   return (
@@ -13,6 +14,11 @@ const MainLayout = () => {
       <main>
         <Outlet />
       </main>
+      <footer className="bg-primary">
+        <footer className="max-w-7xl xl:mx-auto xl:px-2 lg:px-6 mx-3">
+          <Footer></Footer>
+        </footer>
+      </footer>
     </div>
   );
 };
