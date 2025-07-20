@@ -23,10 +23,10 @@ const RestaurantProfile = () => {
 
   return (
     <>
-      <h2 className="text-base-100 font-semibold text-2xl mb-2 bg-secondary p-4 rounded-xl">
+      <h2 className="text-base-100 font-semibold text-2xl mb-2 bg-secondary p-4 rounded-lg px-6">
         Restaurant Profile
       </h2>
-      <div className=" p-6 bg-base-100 rounded-xl shadow-lg overflow-hidden">
+      <div className=" p-6 bg-base-100 rounded-lg shadow-lg overflow-hidden">
         <div className="flex flex-col md:flex-row gap-6">
           <div className="aspect-square w-40 h-40 bg-base-200 rounded-xl overflow-hidden shadow-md">
             <img

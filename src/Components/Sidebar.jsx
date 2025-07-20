@@ -53,7 +53,7 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`z-10 md:fixed flex flex-col justify-between w-64 h-screen p-4 shadow-lg shadow-accent transition-transform duration-200 ease-in-out bg-base-200 ${
+        className={`z-10 md:fixed flex flex-col justify-between w-64 min-h-screen p-4 shadow-lg shadow-accent transition-transform duration-200 ease-in-out bg-base-200 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 absolute md:static`}
       >

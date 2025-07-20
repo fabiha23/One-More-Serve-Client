@@ -5,7 +5,7 @@ import { FaUserCircle, FaHandHoldingHeart, FaTruck, FaGift, FaHistory } from 're
 const CharityMenu = () => {
   const linkClass = ({ isActive }) =>
     `flex items-center gap-2 transition-all ${
-      isActive ? 'border-b-2 border-accent font-semibold' : 'hover:ml-4'
+      isActive ? 'border-b-2 border-secondary font-semibold' : 'hover:ml-4'
     }`;
 
   return (
