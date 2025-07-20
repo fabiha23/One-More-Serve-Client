@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Favorites = () => {
+const CharityProfile = () => {
     return (
         <div>
-            fvrt
+            charity
         </div>
     );
 };
 
-export default Favorites;
+export default CharityProfile;

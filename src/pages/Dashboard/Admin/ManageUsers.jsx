@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Favorites = () => {
+const ManageUsers = () => {
     return (
         <div>
-            fvrt
+            manage users
         </div>
     );
 };
 
-export default Favorites;
+export default ManageUsers;

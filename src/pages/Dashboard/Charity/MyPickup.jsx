@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Favorites = () => {
+const MyPickup = () => {
     return (
         <div>
-            fvrt
+            my pick
         </div>
     );
 };
 
-export default Favorites;
+export default MyPickup;

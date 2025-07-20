@@ -23,7 +23,7 @@ const Login = () => {
         }
 
         loginUser(email, password)
-            .then((result) => {
+            .then(() => {
                 setError('');
                 Swal.fire({
                     title: 'Logged In!',
@@ -33,10 +33,13 @@ const Login = () => {
                 });
                 navigate(location?.state || '/');
             })
-            .catch((error) => {
-                if (error.message === 'Firebase: Error (auth/invalid-credential).') {
-                    setError('Invalid email or password');
-                }
+            .catch((err) => {
+                 Swal.fire({
+                        title: "Login Failed!",
+                        text: err.message || "Something went wrong. Please try again.",
+                        icon: "error",
+                        confirmButtonColor: "#EF4444",
+                      });
             });
     };
 

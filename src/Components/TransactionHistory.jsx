@@ -4,6 +4,7 @@ const TransactionHistory = () => {
    
     return (
         <div>
+            transaction
         </div>
     );
 };

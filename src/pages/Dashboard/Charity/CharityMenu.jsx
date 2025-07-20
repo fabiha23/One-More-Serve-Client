@@ -1,27 +1,32 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { NavLink } from 'react-router';
 import { FaUserCircle, FaHandHoldingHeart, FaTruck, FaGift, FaHistory } from 'react-icons/fa';
 
 const CharityMenu = () => {
-    return (
-        <nav className="flex flex-col gap-4 text-accent">
-            <Link to="/dashboard/charity-profile" className="flex items-center gap-2 hover:text-primary">
-                <FaUserCircle /> Charity Profile
-            </Link>
-            <Link to="/dashboard/my-requests" className="flex items-center gap-2 hover:text-primary">
-                <FaHandHoldingHeart /> My Requests
-            </Link>
-            <Link to="/dashboard/my-pickups" className="flex items-center gap-2 hover:text-primary">
-                <FaTruck /> My Pickups
-            </Link>
-            <Link to="/dashboard/received-donations" className="flex items-center gap-2 hover:text-primary">
-                <FaGift /> Received Donations
-            </Link>
-            <Link to="/dashboard/transactions" className="flex items-center gap-2 hover:text-primary">
-                <FaHistory /> Transaction History
-            </Link>
-        </nav>
-    );
+  const linkClass = ({ isActive }) =>
+    `flex items-center gap-2 transition-all ${
+      isActive ? 'border-b-2 border-accent font-semibold' : 'hover:ml-4'
+    }`;
+
+  return (
+    <nav className="flex flex-col gap-4 text-accent font-medium">
+      <NavLink to="charity-profile" className={linkClass}>
+        <FaUserCircle /> Charity Profile
+      </NavLink>
+      <NavLink to="my-requests" className={linkClass}>
+        <FaHandHoldingHeart /> My Requests
+      </NavLink>
+      <NavLink to="my-pickups" className={linkClass}>
+        <FaTruck /> My Pickups
+      </NavLink>
+      <NavLink to="received-donations" className={linkClass}>
+        <FaGift /> Received Donations
+      </NavLink>
+      <NavLink to="transactions" className={linkClass}>
+        <FaHistory /> Transaction History
+      </NavLink>
+    </nav>
+  );
 };
 
 export default CharityMenu;

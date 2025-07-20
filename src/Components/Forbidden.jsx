@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Favorites = () => {
+const Forbidden = () => {
     return (
         <div>
-            fvrt
+            forbidden
         </div>
     );
 };
 
-export default Favorites;
+export default Forbidden;

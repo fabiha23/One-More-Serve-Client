@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Favorites = () => {
+const AddDonation = () => {
     return (
         <div>
-            fvrt
+            add
         </div>
     );
 };
 
-export default Favorites;
+export default AddDonation;

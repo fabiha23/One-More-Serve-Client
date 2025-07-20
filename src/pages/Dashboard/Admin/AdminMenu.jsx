@@ -1,28 +1,40 @@
 import React from 'react';
-import { Link } from 'react-router';
-import { FaUserCircle, FaHandHoldingHeart, FaUsersCog, FaUserShield, FaClipboardList, FaStar } from 'react-icons/fa';
+import { NavLink } from 'react-router';
+import {
+  FaUserCircle,
+  FaHandHoldingHeart,
+  FaUsersCog,
+  FaUserShield,
+  FaClipboardList,
+  FaStar,
+} from 'react-icons/fa';
 
 const AdminMenu = () => {
+  const linkClass = ({ isActive }) =>
+    `flex items-center gap-2 transition-all ${
+      isActive ? 'border-b-2 border-accent font-semibold' : 'hover:ml-4'
+    }`;
+
   return (
-    <nav className="flex flex-col gap-4 text-accent">
-      <Link to="/dashboard/my-profile" className="flex items-center gap-2 hover:text-primary">
+    <nav className="flex flex-col gap-4 text-accent font-medium">
+      <NavLink to="my-profile" className={linkClass}>
         <FaUserCircle /> Admin Profile
-      </Link>
-      <Link to="/dashboard/manage-donations" className="flex items-center gap-2 hover:text-primary">
+      </NavLink>
+      <NavLink to="manage-donations" className={linkClass}>
         <FaHandHoldingHeart /> Manage Donations
-      </Link>
-      <Link to="/dashboard/manage-users" className="flex items-center gap-2 hover:text-primary">
+      </NavLink>
+      <NavLink to="manage-users" className={linkClass}>
         <FaUsersCog /> Manage Users
-      </Link>
-      <Link to="/dashboard/manage-roles" className="flex items-center gap-2 hover:text-primary">
+      </NavLink>
+      <NavLink to="manage-roles" className={linkClass}>
         <FaUserShield /> Manage Role Requests
-      </Link>
-      <Link to="/dashboard/manage-requests" className="flex items-center gap-2 hover:text-primary">
+      </NavLink>
+      <NavLink to="manage-requests" className={linkClass}>
         <FaClipboardList /> Manage Requests
-      </Link>
-      <Link to="/dashboard/feature-donations" className="flex items-center gap-2 hover:text-primary">
+      </NavLink>
+      <NavLink to="feature-donations" className={linkClass}>
         <FaStar /> Feature Donations
-      </Link>
+      </NavLink>
     </nav>
   );
 };

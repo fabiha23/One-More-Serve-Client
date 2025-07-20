@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Favorites = () => {
+const AdminProfile = () => {
     return (
         <div>
-            fvrt
+            admin
         </div>
     );
 };
 
-export default Favorites;
+export default AdminProfile;

@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import { FcGoogle } from "react-icons/fc";
 import useAxios from "../../hooks/useAxios";
+import Swal from "sweetalert2";
 
 const SocialLogin = () => {
   const { signInWithGoogle } = useAuth();
@@ -18,7 +19,7 @@ const SocialLogin = () => {
         console.log(result.user);
         // update userinfo in the database
         const userInfo = {
-          name:user?.displayName,
+          name: user?.displayName,
           email: user?.email,
           photoURL: user?.photoURL,
           role: "user", // default role
@@ -26,13 +27,18 @@ const SocialLogin = () => {
           last_log_in: new Date().toISOString(),
         };
 
-        const res = await axiosInstance.post('/users', userInfo);
-        console.log('user update info', res.data)
+        const res = await axiosInstance.post("/users", userInfo);
+        console.log("user update info", res.data);
 
         navigate(from);
       })
-      .catch((error) => {
-        console.error(error);
+      .catch((err) => {
+        Swal.fire({
+          title: "Registration Failed!",
+          text: err.message || "Something went wrong. Please try again.",
+          icon: "error",
+          confirmButtonColor: "#EF4444",
+        });
       });
   };
 

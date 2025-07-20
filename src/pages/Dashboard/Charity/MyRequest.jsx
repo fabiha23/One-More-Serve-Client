@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Favorites = () => {
+const MyRequest = () => {
     return (
         <div>
-            fvrt
+            my rqst
         </div>
     );
 };
 
-export default Favorites;
+export default MyRequest;

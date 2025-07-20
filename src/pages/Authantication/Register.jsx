@@ -23,7 +23,9 @@ const Register = () => {
     const formData = new FormData();
     formData.append("image", image);
     try {
-      const uploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_upload_key}`;
+      const uploadUrl = `https://api.imgbb.com/1/upload?key=${
+        import.meta.env.VITE_image_upload_key
+      }`;
       const res = await axios.post(uploadUrl, formData);
       setProfilePic(res.data.data.url);
     } catch (err) {
@@ -73,7 +75,25 @@ const Register = () => {
       navigate(from);
     } catch (err) {
       console.error(err);
-      setError(err.message || "Registration failed");
+      Swal.fire({
+        title: "Registration Failed!",
+        text: err.message || "Something went wrong. Please try again.",
+        icon: "error",
+        confirmButtonColor: "#EF4444",
+      });
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+    if (!/[A-Z]/.test(password)) {
+      setError("Password must contain at least one uppercase letter");
+      return;
+    }
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+      setError("Password must contain at least one special character");
+      return;
     }
   };
 
@@ -134,34 +154,51 @@ const Register = () => {
                 Profile Image
               </label>
               <div className="flex items-center gap-4">
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-neutral/20 border-dashed rounded-lg cursor-pointer bg-neutral/10 hover:bg-neutral/20">
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg
-                      className="w-8 h-8 mb-2 text-neutral/50"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                {profilePic ? (
+                  <div className="w-24 h-24 rounded-lg overflow-hidden border border-neutral/20 relative">
+                    <img
+                      src={profilePic}
+                      alt="Uploaded"
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setProfilePic("")}
+                      className="absolute top-1 right-1 bg-primary text-white rounded-full font-bold w-5 h-5 flex items-center justify-center text-xs cursor-pointer"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                      />
-                    </svg>
-                    <p className="text-xs text-neutral/50">PNG, JPG</p>
+                      ✕
+                    </button>
                   </div>
-                  <input
-                    type="file"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                  />
-                </label>
+                ) : (
+                  <label className="flex flex-col items-center justify-center w-full border-2 border-neutral/20 border-dashed rounded-lg cursor-pointer bg-neutral/10 hover:bg-neutral/20">
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <svg
+                        className="w-8 h-8 mb-2 text-neutral/50"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                        />
+                      </svg>
+                      <p className="text-xs text-neutral/50">PNG, JPG</p>
+                    </div>
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                    />
+                  </label>
+                )}
               </div>
             </div>
 
-            {error && <p className="text-error text-sm">{error}</p>}
+            {error && <p className="text-error">{error}</p>}
 
             <button
               type="submit"
