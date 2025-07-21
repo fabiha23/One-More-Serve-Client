@@ -45,7 +45,9 @@ const Sidebar = () => {
     <>
       {/* Mobile Navbar */}
       <div className="flex justify-between items-center md:hidden p-4 shadow bg-base-100">
-        <h2 className="text-xl font-bold text-secondary">OneMoreServe</h2>
+        <Link to="/">
+          <h2 className="text-xl font-bold text-secondary cursor-pointer">OneMoreServe</h2>
+        </Link>
         <button onClick={handleToggle} className="text-primary">
           <AiOutlineBars className="w-6 h-6" />
         </button>
@@ -58,9 +60,11 @@ const Sidebar = () => {
         } md:translate-x-0 absolute md:static`}
       >
         <div>
-          <h2 className="text-2xl font-bold text-secondary mb-6 hidden md:block">
-            OneMoreServe
-          </h2>
+          <Link to='/'>
+            <h2 className="text-2xl font-bold text-secondary mb-6 hidden md:block cursor-pointer">
+              OneMoreServe
+            </h2>
+          </Link>
 
           <div className="flex gap-2 items-center mb-6">
             {user?.photoURL ? (
@@ -83,7 +87,7 @@ const Sidebar = () => {
           {role === "restaurant" && <RestaurantMenu />}
         </div>
         <div className="flex justify-between">
-          <Link to='/'>
+          <Link to="/">
             <button className="flex items-center gap-1 text-lg cursor-pointer text-accent hover:underline font-semibold">
               <TiHome size={21} /> Home
             </button>

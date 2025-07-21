@@ -1,52 +1,74 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
-import {
-  FaUtensils,
-  FaWeightHanging,
-  FaClock,
-  FaMapMarkerAlt,
-  FaCamera,
+import { 
+  FaUtensils, 
+  FaWeightHanging, 
+  FaClock, 
+  FaMapMarkerAlt, 
+  FaCamera 
 } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import Loading from "../../../Components/Loading";
 import useAxios from "../../../hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
 
-const AddDonation = () => {
+const UpdateDonation = () => {
   const { user } = useAuth();
-  console.log(user);
+  const { state } = useLocation();
+  const navigate = useNavigate();
   const axiosInstance = useAxios();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
   const [imageUrl, setImageUrl] = useState("");
+  const donation = state?.donation;
 
-  const { mutate: addDonation, isPending } = useMutation({
-    mutationKey: ["add-donation"],
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors }, 
+    setValue 
+  } = useForm();
+
+  // Pre-fill form with donation data
+  useEffect(() => {
+    if (donation) {
+      setValue("title", donation?.title);
+      setValue("foodType", donation?.foodType);
+      
+      // Split quantity into value and unit
+      const quantityParts = donation?.quantity?.split(" ");
+      setValue("quantity", quantityParts[0]);
+      setValue("quantityUnit", quantityParts[1] || "portions");
+      
+      setValue("pickupStart", donation?.pickupStart.split('T')[0]);
+      setValue("pickupEnd", donation?.pickupEnd.split('T')[0]);
+      setValue("location", donation?.location);
+      
+      setImageUrl(donation?.donationImage);
+    }
+  }, [donation, setValue]);
+
+  const { mutate: updateDonation, isPending } = useMutation({
+    mutationKey: ["update-donation"],
     mutationFn: async (donationData) => {
-      const { data } = await axiosInstance.post("/donations", donationData);
+      const { data } = await axiosInstance.put(`/donations/${donation?._id}`, donationData);
       return data;
     },
     onSuccess: () => {
       Swal.fire({
-        title: "Donation Added!",
-        text: "Donation has been listed successfully",
+        title: "Donation Updated!",
+        text: "Donation has been updated successfully",
         icon: "success",
         timer: 3000,
         confirmButtonColor: "#10B981",
       });
-      //   reset();
-    //   setImageUrl("");
+      navigate("/dashboard/my-donations");
     },
     onError: (error) => {
       Swal.fire({
-        title: "Submission Failed",
-        text: error.response?.data?.message || "Failed to add donation",
+        title: "Update Failed",
+        text: error?.response?.data?.message || "Failed to update donation",
         icon: "error",
         confirmButtonColor: "#EF4444",
       });
@@ -54,7 +76,7 @@ const AddDonation = () => {
   });
 
   const handleImageUpload = async (e) => {
-    const image = e.target.files[0];
+    const image = e?.target?.files[0];
     if (!image) return;
 
     try {
@@ -62,9 +84,7 @@ const AddDonation = () => {
       formData.append("image", image);
 
       const response = await axios.post(
-        `https://api.imgbb.com/1/upload?key=${
-          import.meta.env.VITE_image_upload_key
-        }`,
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_upload_key}`,
         formData
       );
 
@@ -83,23 +103,22 @@ const AddDonation = () => {
   const onSubmit = async (data) => {
     const donationData = {
       ...data,
-      restaurantId: user?.uid,
-      restaurantName: user?.displayName,
-      restaurantEmail: user?.email,
+      quantity: `${data.quantity} ${data.quantityUnit}`,
       donationImage: imageUrl,
-      status: "Pending",
-      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
-    addDonation(donationData);
+    updateDonation(donationData);
   };
+
   if (isPending) return <Loading></Loading>;
+
   return (
     <>
       <h2 className="text-base-100 font-semibold text-2xl mb-3 bg-secondary p-4 rounded-lg px-6">
-        Add Donation
+        Update Donation
       </h2>
       <div className="p-6 bg-base-100 rounded-lg shadow-lg">
-        <form onSubmit={handleSubmit(onSubmit)} className=" space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <fieldset className="fieldset bg-base-200 p-3 rounded-box">
             <label className="text-accent font-semibold text-base">
               Donation Title
@@ -114,7 +133,7 @@ const AddDonation = () => {
             />
             {errors.title && (
               <span className="text-error text-sm mt-1">
-                {errors.title.message}
+                {errors?.title?.message}
               </span>
             )}
           </fieldset>
@@ -140,7 +159,7 @@ const AddDonation = () => {
               </select>
               {errors.foodType && (
                 <span className="text-error text-sm mt-1">
-                  {errors.foodType.message}
+                  {errors?.foodType?.message}
                 </span>
               )}
             </fieldset>
@@ -172,7 +191,7 @@ const AddDonation = () => {
               </div>
               {errors.quantity && (
                 <span className="text-error text-sm mt-1">
-                  {errors.quantity.message}
+                  {errors?.quantity?.message}
                 </span>
               )}
             </fieldset>
@@ -192,7 +211,7 @@ const AddDonation = () => {
               />
               {errors.pickupStart && (
                 <span className="text-error text-sm mt-1">
-                  {errors.pickupStart.message}
+                  {errors?.pickupStart?.message}
                 </span>
               )}
             </fieldset>
@@ -212,7 +231,7 @@ const AddDonation = () => {
               />
               {errors.pickupEnd && (
                 <span className="text-error text-sm mt-1">
-                  {errors.pickupEnd.message}
+                  {errors?.pickupEnd?.message}
                 </span>
               )}
             </fieldset>
@@ -264,12 +283,11 @@ const AddDonation = () => {
             </select>
             {errors.location && (
               <span className="text-error text-sm mt-1">
-                {errors.location.message}
+                {errors?.location?.message}
               </span>
             )}
           </fieldset>
 
-          {/* Image upload area REPLACED */}
           <fieldset className="fieldset bg-base-200 p-3 rounded-box">
             <label className="text-accent font-semibold text-base">
               Food Image
@@ -309,7 +327,6 @@ const AddDonation = () => {
                     <p className="text-xs text-accent">PNG, JPG</p>
                   </div>
                   <input
-                    required
                     type="file"
                     className="hidden"
                     accept="image/*"
@@ -322,6 +339,7 @@ const AddDonation = () => {
 
           <input
             type="submit"
+            value="Update Donation"
             className={`bg-primary text-base-100 w-full py-2 rounded-md text-lg font-semibold cursor-pointer hover:bg-secondary duration-300`}
           />
         </form>
@@ -330,4 +348,4 @@ const AddDonation = () => {
   );
 };
 
-export default AddDonation;
+export default UpdateDonation;

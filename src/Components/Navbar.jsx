@@ -99,12 +99,6 @@ const Navbar = () => {
                             {openUser && (
                                 <div className="absolute right-0 mt-2 bg-base-200 p-3 shadow rounded z-50 text-accent top-9 border-2 border-neutral w-50 space-y-2">
                                     <p className='font-medium'>{user.displayName}</p>
-                                    <Link to='/my-articles'>
-                                        <p>My Articles</p>
-                                    </Link>
-                                    <Link to='/post-article'>
-                                        <p className='my-2'>Post Article</p>
-                                    </Link>
                                     <button className='flex items-center gap-2 bg-base-00 border-2 border-neutral p-1 px-3 shadow-sm rounded-sm cursor-pointer font-medium text-accent' onClick={handleSignOut}><TbLogout2 />
                                         Logout</button>
                                 </div>

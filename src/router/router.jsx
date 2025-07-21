@@ -29,6 +29,7 @@ import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import ManageRequests from "../pages/Dashboard/Admin/ManageRequests";
 import FeatureDonations from "../pages/Dashboard/Admin/FeatureDonations";
 import ManageRoleRequests from "../pages/Dashboard/Admin/ManageRoleRequests";
+import UpdateDonation from "../pages/Dashboard/Restaurant/UpdateDonation";
 
 export const router = createBrowserRouter([
   {
@@ -178,6 +179,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <RestaurantRoute>
               <RequestedDonation />
+            </RestaurantRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "update-donation/:id",
+        element: (
+          <PrivateRoute>
+            <RestaurantRoute>
+              <UpdateDonation></UpdateDonation>
             </RestaurantRoute>
           </PrivateRoute>
         ),
