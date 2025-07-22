@@ -39,7 +39,18 @@ const MyDonations = () => {
       const { data } = await axiosInstance.delete(`/donations/${id}`);
       return data;
     },
-    onSuccess: () => {},
+    onSuccess: () => {
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your donation has been deleted.",
+        icon: "success",
+        timer: 3000,
+        confirmButtonColor: "#10B981",
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["restaurant-donations", user?.email],
+      });
+    },
     onError: (error) => {
       Swal.fire({
         title: "Error!",
@@ -62,16 +73,6 @@ const MyDonations = () => {
     }).then((result) => {
       if (result?.isConfirmed) {
         deleteDonation(id);
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your donation has been deleted.",
-          icon: "success",
-          timer: 3000,
-          confirmButtonColor: "#10B981",
-        });
-        queryClient.invalidateQueries({
-          queryKey: ["restaurant-donations", user?.email],
-        });
       }
     });
   };
