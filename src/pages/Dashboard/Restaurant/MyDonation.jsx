@@ -15,6 +15,7 @@ import { Link } from "react-router";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
 import useAxios from "../../../hooks/useAxios";
+import Loading from "../../../Components/Loading";
 
 const MyDonations = () => {
   const { user } = useAuth();
@@ -78,7 +79,7 @@ const MyDonations = () => {
   };
 
   if (isLoading)
-    return <div className="text-center py-8">Loading donations...</div>;
+    return <Loading></Loading>;
 
   return (
     <div>

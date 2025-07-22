@@ -17,7 +17,7 @@ const AdminMenu = () => {
 
   return (
     <nav className="flex flex-col gap-4 text-accent font-medium">
-      <NavLink to="my-profile" className={linkClass}>
+      <NavLink to="admin-profile" className={linkClass}>
         <FaUserCircle /> Admin Profile
       </NavLink>
       <NavLink to="manage-donations" className={linkClass}>

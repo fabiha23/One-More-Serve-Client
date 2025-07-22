@@ -10,7 +10,6 @@ import RequestCharity from "../pages/Dashboard/User/RequestCharity";
 import PrivateRoute from "./PrivateRoute";
 import Favorites from "../pages/Dashboard/User/Favorites";
 import MyReview from "../pages/Dashboard/User/MyReview";
-import TransactionHistory from "../Components/TransactionHistory";
 import Forbidden from "../Components/Forbidden";
 import CharityRoute from "../router/CharityRoute";
 import CharityProfile from "../pages/Dashboard/Charity/CharityProfile";
@@ -30,6 +29,7 @@ import ManageRequests from "../pages/Dashboard/Admin/ManageRequests";
 import FeatureDonations from "../pages/Dashboard/Admin/FeatureDonations";
 import ManageRoleRequests from "../pages/Dashboard/Admin/ManageRoleRequests";
 import UpdateDonation from "../pages/Dashboard/Restaurant/UpdateDonation";
+import PaymentHistory from "../pages/Dashboard/Payment/PaymentHistory";
 
 export const router = createBrowserRouter([
   {
@@ -87,7 +87,7 @@ export const router = createBrowserRouter([
         path: "transactions",
         element: (
           <PrivateRoute>
-            <TransactionHistory></TransactionHistory>
+            <PaymentHistory></PaymentHistory>
           </PrivateRoute>
         ),
       },
@@ -128,16 +128,6 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <CharityRoute>
               <ReceivedDonation />
-            </CharityRoute>
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "charity-transactions",
-        element: (
-          <PrivateRoute>
-            <CharityRoute>
-              <TransactionHistory />
             </CharityRoute>
           </PrivateRoute>
         ),
