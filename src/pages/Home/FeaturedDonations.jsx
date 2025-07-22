@@ -1,92 +1,101 @@
-import { useQuery } from "@tanstack/react-query";
-import { FaUtensils, FaMapMarkerAlt, FaCalendarAlt, FaWeight } from "react-icons/fa";
-import { Link } from "react-router";
-import useAxios from "../../hooks/useAxios";
-import Loading from "../../Components/Loading";
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router';
+import { 
+  FaUtensils, 
+  FaStore, 
+  FaMapMarkerAlt,
+  FaWeightHanging,
+  FaStar
+} from 'react-icons/fa';
+import useAxios from '../../hooks/useAxios';
+import Loading from '../../Components/Loading';
 
-const FeaturedDonations = () => {
+const FeaturedDonationsSection = () => {
   const axiosInstance = useAxios();
 
-  const { data: allDonations, isLoading } = useQuery({
-    queryKey: ["featured-donations"],
+  const { data: featuredDonations = [], isLoading } = useQuery({
+    queryKey: ['featuredDonations'],
     queryFn: async () => {
-      const { data } = await axiosInstance.get("/donations");
-      return data;
+      const res = await axiosInstance.get('/donations?featured=true&status=Verified');
+      return res.data.slice(0, 4);
     },
   });
 
   if (isLoading) return <Loading />;
-    const donations = allDonations?.slice(0, 4) || [];
-
 
   return (
     <section className="py-10">
-      <h2 className="text-3xl font-bold text-center mb-8">Featured Donations</h2>
-      
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-  {donations?.map((donation) => (
-    <div key={donation._id} className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
-      {/* Reduced image height */}
-      <figure className="h-36 overflow-hidden">
-        <img 
-          src={donation.donationImage} 
-          alt={donation.title} 
-          className="w-full h-full object-cover"
-        />
-      </figure>
-      
-      {/* Compact card body */}
-      <div className="card-body p-3 flex-grow">
-        <h3 className="card-title text-md line-clamp-1 mb-1">{donation.title}</h3>
-        
-        {/* Tighter info layout */}
-        <div className="space-y-1 text-sm">
-          <div className="flex items-center gap-1">
-            <FaUtensils className="text-accent text-xs" />
-            <span className="line-clamp-1">{donation.foodType}</span>
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-accent mb-8 text-center">
+          Featured Donations
+        </h2>
+
+        {featuredDonations.length === 0 ? (
+          <div className="text-center py-8 bg-base-100 rounded-lg shadow">
+            <p className="text-accent">No featured donations available</p>
           </div>
-          
-          <div className="flex items-center gap-1">
-            <FaWeight className="text-accent text-xs" />
-            <span>{donation.quantity}{donation.quantityUnit}</span>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredDonations.map(donation => (
+              <div 
+                key={donation._id} 
+                className="card bg-base-100 shadow-lg hover:shadow-xl transition duration-300 border border-base-200"
+              >
+                <figure className="h-40 relative overflow-hidden">
+                  <img 
+                    src={donation.donationImage} 
+                    alt={donation.title} 
+                    className="w-full h-full object-cover transform hover:scale-105 transition duration-300"
+                  />
+                  <div className="absolute top-2 right-2 badge badge-primary gap-1 text-xs px-2 py-1">
+                    <FaStar className="text-yellow-300" />
+                    Featured
+                  </div>
+                </figure>
+
+                <div className="card-body p-4">
+                  <h3 className="card-title text-lg font-semibold mb-2">
+                    {donation.title}
+                  </h3>
+
+                  <div className="space-y-1 text-accent text-sm">
+                    <div className="flex items-center gap-2">
+                      <FaUtensils className="text-accent" />
+                      <span>{donation.foodType}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <FaStore className="text-accent" />
+                      <span>{donation.restaurantName}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <FaMapMarkerAlt className="text-accent" />
+                      <span>{donation.location || 'Location not provided'}</span>
+                    </div>
+                  </div>
+
+                  <div className="card-actions mt-4 flex justify-between items-center">
+                    <span className={`badge ${
+                      donation.status === 'Verified' ? 'badge-success' : 'badge-neutral'
+                    }`}>
+                      {donation.status}
+                    </span>
+                    <Link 
+                      to={`/donations/${donation._id}`} 
+                      className="btn btn-primary btn-sm"
+                    >
+                      Details
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-          
-          <div className="flex items-center gap-1">
-            <FaMapMarkerAlt className="text-accent text-xs" />
-            <span className="line-clamp-1">{donation.location}</span>
-          </div>
-          
-          <div className="flex items-center gap-1">
-            <FaCalendarAlt className="text-accent text-xs" />
-            <span className="text-xs">
-              {new Date(donation.pickupStart).toLocaleDateString()} - 
-              {new Date(donation.pickupEnd).toLocaleDateString()}
-            </span>
-          </div>
-        </div>
-        
-        {/* Combined status and restaurant info */}
-        <div className="mt-2 pt-2 border-t border-gray-100">
-          <div className="flex justify-between items-center">
-            <div className="badge badge-sm capitalize">
-              {donation.status}
-            </div>
-            <Link 
-              to={`/donations/${donation._id}`} 
-              className="btn btn-xs btn-primary"
-            >
-              Details
-            </Link>
-          </div>
-          
-          <p className="text-xs mt-1 text-gray-600">By: {donation.restaurantName}</p>
-        </div>
+        )}
       </div>
-    </div>
-  ))}
-</div>
     </section>
   );
 };
 
-export default FeaturedDonations;
+export default FeaturedDonationsSection;
