@@ -5,7 +5,8 @@ import useAxios from '../../../hooks/useAxios';
 import Loading from '../../../Components/Loading';
 
 const ManageUsers = () => {
-    const axiosInstance=useAxios()
+  const axiosInstance = useAxios();
+
   const { data: users = [], refetch, isLoading } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
@@ -14,9 +15,9 @@ const ManageUsers = () => {
     },
   });
 
-  const handleMakeRole = async (userId, role) => {
+  const handleMakeRole = async (email, role) => {
     try {
-      await axiosInstance.patch(`/users/role/${userId}`, { role });
+      await axiosInstance.patch(`/users/role?email=${email}`, { role });
       Swal.fire('Success', `${role} role assigned`, 'success');
       refetch();
     } catch (err) {
@@ -44,7 +45,7 @@ const ManageUsers = () => {
     }
   };
 
-  if (isLoading) return <Loading></Loading>;
+  if (isLoading) return <Loading />;
 
   return (
     <div className="p-4">
@@ -65,9 +66,9 @@ const ManageUsers = () => {
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td className="space-x-2">
-                <button onClick={() => handleMakeRole(user._id, 'Admin')} className="btn btn-xs">Make Admin</button>
-                <button onClick={() => handleMakeRole(user._id, 'Restaurant')} className="btn btn-xs">Make Restaurant</button>
-                <button onClick={() => handleMakeRole(user._id, 'Charity')} className="btn btn-xs">Make Charity</button>
+                <button onClick={() => handleMakeRole(user.email, 'Admin')} className="btn btn-xs">Make Admin</button>
+                <button onClick={() => handleMakeRole(user.email, 'Restaurant')} className="btn btn-xs">Make Restaurant</button>
+                <button onClick={() => handleMakeRole(user.email, 'Charity')} className="btn btn-xs">Make Charity</button>
                 <button onClick={() => handleDelete(user._id)} className="btn btn-xs btn-error">Delete</button>
               </td>
             </tr>
