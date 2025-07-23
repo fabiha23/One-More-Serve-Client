@@ -15,7 +15,7 @@ const AddReviewModal = ({
   closeModal,
   refetch,
 }) => {
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const axiosInstance = useAxios();
 
   // State to track star rating

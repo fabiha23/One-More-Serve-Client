@@ -18,6 +18,7 @@ import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 import AddReviewModal from "./AddReviewModal";
 import ReviewSection from "./ReviewSection";
+import RequestDonationModal from "./RequestDonationModal";
 
 const DonationDetails = () => {
   const [role, isRoleLoading] = useRole();
@@ -37,6 +38,16 @@ const DonationDetails = () => {
       return res.data;
     },
   });
+  const { data: charityRequests = [] } = useQuery({
+  queryKey: ["charityInfo", user?.email],
+  enabled: !!user?.email && role === "charity",
+  queryFn: async () => {
+    const res = await axiosInstance.get(`/roleRequests?email=${user?.email}`);
+    return res.data;
+  },
+});
+const charityInfo = charityRequests[0] || {};
+
 
   // Fetch if current donation is favorited
   const { data: favorite = [] } = useQuery({
@@ -189,18 +200,22 @@ const DonationDetails = () => {
               </div>
             </div>
             <div className="flex flex-wrap gap-3 mt-auto">
-              <button
-                onClick={() => setRequestModalOpen(true)}
-                className="btn btn-primary"
-              >
-                Request Donation
-              </button>
-              <button
-                onClick={() => setReviewModalOpen(true)}
-                className="btn btn-secondary"
-              >
-                Add Review
-              </button>
+              {role === "charity" && (
+                <button
+                  onClick={() => setRequestModalOpen(true)}
+                  className="btn btn-primary"
+                >
+                  Request Donation
+                </button>
+              )}
+              {(role === "charity" || role === "user") && (
+                <button
+                  onClick={() => setReviewModalOpen(true)}
+                  className="btn btn-secondary"
+                >
+                  Add Review
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -221,18 +236,21 @@ const DonationDetails = () => {
             donationTitle={donation?.title}
             restaurantName={donation?.restaurantName}
             closeModal={() => setReviewModalOpen(false)}
-            refetch={() => queryClient.invalidateQueries(["donationDetails", id])}
+            refetch={() =>
+              queryClient.invalidateQueries(["donationDetails", id])
+            }
           />
         )}
 
         {/* Uncomment and implement RequestDonationModal when ready */}
-        {/* {isRequestModalOpen && (
+        {isRequestModalOpen && (
           <RequestDonationModal
             isOpen={isRequestModalOpen}
-            onClose={() => setRequestModalOpen(false)}
+            closeModal={() => setRequestModalOpen(false)}
             donation={donation}
+            charityInfo={charityInfo}
           />
-        )} */}
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
-import { AiOutlineBars, AiOutlineHome } from "react-icons/ai";
+import { AiOutlineBars } from "react-icons/ai";
 import useAuth from "../hooks/useAuth";
 import UserMenu from "../pages/Dashboard/User/UserMenu";
 import useRole from "../hooks/UseRole";
@@ -8,8 +8,6 @@ import Loading from "./Loading";
 import CharityMenu from "../pages/Dashboard/Charity/CharityMenu";
 import AdminMenu from "../pages/Dashboard/Admin/AdminMenu";
 import RestaurantMenu from "../pages/Dashboard/Restaurant/RestaurantMenu";
-import { FiHome } from "react-icons/fi";
-import { BiHome } from "react-icons/bi";
 import { TiHome } from "react-icons/ti";
 import { Link, useNavigate } from "react-router";
 import logo from "../assets/logo.png";
