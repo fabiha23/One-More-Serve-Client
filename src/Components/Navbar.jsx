@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { IoMenu, IoMoonOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { TbLogout2 } from "react-icons/tb";
 import { FiSun } from "react-icons/fi";
 import useAuth from "../hooks/useAuth";
 import logo from "../assets/logo.png";
+import useRole from "../hooks/UseRole";
+import UserDropdown from "./UserDropdown";
+import useAxios from "../hooks/useAxios";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [openUser, setOpenUser] = useState(false);
   const { user, signOutUser } = useAuth();
   const [theme, setTheme] = useState("light");
+  const [role] = useRole();
+  const axiosInstance=useAxios()
+  const navigate=useNavigate()
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -74,25 +80,24 @@ const Navbar = () => {
     </>
   );
 
-  const handleSignOut = () => {
-    signOutUser()
-      .then(() => {
-        console.log("sign out hoise");
-        return fetch(`${import.meta.env.VITE_API_URL}/logout`, {
-          method: "POST",
-          credentials: "include",
-        });
-      })
-      .then((res) => {
-        if (res.ok) {
-          console.log("Signed out from Firebase and backend token cleared");
-          // Clear any frontend state here, e.g. setUser(null)
-        } else {
-          console.log("Backend logout failed");
-        }
-      })
-      .catch((error) => console.log(error));
-  };
+ const handleSignOut = () => {
+  signOutUser()
+    .then(() => {
+      console.log("Signed out from Firebase");
+      return axiosInstance.post("/logout"); // Logout from backend
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        console.log("Backend logout successful");
+        navigate("/");
+      } else {
+        console.log("Backend logout failed");
+      }
+    })
+    .catch((error) => {
+      console.error("Logout error:", error);
+    });
+};
   return (
     <nav>
       <div className="flex justify-between py-4 items-center">
@@ -143,17 +148,13 @@ const Navbar = () => {
                 alt="User"
               />
               {openUser && (
-                <div className="absolute right-0 mt-2 bg-base-200 p-3 shadow rounded z-50 text-accent top-9 border-2 border-neutral w-50 space-y-2">
-                  <p className="font-medium">{user.displayName}</p>
-                  <button
-                    className="flex items-center gap-2 bg-base-00 border-2 border-neutral p-1 px-3 shadow-sm rounded-sm cursor-pointer font-medium text-accent"
-                    onClick={handleSignOut}
-                  >
-                    <TbLogout2 />
-                    Logout
-                  </button>
-                </div>
-              )}
+                <UserDropdown
+                  user={user}
+                  role={role}
+                  handleSignOut={handleSignOut}
+                  openUser={openUser}
+                />
+              )}{" "}
             </div>
           )}
           <span className="text-neutral" onClick={() => setOpen(!open)}>

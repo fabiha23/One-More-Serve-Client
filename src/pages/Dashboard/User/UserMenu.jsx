@@ -19,7 +19,7 @@ const UserMenu = () => {
       <NavLink to="favorites" className={linkClass}>
         <FaHeart /> Favorites
       </NavLink>
-      <NavLink to="reviews" className={linkClass}>
+      <NavLink to="my-reviews" className={linkClass}>
         <FaStar /> My Reviews
       </NavLink>
       <NavLink to="transactions" className={linkClass}>

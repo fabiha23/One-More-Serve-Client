@@ -11,36 +11,39 @@ import RestaurantMenu from "../pages/Dashboard/Restaurant/RestaurantMenu";
 import { FiHome } from "react-icons/fi";
 import { BiHome } from "react-icons/bi";
 import { TiHome } from "react-icons/ti";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import logo from "../assets/logo.png";
+import useAxios from "../hooks/useAxios";
 
 const Sidebar = () => {
   const { user, signOutUser } = useAuth();
   const [role, isRoleLoading] = useRole();
   const [isOpen, setIsOpen] = useState(false);
+  const axiosInstance=useAxios();
+  const navigate =useNavigate()
 
   if (isRoleLoading) return <Loading />;
 
   const handleToggle = () => setIsOpen(!isOpen);
 
   const handleSignOut = () => {
-    signOutUser()
-      .then(() => {
-        console.log("sign out hoise");
-        return fetch(`${import.meta.env.VITE_API_URL}/logout`, {
-          method: "POST",
-          credentials: "include",
-        });
-      })
-      .then((res) => {
-        if (res.ok) {
-          console.log("Signed out from Firebase and backend token cleared");
-        } else {
-          console.log("Backend logout failed");
-        }
-      })
-      .catch((error) => console.log(error));
-  };
+  signOutUser()
+    .then(() => {
+      console.log("Signed out from Firebase");
+      return axiosInstance.post("/logout"); // Logout from backend
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        console.log("Backend logout successful");
+        navigate("/");
+      } else {
+        console.log("Backend logout failed");
+      }
+    })
+    .catch((error) => {
+      console.error("Logout error:", error);
+    });
+};
 
   return (
     <>

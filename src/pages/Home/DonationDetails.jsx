@@ -15,6 +15,9 @@ import useAxios from "../../hooks/useAxios";
 import Loading from "../../Components/Loading";
 import useRole from "../../hooks/UseRole";
 import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
+import AddReviewModal from "./AddReviewModal";
+import ReviewSection from "./ReviewSection";
 
 const DonationDetails = () => {
   const [role, isRoleLoading] = useRole();
@@ -50,24 +53,33 @@ const DonationDetails = () => {
   const isFavorite = favorite.length > 0;
   const favoriteId = favorite[0]?._id;
   const favoriteData = {
-  userEmail: user?.email,
-  donationId: donation?._id,
-  donationTitle: donation?.title,
-  donationImage: donation?.donationImage,
-  restaurantName: donation?.restaurantName,
-  location: donation?.location,
-  status: donation?.status,
-  quantity: donation?.quantity,
-  quantityUnit: donation?.quantityUnit,
-};
+    userEmail: user?.email,
+    donationId: donation?._id,
+    donationTitle: donation?.title,
+    donationImage: donation?.donationImage,
+    restaurantName: donation?.restaurantName,
+    location: donation?.location,
+    status: donation?.status,
+    quantity: donation?.quantity,
+    quantityUnit: donation?.quantityUnit,
+  };
 
   // Add to favorites
   const addFavorite = useMutation({
     mutationFn: async () => {
-      return await axiosInstance.post("/favorites",favoriteData);
+      return await axiosInstance.post("/favorites", favoriteData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["favorite", id, user?.email]);
+      Swal.fire({
+        icon: "success",
+        title: "Added to Favorites",
+        text: `"${donation?.title}" has been added to your favorites.`,
+        timer: 3000,
+        showConfirmButton: false,
+        position: "top-end",
+        toast: true,
+      });
     },
   });
 
@@ -78,6 +90,14 @@ const DonationDetails = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["favorite", id, user?.email]);
+      Swal.fire({
+        icon: "success",
+        title: "Removed from Favorites",
+        showConfirmButton: false,
+        position: "top-end",
+        timer: 3000,
+        toast: true,
+      });
     },
   });
 
@@ -187,22 +207,32 @@ const DonationDetails = () => {
 
         {/* Reviews Section */}
         <div className="mb-10 mt-12">
-          {/* <ReviewSection donationId={id} /> */}
+          <ReviewSection donationId={id} />
         </div>
 
         {/* Modals */}
-        {/* 
-        <RequestDonationModal 
-          isOpen={isRequestModalOpen} 
-          onClose={() => setRequestModalOpen(false)} 
-          donation={donation} 
-        />
-        <AddReviewModal 
-          isOpen={isReviewModalOpen} 
-          onClose={() => setReviewModalOpen(false)} 
-          donationId={id}
-        />
-        */}
+        {isReviewModalOpen && (
+          <AddReviewModal
+            isOpen={isReviewModalOpen}
+            donationId={id}
+            reviewerName={user?.displayName}
+            reviewerEmail={user?.email}
+            reviewerImage={user?.photoURL}
+            donationTitle={donation?.title}
+            restaurantName={donation?.restaurantName}
+            closeModal={() => setReviewModalOpen(false)}
+            refetch={() => queryClient.invalidateQueries(["donationDetails", id])}
+          />
+        )}
+
+        {/* Uncomment and implement RequestDonationModal when ready */}
+        {/* {isRequestModalOpen && (
+          <RequestDonationModal
+            isOpen={isRequestModalOpen}
+            onClose={() => setRequestModalOpen(false)}
+            donation={donation}
+          />
+        )} */}
       </div>
     </div>
   );
