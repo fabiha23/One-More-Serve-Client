@@ -1,18 +1,20 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { FaUtensils, FaStore, FaHandsHelping, FaEnvelope, FaCalendarAlt } from 'react-icons/fa';
 import useAxios from '../../hooks/useAxios';
 import Swal from 'sweetalert2';
 
-const RequestDonationModal = ({ donation,charityInfo, closeModal, refetch }) => {
+const RequestDonationModal = ({ donation, charityInfo, closeModal, refetch }) => {
   const { register, handleSubmit, reset } = useForm();
   const axiosInstance = useAxios();
 
   const onSubmit = async (data) => {
     try {
-      await axiosInstance.post('/donation-requests', {
+      await axiosInstance.post('/donationRequests', {
         ...data,
         status: 'Pending',
-        donationId: donation._id,
+        donationId: donation?._id,
+        foodType: donation?.foodType
       });
       Swal.fire('Requested!', 'Your donation request has been sent.', 'success');
       closeModal();
@@ -24,80 +26,116 @@ const RequestDonationModal = ({ donation,charityInfo, closeModal, refetch }) => 
   };
 
   return (
-    <dialog id="request_donation_modal" className="modal" open>
-      <div className="modal-box max-w-2xl">
-        <h3 className="font-bold text-xl mb-4">Request Donation</h3>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Donation Title */}
-          <div>
-            <label className="label font-semibold">Donation Title</label>
-            <input
-              {...register('donationTitle')}
-              value={donation?.title}
-              readOnly
-              className="input input-bordered w-full"
-            />
+    <dialog id="request_donation_modal" className="modal modal-bottom sm:modal-middle" open>
+      <div className="modal-box max-w-4xl">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="font-bold text-2xl">Request Donation</h3>
+          <button onClick={closeModal} className="btn btn-circle btn-sm">✕</button>
+        </div>
+        
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="overflow-x-auto">
+            <table className="table w-full">
+              <tbody>
+                {/* Donation Title */}
+                <tr>
+                  <td className="font-semibold flex items-center gap-2">
+                    <FaUtensils className="text-primary" /> Donation Title
+                  </td>
+                  <td>
+                    <input
+                      {...register('donationTitle')}
+                      value={donation?.title}
+                      readOnly
+                      className="input input-bordered w-full"
+                    />
+                  </td>
+                </tr>
+
+                {/* Restaurant Name */}
+                <tr>
+                  <td className="font-semibold flex items-center gap-2">
+                    <FaStore className="text-primary" /> Restaurant
+                  </td>
+                  <td>
+                    <input
+                      {...register('restaurantName')}
+                      value={donation?.restaurantName}
+                      readOnly
+                      className="input input-bordered w-full"
+                    />
+                  </td>
+                </tr>
+
+                {/* Charity Name */}
+                <tr>
+                  <td className="font-semibold flex items-center gap-2">
+                    <FaHandsHelping className="text-primary" /> Charity
+                  </td>
+                  <td>
+                    <input
+                      {...register('charityName')}
+                      value={charityInfo?.organizationName}
+                      readOnly
+                      className="input input-bordered w-full"
+                    />
+                  </td>
+                </tr>
+
+                {/* Charity Email */}
+                <tr>
+                  <td className="font-semibold flex items-center gap-2">
+                    <FaEnvelope className="text-primary" /> Charity Email
+                  </td>
+                  <td>
+                    <input
+                      {...register('charityEmail')}
+                      value={charityInfo?.email}
+                      readOnly
+                      className="input input-bordered w-full"
+                    />
+                  </td>
+                </tr>
+
+                {/* Request Description */}
+                <tr>
+                  <td className="font-semibold">Request Description</td>
+                  <td>
+                    <textarea
+                      {...register('requestDescription')}
+                      placeholder="Write your reason for requesting this donation..."
+                      required
+                      className="textarea textarea-bordered w-full"
+                      rows={3}
+                    />
+                  </td>
+                </tr>
+
+                {/* Preferred Pickup Time */}
+                <tr>
+                  <td className="font-semibold flex items-center gap-2">
+                    <FaCalendarAlt className="text-primary" /> Pickup Time
+                  </td>
+                  <td>
+                    <input
+                      type="datetime-local"
+                      {...register('pickupTime')}
+                      required
+                      className="input input-bordered w-full"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
-          {/* Restaurant Name */}
-          <div>
-            <label className="label font-semibold">Restaurant Name</label>
-            <input
-              {...register('restaurantName')}
-              value={donation?.restaurantName}
-              readOnly
-              className="input input-bordered w-full"
-            />
-          </div>
-
-          {/* Charity Name */}
-          <div>
-            <label className="label font-semibold">Charity Name</label>
-            <input
-              {...register('charityName')}
-              value={charityInfo?.organizationName}
-              readOnly
-              className="input input-bordered w-full"
-            />
-          </div>
-
-          {/* Charity Email */}
-          <div>
-            <label className="label font-semibold">Charity Email</label>
-            <input
-              {...register('charityEmail')}
-              value={charityInfo?.email}
-              readOnly
-              className="input input-bordered w-full"
-            />
-          </div>
-
-          {/* Request Description */}
-          <div>
-            <label className="label font-semibold">Request Description</label>
-            <textarea
-              {...register('requestDescription')}
-              placeholder="Write your reason for requesting this donation..."
-              required
-              className="textarea textarea-bordered w-full"
-            />
-          </div>
-
-          {/* Preferred Pickup Time */}
-          <div>
-            <label className="label font-semibold">Preferred Pickup Time</label>
-            <input
-              type="datetime-local"
-              {...register('pickupTime')}
-              required
-              className="input input-bordered w-full"
-            />
-          </div>
-
-          {/* Actions */}
-          <div className="modal-action">
-            <button type="submit" className="btn btn-primary">Submit</button>
-            <button type="button" onClick={closeModal} className="btn">Close</button>
+          <div className="modal-action mt-6">
+            <button type="button" onClick={closeModal} className="btn btn-ghost">
+              Cancel
+            </button>
+            <button type="submit" className="btn btn-primary">
+              Submit Request
+            </button>
           </div>
         </form>
       </div>

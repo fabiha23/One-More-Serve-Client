@@ -46,7 +46,7 @@ const Sidebar = () => {
   return (
     <>
       {/* Mobile Navbar */}
-      <div className="flex justify-between items-center md:hidden p-4 shadow bg-base-100">
+      <div className="flex justify-between items-center lg:hidden p-4 shadow bg-base-100">
         <Link to="/">
           <img className="w-8" src={logo} alt="" />
         </Link>
@@ -57,12 +57,12 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`z-10 md:fixed flex flex-col justify-between w-64 min-h-screen p-4 shadow-lg shadow-accent transition-transform duration-200 ease-in-out bg-base-200 ${
+        className={`z-10 lg:fixed flex flex-col justify-between min-w-64 min-h-screen p-4 shadow-lg shadow-accent transition-transform duration-200 ease-in-out bg-base-200 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 absolute md:static`}
+        } lg:translate-x-0 absolute lg:static`}
       >
         <div>
-          <Link to="/" className="hidden md:flex items-center gap-1">
+          <Link to="/" className="hidden lg:flex items-center gap-1">
             <img className="w-8 mb-6" src={logo} alt="" />
             <h2 className="text-2xl font-bold text-secondary mb-6 cursor-pointer">
               OneMoreServe
