@@ -82,7 +82,7 @@ const FeaturedDonationsSection = () => {
                       {donation.status}
                     </span>
                     <Link 
-                      to={`/donations/${donation._id}`} 
+                      to={`/donation-details/${donation._id}`} 
                       className="btn btn-primary btn-sm"
                     >
                       Details

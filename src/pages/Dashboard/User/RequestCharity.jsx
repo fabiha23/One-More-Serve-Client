@@ -22,7 +22,9 @@ const RequestCharity = () => {
   const { data: existingRequest, isLoading } = useQuery({
     queryKey: ["charity-role-request", user?.email],
     queryFn: async () => {
-      const { data } = await axiosInstance.get(`/roleRequests?email=${user.email}`);
+      const { data } = await axiosInstance.get(
+        `/roleRequests?email=${user.email}`
+      );
       return data;
     },
     enabled: !!user?.email,
@@ -59,11 +61,11 @@ const RequestCharity = () => {
 
   if (isLoading) return <Loading />;
 
-  if (existingRequest && existingRequest.status !== "Rejected") {
+  if (existingRequest && existingRequest.status === "pending") {
     return (
       <div className="p-6 bg-base-100 rounded-lg shadow text-center">
         <h3 className="text-lg font-semibold mb-2">
-          You already have a pending or approved Charity Role request.
+          You already have a pending or Charity Role request.
         </h3>
         <p>Please wait for admin approval or contact support for assistance.</p>
       </div>
@@ -102,78 +104,86 @@ const RequestCharity = () => {
   };
 
   return (
-    <div>
-      <h2 className="text-base-100 font-semibold text-2xl mb-3 bg-secondary p-4 rounded-lg px-6">
-        Request Charity Role
-      </h2>
-      <form className="max-w-md mx-auto p-6 bg-base-100 rounded-lg shadow space-y-4">
-        <div>
-          <label className="label">Name</label>
-          <input
-            type="text"
-            readOnly
-            value={user.displayName}
-            className="input input-bordered w-full"
-          />
-        </div>
-        <div>
-          <label className="label">Email</label>
-          <input
-            type="email"
-            readOnly
-            value={user.email}
-            className="input input-bordered w-full"
-          />
-        </div>
-        <div>
-          <label className="label">Organization Name</label>
-          <input
-            type="text"
-            required
-            value={organizationName}
-            onChange={(e) => setOrganizationName(e.target.value)}
-            className="input input-bordered w-full"
-          />
-        </div>
-        <div>
-          <label className="label">Mission Statement</label>
-          <textarea
-            required
-            value={missionStatement}
-            onChange={(e) => setMissionStatement(e.target.value)}
-            className="textarea textarea-bordered w-full"
-            rows={4}
-          />
-        </div>
-        <div>
-          <label className="label">Payment Amount</label>
-          <p className="text-lg font-semibold">${paymentAmount}</p>
-          <small className="text-gray-500">
-            * Payment processing will be done here.
-          </small>
-        </div>
-        <button
-          type="submit"
-          onClick={handlePayClick}
-          disabled={isPending}
-          className="btn btn-primary w-full"
-        >
-          {isPending ? "Submitting..." : "Pay"}
-        </button>
-      </form>
+  <div>
+    <h2 className="text-base-100 font-semibold text-2xl mb-3 bg-secondary p-4 rounded-lg px-6">
+      Request Charity Role
+    </h2>
 
-      {/* Payment modal */}
-      {isPaymentModalOpen && (
-        <Payment
-          amount={paymentAmount}
-          onClose={() => setIsPaymentModalOpen(false)}
-          onPaymentSuccess={handlePaymentSuccess}
-          roleRequestId={newRequestData?.id || null}
-          isOpen={true}
+    {/* Handle rejected state message inline */}
+    {existingRequest?.status === "rejected" && (
+      <div className="p-4 bg-red-100 border border-red-300 rounded text-red-700 mb-4">
+        <h3 className="text-lg font-semibold mb-1">Your previous request was rejected.</h3>
+        <p>You can edit the details below and resubmit your Charity Role request.</p>
+      </div>
+    )}
+
+    <form className="max-w-md mx-auto p-6 bg-base-100 rounded-lg shadow space-y-4">
+      <div>
+        <label className="label">Name</label>
+        <input
+          type="text"
+          readOnly
+          value={user.displayName}
+          className="input input-bordered w-full"
         />
-      )}
-    </div>
-  );
+      </div>
+      <div>
+        <label className="label">Email</label>
+        <input
+          type="email"
+          readOnly
+          value={user.email}
+          className="input input-bordered w-full"
+        />
+      </div>
+      <div>
+        <label className="label">Organization Name</label>
+        <input
+          type="text"
+          required
+          value={organizationName}
+          onChange={(e) => setOrganizationName(e.target.value)}
+          className="input input-bordered w-full"
+        />
+      </div>
+      <div>
+        <label className="label">Mission Statement</label>
+        <textarea
+          required
+          value={missionStatement}
+          onChange={(e) => setMissionStatement(e.target.value)}
+          className="textarea textarea-bordered w-full"
+          rows={4}
+        />
+      </div>
+      <div>
+        <label className="label">Payment Amount</label>
+        <p className="text-lg font-semibold">${paymentAmount}</p>
+        <small className="text-gray-500">* Payment processing will be done here.</small>
+      </div>
+      <button
+        type="submit"
+        onClick={handlePayClick}
+        disabled={isPending}
+        className="btn btn-primary w-full"
+      >
+        {isPending ? "Submitting..." : "Pay"}
+      </button>
+    </form>
+
+    {/* Payment modal */}
+    {isPaymentModalOpen && (
+      <Payment
+        amount={paymentAmount}
+        onClose={() => setIsPaymentModalOpen(false)}
+        onPaymentSuccess={handlePaymentSuccess}
+        roleRequestId={newRequestData?.id || null}
+        isOpen={true}
+      />
+    )}
+  </div>
+);
+
 };
 
 export default RequestCharity;

@@ -12,6 +12,7 @@ import { FiHome } from "react-icons/fi";
 import { BiHome } from "react-icons/bi";
 import { TiHome } from "react-icons/ti";
 import { Link } from "react-router";
+import logo from "../assets/logo.png";
 
 const Sidebar = () => {
   const { user, signOutUser } = useAuth();
@@ -46,7 +47,7 @@ const Sidebar = () => {
       {/* Mobile Navbar */}
       <div className="flex justify-between items-center md:hidden p-4 shadow bg-base-100">
         <Link to="/">
-          <h2 className="text-xl font-bold text-secondary cursor-pointer">OneMoreServe</h2>
+          <img className="w-8" src={logo} alt="" />
         </Link>
         <button onClick={handleToggle} className="text-primary">
           <AiOutlineBars className="w-6 h-6" />
@@ -60,8 +61,9 @@ const Sidebar = () => {
         } md:translate-x-0 absolute md:static`}
       >
         <div>
-          <Link to='/'>
-            <h2 className="text-2xl font-bold text-secondary mb-6 hidden md:block cursor-pointer">
+          <Link to="/" className="hidden md:flex items-center gap-1">
+            <img className="w-8 mb-6" src={logo} alt="" />
+            <h2 className="text-2xl font-bold text-secondary mb-6 cursor-pointer">
               OneMoreServe
             </h2>
           </Link>
