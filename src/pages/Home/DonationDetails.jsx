@@ -44,7 +44,7 @@ const DonationDetails = () => {
     enabled: !!id,
   });
 
-  // Fetch charity info if user is charity
+  // Fetch charity info
   const {
     data: charityRequests = [],
     isLoading: charityLoading,
@@ -58,7 +58,7 @@ const DonationDetails = () => {
   });
   const charityInfo = charityRequests[0] || {};
 
-  // Fetch if donation is favorited
+  // Fetch user's favorite status
   const {
     data: favorite = [],
     isLoading: favoriteLoading,
@@ -119,7 +119,39 @@ const DonationDetails = () => {
     },
   });
 
-  if (donationLoading || isRoleLoading || charityLoading || favoriteLoading)
+  // ✅ Fetch donation requests for this donation to check for accepted one
+  const {
+    data: donationRequests = [],
+    isLoading: requestsLoading,
+  } = useQuery({
+    queryKey: ["donationRequestByDonationId", id],
+    enabled: !!id && role === "charity",
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/donationRequests?donationId=${id}`);
+      return res.data;
+    },
+  });
+
+  const acceptedRequest = donationRequests.find(
+    (req) => req.status === "Accepted" && req.charityEmail === user?.email
+  );
+
+  // ✅ Confirm Pickup mutation
+  const markAsPickedUp = useMutation({
+    mutationFn: () => axiosInstance.patch(`/donations/status/${id}`, { status: "Picked Up" }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["donationDetails", id]);
+      Swal.fire("Success", "Marked as Picked Up", "success");
+    },
+  });
+
+  if (
+    donationLoading ||
+    isRoleLoading ||
+    charityLoading ||
+    favoriteLoading ||
+    requestsLoading
+  )
     return <Loading />;
   if (donationError)
     return (
@@ -132,7 +164,7 @@ const DonationDetails = () => {
     <div className="pt-10">
       <div className="container mx-auto max-w-6xl py-8">
         <div className="card bg-base-200 shadow-lg rounded-xl p-6 flex flex-col lg:flex-row gap-8">
-          {/* Image Left */}
+          {/* Image Section */}
           <div className="flex-shrink-0 w-full lg:w-1/2 relative rounded-xl overflow-hidden shadow-lg">
             <img
               src={donation?.donationImage}
@@ -147,7 +179,6 @@ const DonationDetails = () => {
                     : addFavorite.mutate()
                 }
                 className="absolute top-4 right-4 btn btn-circle btn-sm btn-ghost bg-white/90"
-                aria-label="Toggle Favorite"
               >
                 {isFavorite ? (
                   <FaHeart className="text-red-500 text-xl" />
@@ -158,57 +189,28 @@ const DonationDetails = () => {
             )}
           </div>
 
-          {/* Details Right */}
+          {/* Details Section */}
           <div className="w-full lg:w-1/2 flex flex-col justify-between">
             <div>
               <h1 className="text-3xl font-bold mb-4">{donation?.title}</h1>
               <div className="divider my-2"></div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <DetailItem
-                  icon={<FaUtensils />}
-                  label="Food Type"
-                  value={donation?.foodType || "N/A"}
-                />
-                <DetailItem
-                  icon={<FaWeightHanging />}
-                  label="Quantity"
-                  value={`${donation?.quantity ?? "-"} ${donation?.quantityUnit || ""}`}
-                />
-                <DetailItem
-                  icon={<FaStore />}
-                  label="Restaurant"
-                  value={donation?.restaurantName || "N/A"}
-                />
-                <DetailItem
-                  icon={<FaMapMarkerAlt />}
-                  label="Location"
-                  value={donation?.location || "N/A"}
-                />
-                <DetailItem
-                  icon={<FaCalendarAlt />}
-                  label="Pickup Window"
-                  value={donation?.pickupTime || "N/A"}
-                />
-                <DetailItem
-                  icon={<FaInfoCircle />}
-                  label="Status"
-                  value={
-                    <span
-                      className={`badge ${
-                        donation?.status === "Available" ||
-                        donation?.status === "Verified"
-                          ? "badge-success"
-                          : donation?.status === "Pending"
-                          ? "badge-warning"
-                          : "badge-info"
-                      }`}
-                    >
-                      {donation?.status === "Verified"
-                        ? "Available"
-                        : donation?.status || "Unknown"}
-                    </span>
-                  }
-                />
+                <DetailItem icon={<FaUtensils />} label="Food Type" value={donation?.foodType || "N/A"} />
+                <DetailItem icon={<FaWeightHanging />} label="Quantity" value={`${donation?.quantity ?? "-"} ${donation?.quantityUnit || ""}`} />
+                <DetailItem icon={<FaStore />} label="Restaurant" value={donation?.restaurantName || "N/A"} />
+                <DetailItem icon={<FaMapMarkerAlt />} label="Location" value={donation?.location || "N/A"} />
+                <DetailItem icon={<FaCalendarAlt />} label="Pickup Window" value={donation?.pickupTime || "N/A"} />
+                <DetailItem icon={<FaInfoCircle />} label="Status" value={
+                  <span className={`badge ${
+                    donation?.status === "Available" || donation?.status === "Verified"
+                      ? "badge-success"
+                      : donation?.status === "Pending"
+                      ? "badge-warning"
+                      : "badge-info"
+                  }`}>
+                    {donation?.status === "Verified" ? "Available" : donation?.status || "Unknown"}
+                  </span>
+                } />
               </div>
               <div className="mb-6">
                 <h3 className="font-semibold text-lg mb-2">Description</h3>
@@ -217,21 +219,37 @@ const DonationDetails = () => {
                 </p>
               </div>
             </div>
+
             <div className="flex flex-wrap gap-3 mt-auto">
               {role === "charity" && (
-                <button
-                  onClick={() => setRequestModalOpen(true)}
-                  className="btn btn-primary"
-                >
+                <button onClick={() => setRequestModalOpen(true)} className="btn btn-primary">
                   Request Donation
                 </button>
               )}
+
               {(role === "charity" || role === "user") && (
-                <button
-                  onClick={() => setReviewModalOpen(true)}
-                  className="btn btn-secondary"
-                >
+                <button onClick={() => setReviewModalOpen(true)} className="btn btn-secondary">
                   Add Review
+                </button>
+              )}
+
+              {/* ✅ Confirm Pickup Button */}
+              {role === "charity" && acceptedRequest && (
+                <button
+                  className="btn btn-success"
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Confirm Pickup?",
+                      text: "Are you sure the donation has been picked up?",
+                      icon: "question",
+                      showCancelButton: true,
+                      confirmButtonText: "Yes, confirm",
+                    }).then((res) => {
+                      if (res.isConfirmed) markAsPickedUp.mutate();
+                    });
+                  }}
+                >
+                  Confirm Pickup
                 </button>
               )}
             </div>
@@ -273,7 +291,7 @@ const DonationDetails = () => {
   );
 };
 
-// Helper DetailItem component
+// DetailItem component
 const DetailItem = ({ icon, label, value }) => (
   <div className="flex items-start gap-3">
     <div className="text-primary mt-1">{icon}</div>
