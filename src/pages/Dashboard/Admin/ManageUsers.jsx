@@ -66,9 +66,9 @@ const ManageUsers = () => {
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td className="space-x-2">
-                <button onClick={() => handleMakeRole(user.email, 'Admin')} className="btn btn-xs">Make Admin</button>
-                <button onClick={() => handleMakeRole(user.email, 'Restaurant')} className="btn btn-xs">Make Restaurant</button>
-                <button onClick={() => handleMakeRole(user.email, 'Charity')} className="btn btn-xs">Make Charity</button>
+                <button onClick={() => handleMakeRole(user.email, 'admin')} className="btn btn-xs">Make Admin</button>
+                <button onClick={() => handleMakeRole(user.email, 'restaurant')} className="btn btn-xs">Make Restaurant</button>
+                <button onClick={() => handleMakeRole(user.email, 'charity')} className="btn btn-xs">Make Charity</button>
                 <button onClick={() => handleDelete(user._id)} className="btn btn-xs btn-error">Delete</button>
               </td>
             </tr>

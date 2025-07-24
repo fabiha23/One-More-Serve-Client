@@ -31,31 +31,43 @@ const DonationDetails = () => {
   const [isReviewModalOpen, setReviewModalOpen] = useState(false);
 
   // Fetch donation details
-  const { data: donation, isLoading } = useQuery({
+  const {
+    data: donation,
+    isLoading: donationLoading,
+    isError: donationError,
+  } = useQuery({
     queryKey: ["donationDetails", id],
     queryFn: async () => {
       const res = await axiosInstance.get(`/donations/${id}`);
       return res.data;
     },
+    enabled: !!id,
   });
-  const { data: charityRequests = [] } = useQuery({
-  queryKey: ["charityInfo", user?.email],
-  enabled: !!user?.email && role === "charity",
-  queryFn: async () => {
-    const res = await axiosInstance.get(`/roleRequests?email=${user?.email}`);
-    return res.data;
-  },
-});
-const charityInfo = charityRequests[0] || {};
 
+  // Fetch charity info if user is charity
+  const {
+    data: charityRequests = [],
+    isLoading: charityLoading,
+  } = useQuery({
+    queryKey: ["charityInfo", user?.email],
+    enabled: !!user?.email && role === "charity",
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/roleRequests?email=${user.email}`);
+      return res.data;
+    },
+  });
+  const charityInfo = charityRequests[0] || {};
 
-  // Fetch if current donation is favorited
-  const { data: favorite = [] } = useQuery({
+  // Fetch if donation is favorited
+  const {
+    data: favorite = [],
+    isLoading: favoriteLoading,
+  } = useQuery({
     queryKey: ["favorite", id, user?.email],
-    enabled: !!user?.email,
+    enabled: !!user?.email && !!id,
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/favorites?donationId=${id}&email=${user?.email}`
+        `/favorites?donationId=${id}&email=${user.email}`
       );
       return res.data;
     },
@@ -63,6 +75,7 @@ const charityInfo = charityRequests[0] || {};
 
   const isFavorite = favorite.length > 0;
   const favoriteId = favorite[0]?._id;
+
   const favoriteData = {
     userEmail: user?.email,
     donationId: donation?._id,
@@ -75,11 +88,8 @@ const charityInfo = charityRequests[0] || {};
     quantityUnit: donation?.quantityUnit,
   };
 
-  // Add to favorites
   const addFavorite = useMutation({
-    mutationFn: async () => {
-      return await axiosInstance.post("/favorites", favoriteData);
-    },
+    mutationFn: () => axiosInstance.post("/favorites", favoriteData),
     onSuccess: () => {
       queryClient.invalidateQueries(["favorite", id, user?.email]);
       Swal.fire({
@@ -94,11 +104,8 @@ const charityInfo = charityRequests[0] || {};
     },
   });
 
-  // Remove from favorites
   const removeFavorite = useMutation({
-    mutationFn: async () => {
-      return await axiosInstance.delete(`/favorites/${favoriteId}`);
-    },
+    mutationFn: () => axiosInstance.delete(`/favorites/${favoriteId}`),
     onSuccess: () => {
       queryClient.invalidateQueries(["favorite", id, user?.email]);
       Swal.fire({
@@ -112,7 +119,14 @@ const charityInfo = charityRequests[0] || {};
     },
   });
 
-  if (isLoading || isRoleLoading) return <Loading />;
+  if (donationLoading || isRoleLoading || charityLoading || favoriteLoading)
+    return <Loading />;
+  if (donationError)
+    return (
+      <div className="text-center mt-10 text-red-600">
+        Error loading donation details.
+      </div>
+    );
 
   return (
     <div className="pt-10">
@@ -128,7 +142,9 @@ const charityInfo = charityRequests[0] || {};
             {(role === "user" || role === "charity") && (
               <button
                 onClick={() =>
-                  isFavorite ? removeFavorite.mutate() : addFavorite.mutate()
+                  isFavorite
+                    ? removeFavorite.mutate()
+                    : addFavorite.mutate()
                 }
                 className="absolute top-4 right-4 btn btn-circle btn-sm btn-ghost bg-white/90"
                 aria-label="Toggle Favorite"
@@ -151,27 +167,27 @@ const charityInfo = charityRequests[0] || {};
                 <DetailItem
                   icon={<FaUtensils />}
                   label="Food Type"
-                  value={donation?.foodType}
+                  value={donation?.foodType || "N/A"}
                 />
                 <DetailItem
                   icon={<FaWeightHanging />}
                   label="Quantity"
-                  value={`${donation?.quantity} ${donation?.quantityUnit}`}
+                  value={`${donation?.quantity ?? "-"} ${donation?.quantityUnit || ""}`}
                 />
                 <DetailItem
                   icon={<FaStore />}
                   label="Restaurant"
-                  value={donation?.restaurantName}
+                  value={donation?.restaurantName || "N/A"}
                 />
                 <DetailItem
                   icon={<FaMapMarkerAlt />}
                   label="Location"
-                  value={donation?.location}
+                  value={donation?.location || "N/A"}
                 />
                 <DetailItem
                   icon={<FaCalendarAlt />}
                   label="Pickup Window"
-                  value={donation?.pickupTime}
+                  value={donation?.pickupTime || "N/A"}
                 />
                 <DetailItem
                   icon={<FaInfoCircle />}
@@ -179,14 +195,17 @@ const charityInfo = charityRequests[0] || {};
                   value={
                     <span
                       className={`badge ${
-                        donation?.status === "Available"
+                        donation?.status === "Available" ||
+                        donation?.status === "Verified"
                           ? "badge-success"
                           : donation?.status === "Pending"
                           ? "badge-warning"
                           : "badge-info"
                       }`}
                     >
-                      {donation?.status}
+                      {donation?.status === "Verified"
+                        ? "Available"
+                        : donation?.status || "Unknown"}
                     </span>
                   }
                 />
@@ -194,8 +213,7 @@ const charityInfo = charityRequests[0] || {};
               <div className="mb-6">
                 <h3 className="font-semibold text-lg mb-2">Description</h3>
                 <p className="text-gray-700">
-                  {donation?.description ||
-                    "No additional description provided"}
+                  {donation?.description || "No additional description provided"}
                 </p>
               </div>
             </div>
@@ -236,19 +254,18 @@ const charityInfo = charityRequests[0] || {};
             donationTitle={donation?.title}
             restaurantName={donation?.restaurantName}
             closeModal={() => setReviewModalOpen(false)}
-            refetch={() =>
-              queryClient.invalidateQueries(["donationDetails", id])
-            }
+            refetch={() => queryClient.invalidateQueries(["donationDetails", id])}
           />
         )}
 
-        {/* Uncomment and implement RequestDonationModal when ready */}
         {isRequestModalOpen && (
           <RequestDonationModal
             isOpen={isRequestModalOpen}
             closeModal={() => setRequestModalOpen(false)}
             donation={donation}
             charityInfo={charityInfo}
+            user={user}
+            refetch={() => queryClient.invalidateQueries(["donationDetails", id])}
           />
         )}
       </div>

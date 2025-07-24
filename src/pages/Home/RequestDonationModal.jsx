@@ -1,38 +1,64 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { FaUtensils, FaStore, FaHandsHelping, FaEnvelope, FaCalendarAlt } from 'react-icons/fa';
-import useAxios from '../../hooks/useAxios';
-import Swal from 'sweetalert2';
+import React from "react";
+import { useForm } from "react-hook-form";
+import {
+  FaUtensils,
+  FaStore,
+  FaHandsHelping,
+  FaEnvelope,
+  FaCalendarAlt,
+} from "react-icons/fa";
+import useAxios from "../../hooks/useAxios";
+import Swal from "sweetalert2";
 
-const RequestDonationModal = ({ donation, charityInfo, closeModal, refetch }) => {
+const RequestDonationModal = ({
+  donation,
+  charityInfo,
+  user,
+  closeModal,
+  refetch,
+}) => {
   const { register, handleSubmit, reset } = useForm();
   const axiosInstance = useAxios();
 
   const onSubmit = async (data) => {
     try {
-      await axiosInstance.post('/donationRequests', {
+      await axiosInstance.post("/donationRequests", {
         ...data,
-        status: 'Pending',
+        status: "Pending",
         donationId: donation?._id,
-        foodType: donation?.foodType
+        foodType: donation?.foodType,
+        charityImage:user?.photoURL
       });
-      Swal.fire('Requested!', 'Your donation request has been sent.', 'success');
+      await axiosInstance.patch(`/donations/status/${donation._id}`, {
+        status: "Requested",
+      });
+      Swal.fire(
+        "Requested!",
+        "Your donation request has been sent.",
+        "success"
+      );
       closeModal();
       reset();
-      refetch?.();
+      refetch();
     } catch (err) {
-      Swal.fire('Error', err.message, 'error');
+      Swal.fire("Error", err.message, "error");
     }
   };
 
   return (
-    <dialog id="request_donation_modal" className="modal modal-bottom sm:modal-middle" open>
+    <dialog
+      id="request_donation_modal"
+      className="modal modal-bottom sm:modal-middle"
+      open
+    >
       <div className="modal-box max-w-4xl">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-2xl">Request Donation</h3>
-          <button onClick={closeModal} className="btn btn-circle btn-sm">✕</button>
+          <button onClick={closeModal} className="btn btn-circle btn-sm">
+            ✕
+          </button>
         </div>
-        
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="overflow-x-auto">
             <table className="table w-full">
@@ -44,7 +70,7 @@ const RequestDonationModal = ({ donation, charityInfo, closeModal, refetch }) =>
                   </td>
                   <td>
                     <input
-                      {...register('donationTitle')}
+                      {...register("donationTitle")}
                       value={donation?.title}
                       readOnly
                       className="input input-bordered w-full"
@@ -59,7 +85,7 @@ const RequestDonationModal = ({ donation, charityInfo, closeModal, refetch }) =>
                   </td>
                   <td>
                     <input
-                      {...register('restaurantName')}
+                      {...register("restaurantName")}
                       value={donation?.restaurantName}
                       readOnly
                       className="input input-bordered w-full"
@@ -74,8 +100,10 @@ const RequestDonationModal = ({ donation, charityInfo, closeModal, refetch }) =>
                   </td>
                   <td>
                     <input
-                      {...register('charityName')}
-                      value={charityInfo?.organizationName}
+                      {...register("charityName")}
+                      value={
+                        charityInfo?.organizationName || user?.displayName
+                      }
                       readOnly
                       className="input input-bordered w-full"
                     />
@@ -89,8 +117,8 @@ const RequestDonationModal = ({ donation, charityInfo, closeModal, refetch }) =>
                   </td>
                   <td>
                     <input
-                      {...register('charityEmail')}
-                      value={charityInfo?.email}
+                      {...register("charityEmail")}
+                      value={user?.email}
                       readOnly
                       className="input input-bordered w-full"
                     />
@@ -102,7 +130,7 @@ const RequestDonationModal = ({ donation, charityInfo, closeModal, refetch }) =>
                   <td className="font-semibold">Request Description</td>
                   <td>
                     <textarea
-                      {...register('requestDescription')}
+                      {...register("requestDescription")}
                       placeholder="Write your reason for requesting this donation..."
                       required
                       className="textarea textarea-bordered w-full"
@@ -119,7 +147,7 @@ const RequestDonationModal = ({ donation, charityInfo, closeModal, refetch }) =>
                   <td>
                     <input
                       type="datetime-local"
-                      {...register('pickupTime')}
+                      {...register("pickupTime")}
                       required
                       className="input input-bordered w-full"
                     />
@@ -130,7 +158,11 @@ const RequestDonationModal = ({ donation, charityInfo, closeModal, refetch }) =>
           </div>
 
           <div className="modal-action mt-6">
-            <button type="button" onClick={closeModal} className="btn btn-ghost">
+            <button
+              type="button"
+              onClick={closeModal}
+              className="btn btn-ghost"
+            >
               Cancel
             </button>
             <button type="submit" className="btn btn-primary">
