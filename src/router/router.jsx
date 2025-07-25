@@ -10,7 +10,6 @@ import RequestCharity from "../pages/Dashboard/User/RequestCharity";
 import PrivateRoute from "./PrivateRoute";
 import Favorites from "../pages/Dashboard/User/Favorites";
 import MyReview from "../pages/Dashboard/User/MyReview";
-import Forbidden from "../Components/Forbidden";
 import CharityRoute from "../router/CharityRoute";
 import CharityProfile from "../pages/Dashboard/Charity/CharityProfile";
 import MyRequest from "../pages/Dashboard/Charity/MyRequest";
@@ -33,6 +32,8 @@ import PaymentHistory from "../pages/Dashboard/Payment/PaymentHistory";
 import DonationDetails from "../pages/Home/DonationDetails";
 import AllDonations from "../pages/Home/AllDonations";
 import AboutUs from "../pages/Home/AboutUs";
+import PageNotFound from "../pages/Status/PageNotFound";
+import Forbidden from "../pages/Status/Forbidden";
 
 export const router = createBrowserRouter([
   {
@@ -275,4 +276,8 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/*',
+    element: <PageNotFound></PageNotFound>
+  }
 ]);
