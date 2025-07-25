@@ -17,9 +17,13 @@ const FeaturedDonationsSection = () => {
   const { data: featuredDonations = [], isLoading } = useQuery({
     queryKey: ["featuredDonations"],
     queryFn: async () => {
-      const res = await axiosInstance.get(
-        "/donations?featured=true&status=Verified&status=Requested"
-      );
+      const res = await axiosInstance.get("/donations", {
+        params: {
+          featured: true,
+          status: ["Verified", "Requested", "Picked Up"],
+        },
+      });
+
       return res.data.slice(0, 4);
     },
   });
@@ -82,7 +86,7 @@ const FeaturedDonationsSection = () => {
                   <div className="card-actions mt-4 flex justify-between items-center">
                     <span
                       className={`badge ${
-                        donation.status === "Verified"
+                        (donation.status === "Verified"||donation.status === "Picked Up")
                           ? "badge-success"
                           : donation.status === "Requested"
                           ? "badge-warning"

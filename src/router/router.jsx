@@ -32,6 +32,7 @@ import UpdateDonation from "../pages/Dashboard/Restaurant/UpdateDonation";
 import PaymentHistory from "../pages/Dashboard/Payment/PaymentHistory";
 import DonationDetails from "../pages/Home/DonationDetails";
 import AllDonations from "../pages/Home/AllDonations";
+import AboutUs from "../pages/Home/AboutUs";
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
       {
         path: "forbidden",
         Component: Forbidden,
+      },
+      {
+        path: "about-us",
+        Component: AboutUs,
       },
     ],
   },

@@ -16,8 +16,8 @@ const Navbar = () => {
   const { user, signOutUser } = useAuth();
   const [theme, setTheme] = useState("light");
   const [role] = useRole();
-  const axiosInstance=useAxios()
-  const navigate=useNavigate()
+  const axiosInstance = useAxios();
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -26,6 +26,16 @@ const Navbar = () => {
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
+
+  let dashboardPath = "/dashboard/my-profile"; // Default path
+
+  if (role === "admin") {
+    dashboardPath = "/dashboard/admin-profile";
+  } else if (role === "charity") {
+    dashboardPath = "/dashboard/charity-profile";
+  } else if (role === "restaurant") {
+    dashboardPath = "/dashboard/restaurant-profile";
+  }
 
   const links = (
     <>
@@ -60,7 +70,7 @@ const Navbar = () => {
               isActive && "border-l-3 text-secondary pl-1 border-secondary"
             }`
           }
-          to="/dashboard"
+          to={dashboardPath}
         >
           Dashboard
         </NavLink>
@@ -80,24 +90,24 @@ const Navbar = () => {
     </>
   );
 
- const handleSignOut = () => {
-  signOutUser()
-    .then(() => {
-      console.log("Signed out from Firebase");
-      return axiosInstance.post("/logout"); // Logout from backend
-    })
-    .then((res) => {
-      if (res.status === 200) {
-        console.log("Backend logout successful");
-        navigate("/");
-      } else {
-        console.log("Backend logout failed");
-      }
-    })
-    .catch((error) => {
-      console.error("Logout error:", error);
-    });
-};
+  const handleSignOut = () => {
+    signOutUser()
+      .then(() => {
+        console.log("Signed out from Firebase");
+        return axiosInstance.post("/logout"); // Logout from backend
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("Backend logout successful");
+          navigate("/");
+        } else {
+          console.log("Backend logout failed");
+        }
+      })
+      .catch((error) => {
+        console.error("Logout error:", error);
+      });
+  };
   return (
     <nav>
       <div className="flex justify-between py-4 items-center">
