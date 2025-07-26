@@ -20,7 +20,7 @@ const Sidebar = () => {
   const axiosInstance=useAxios();
   const navigate =useNavigate()
 
-  if (isRoleLoading) return <Loading />;
+  // if (isRoleLoading) return <Loading />;
 
   const handleToggle = () => setIsOpen(!isOpen);
 

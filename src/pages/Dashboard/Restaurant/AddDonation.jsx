@@ -16,7 +16,7 @@ import { useMutation } from "@tanstack/react-query";
 
 const AddDonation = () => {
   const { user } = useAuth();
-  console.log(user);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const axiosInstance = useAxios();
   const {
     register,
@@ -40,8 +40,8 @@ const AddDonation = () => {
         timer: 3000,
         confirmButtonColor: "#10B981",
       });
-      //   reset();
-    //   setImageUrl("");
+      reset();
+      setImageUrl("");
     },
     onError: (error) => {
       Swal.fire({
@@ -56,6 +56,8 @@ const AddDonation = () => {
   const handleImageUpload = async (e) => {
     const image = e.target.files[0];
     if (!image) return;
+
+    setIsUploadingImage(true); // Start uploading
 
     try {
       const formData = new FormData();
@@ -77,6 +79,8 @@ const AddDonation = () => {
         icon: "error",
         confirmButtonColor: "#EF4444",
       });
+    } finally {
+      setIsUploadingImage(false); // Upload done
     }
   };
 
@@ -132,7 +136,6 @@ const AddDonation = () => {
               >
                 <option value="">Select food type</option>
                 <option value="Bakery">Bakery</option>
-                <option value="Produce">Produce</option>
                 <option value="Dairy">Dairy</option>
                 <option value="Meat">Meat</option>
                 <option value="Prepared Meals">Prepared Meals</option>
@@ -151,8 +154,8 @@ const AddDonation = () => {
               </label>
               <div className="flex">
                 <input
-                  type="number"
                   {...register("quantity", {
+                    valueAsNumber: true,
                     required: "Quantity is required",
                     min: { value: 1, message: "Must be at least 1" },
                   })}
@@ -170,9 +173,9 @@ const AddDonation = () => {
                   <option value="lbs">Pounds</option>
                 </select>
               </div>
-              {errors.quantity && (
+              {errors?.quantity && (
                 <span className="text-error text-sm mt-1">
-                  {errors.quantity.message}
+                  {errors?.quantity?.message}
                 </span>
               )}
             </fieldset>
@@ -187,12 +190,12 @@ const AddDonation = () => {
                   required: "Pickup start time is required",
                 })}
                 className={`input w-full focus:outline-0 focus:border-neutral focus:shadow-md ${
-                  errors.pickupStart ? "input-error" : ""
+                  errors?.pickupStart ? "input-error" : ""
                 }`}
               />
-              {errors.pickupStart && (
+              {errors?.pickupStart && (
                 <span className="text-error text-sm mt-1">
-                  {errors.pickupStart.message}
+                  {errors?.pickupStart?.message}
                 </span>
               )}
             </fieldset>
@@ -207,12 +210,12 @@ const AddDonation = () => {
                   required: "Pickup end time is required",
                 })}
                 className={`input w-full focus:outline-0 focus:border-neutral focus:shadow-md ${
-                  errors.pickupEnd ? "input-error" : ""
+                  errors?.pickupEnd ? "input-error" : ""
                 }`}
               />
               {errors.pickupEnd && (
                 <span className="text-error text-sm mt-1">
-                  {errors.pickupEnd.message}
+                  {errors?.pickupEnd?.message}
                 </span>
               )}
             </fieldset>
@@ -321,8 +324,9 @@ const AddDonation = () => {
           </fieldset>
 
           <input
+            disabled={isUploadingImage}
             type="submit"
-            className={`bg-primary text-base-100 w-full py-2 rounded-md text-lg font-semibold cursor-pointer hover:bg-secondary duration-300`}
+            className={`bg-primary text-base-100 w-full py-2 rounded-md text-lg font-semibold cursor-pointer hover:bg-secondary duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary`}
           />
         </form>
       </div>

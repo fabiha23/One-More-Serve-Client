@@ -24,7 +24,7 @@ const RecievedDonation = () => {
   return (
     <div>
       <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">
-        My Picked Up Donations
+        My Recieved Donations
       </h2>
 
       {pickups.length === 0 ? (

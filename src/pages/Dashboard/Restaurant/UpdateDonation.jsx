@@ -36,10 +36,8 @@ const UpdateDonation = () => {
       setValue("title", donation?.title);
       setValue("foodType", donation?.foodType);
       
-      // Split quantity into value and unit
-      const quantityParts = donation?.quantity?.split(" ");
-      setValue("quantity", quantityParts[0]);
-      setValue("quantityUnit", quantityParts[1] || "portions");
+      setValue("quantity", donation?.quantity);
+      setValue("quantityUnit", donation?.quantityUnit || "portions");
       
       setValue("pickupStart", donation?.pickupStart.split('T')[0]);
       setValue("pickupEnd", donation?.pickupEnd.split('T')[0]);
@@ -103,7 +101,7 @@ const UpdateDonation = () => {
   const onSubmit = async (data) => {
     const donationData = {
       ...data,
-      quantity: `${data.quantity} ${data.quantityUnit}`,
+      // quantity: `${data.quantity} ${data.quantityUnit}`,
       donationImage: imageUrl,
       updatedAt: new Date().toISOString()
     };
@@ -151,7 +149,6 @@ const UpdateDonation = () => {
               >
                 <option value="">Select food type</option>
                 <option value="Bakery">Bakery</option>
-                <option value="Produce">Produce</option>
                 <option value="Dairy">Dairy</option>
                 <option value="Meat">Meat</option>
                 <option value="Prepared Meals">Prepared Meals</option>
@@ -170,8 +167,8 @@ const UpdateDonation = () => {
               </label>
               <div className="flex">
                 <input
-                  type="number"
                   {...register("quantity", {
+                    valueAsNumber:true,
                     required: "Quantity is required",
                     min: { value: 1, message: "Must be at least 1" },
                   })}

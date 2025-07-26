@@ -199,7 +199,7 @@ const DonationDetails = () => {
                 <DetailItem icon={<FaWeightHanging />} label="Quantity" value={`${donation?.quantity ?? "-"} ${donation?.quantityUnit || ""}`} />
                 <DetailItem icon={<FaStore />} label="Restaurant" value={donation?.restaurantName || "N/A"} />
                 <DetailItem icon={<FaMapMarkerAlt />} label="Location" value={donation?.location || "N/A"} />
-                <DetailItem icon={<FaCalendarAlt />} label="Pickup Window" value={donation?.pickupTime || "N/A"} />
+                <DetailItem icon={<FaCalendarAlt />} label="Pickup Window" value={`${donation?.pickupStart ?? "N/A"} ${donation?.pickupEnd || "N/A"}`} />
                 <DetailItem icon={<FaInfoCircle />} label="Status" value={
                   <span className={`badge ${
                     donation?.status === "Available" || donation?.status === "Verified"
@@ -221,7 +221,7 @@ const DonationDetails = () => {
             </div>
 
             <div className="flex flex-wrap gap-3 mt-auto">
-              {role === "charity" && (
+              {(role === "charity" && donation?.status!=="Picked Up") && (
                 <button onClick={() => setRequestModalOpen(true)} className="btn btn-primary">
                   Request Donation
                 </button>

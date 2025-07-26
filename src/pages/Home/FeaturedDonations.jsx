@@ -20,7 +20,6 @@ const FeaturedDonationsSection = () => {
       const res = await axiosInstance.get("/donations", {
         params: {
           featured: true,
-          status: ["Verified", "Requested", "Picked Up"],
         },
       });
 
