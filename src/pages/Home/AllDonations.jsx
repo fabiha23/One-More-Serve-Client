@@ -19,8 +19,8 @@ const AllDonations = () => {
   if (isError) return <p className="text-center text-error py-10">Failed to load donations.</p>;
 
   return (
-    <div className="min-h-screen py-8 px-4 bg-base-100">
-      <h2 className="text-3xl font-bold text-center mb-6">All Donations</h2>
+    <div className="min-h-screen py-8 bg-base-100 max-w-7xl xl:mx-auto xl:px-2 lg:px-6 mx-3">
+      <h2 className="text-3xl font-bold text-center my-6 mt-10 text-accent">All Donations</h2>
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {donations.map(donation => (
           <DonationCard key={donation._id} donation={donation} />

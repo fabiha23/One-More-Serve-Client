@@ -102,7 +102,6 @@ const UpdateDonation = () => {
     const donationData = {
       ...data,
       // quantity: `${data.quantity} ${data.quantityUnit}`,
-      donationImage: imageUrl,
       updatedAt: new Date().toISOString()
     };
     updateDonation(donationData);

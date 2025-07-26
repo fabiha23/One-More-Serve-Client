@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 const DonationCard = ({ donation }) => {
   const {
-    image,
+    donationImage,
     title,
     restaurantName,
     status,
@@ -17,7 +17,7 @@ const DonationCard = ({ donation }) => {
   return (
     <div className="card bg-base-200 shadow-lg hover:shadow-xl transition">
       <figure className="h-48 overflow-hidden">
-        <img src={image} alt={title} className="object-cover w-full h-full" />
+        <img src={donationImage} alt={title} className="object-cover w-full h-full" />
       </figure>
       <div className="card-body">
         <h3 className="card-title text-xl font-semibold">{title}</h3>
@@ -36,7 +36,6 @@ const DonationCard = ({ donation }) => {
         </p>
         <p className="text-sm">Quantity: {quantity} {quantityUnit}</p>
         <p className="text-sm">Location: {location}</p>
-        <p className="text-sm">Pickup Time: ({pickupStart}) - ({pickupEnd})</p>
         <div className="card-actions mt-4">
           <Link to={`/donation-details/${donation._id}`}>
             <button className="btn btn-primary btn-sm w-full">
