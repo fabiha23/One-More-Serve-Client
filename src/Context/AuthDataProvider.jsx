@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AuthDataContext } from './AuthDataContext';
 import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import { app } from '../firebase/firebase.config';
+import axios from 'axios';
 // import axios from 'axios';
 
 const auth = getAuth(app)

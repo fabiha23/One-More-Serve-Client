@@ -3,9 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import useAxios from '../../../hooks/useAxios'; // your custom axios hook
 import Loading from '../../../Components/Loading';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const ManageDonations = () => {
   const axiosInstance = useAxios();
+  const axiosSecure=useAxiosSecure()
 
   // Fetch donations
   const { data: donations = [], refetch, isLoading } = useQuery({
@@ -19,7 +21,7 @@ const ManageDonations = () => {
   // Handle verification (sets status to "Verified")
   const handleVerify = async (donationId) => {
     try {
-      await axiosInstance.patch(`/donations/status/${donationId}`, { status: 'Verified' });
+      await axiosSecure.patch(`/donations/status/${donationId}`, { status: 'Verified' });
       Swal.fire('Success', 'Donation verified successfully', 'success');
       refetch();
     } catch (err) {

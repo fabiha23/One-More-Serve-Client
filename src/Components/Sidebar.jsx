@@ -28,7 +28,7 @@ const Sidebar = () => {
   signOutUser()
     .then(() => {
       console.log("Signed out from Firebase");
-      return axiosInstance.post("/logout"); // Logout from backend
+      return axiosInstance.get("/logout"); // Logout from backend
     })
     .then((res) => {
       if (res.status === 200) {

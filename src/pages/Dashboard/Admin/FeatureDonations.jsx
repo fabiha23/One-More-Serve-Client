@@ -3,9 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import useAxios from '../../../hooks/useAxios';
 import Swal from 'sweetalert2';
 import Loading from '../../../Components/Loading';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const FeatureDonations = () => {
   const axiosInstance = useAxios();
+  const axiosSecure =useAxiosSecure()
 
   const { data: donations = [], refetch, isLoading } = useQuery({
     queryKey: ['verifiedDonations'],
@@ -17,7 +19,7 @@ const FeatureDonations = () => {
 
   const handleFeature = async (donationId) => {
     try {
-      await axiosInstance.patch(`/donations/feature/${donationId}`, { featured: true });
+      await axiosSecure.patch(`/donations/feature/${donationId}`, { featured: true });
       Swal.fire('Success', 'Donation has been featured!', 'success');
       refetch();
     } catch (err) {
