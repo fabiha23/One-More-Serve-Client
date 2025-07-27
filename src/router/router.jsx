@@ -34,6 +34,7 @@ import AllDonations from "../pages/Home/AllDonations";
 import AboutUs from "../pages/Home/AboutUs";
 import PageNotFound from "../pages/Status/PageNotFound";
 import Forbidden from "../pages/Status/Forbidden";
+import DonationStats from "../pages/Dashboard/Restaurant/DonationStats";
 
 export const router = createBrowserRouter([
   {
@@ -195,6 +196,16 @@ export const router = createBrowserRouter([
           <PrivateRoute>
             <RestaurantRoute>
               <UpdateDonation></UpdateDonation>
+            </RestaurantRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "donation-stats",
+        element: (
+          <PrivateRoute>
+            <RestaurantRoute>
+              <DonationStats></DonationStats>
             </RestaurantRoute>
           </PrivateRoute>
         ),

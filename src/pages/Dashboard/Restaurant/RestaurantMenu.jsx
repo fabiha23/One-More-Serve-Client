@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router';
-import { FaUserCircle, FaUtensils, FaListAlt, FaClipboardList } from 'react-icons/fa';
+import { FaUserCircle, FaUtensils, FaListAlt, FaClipboardList, FaChartBar } from 'react-icons/fa';
 
 const RestaurantMenu = () => {
   const linkClass = ({ isActive }) =>
@@ -21,6 +21,9 @@ const RestaurantMenu = () => {
       </NavLink>
       <NavLink to="requested-donations" className={linkClass}>
         <FaClipboardList /> Requested Donations
+      </NavLink>
+      <NavLink to="donation-stats" className={linkClass}>
+        <FaChartBar /> Donation Statistics
       </NavLink>
     </nav>
   );

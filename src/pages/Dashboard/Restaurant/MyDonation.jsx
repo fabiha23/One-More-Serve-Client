@@ -10,6 +10,7 @@ import {
   FaCheckCircle,
   FaTimesCircle,
   FaPlus,
+  FaTruck,
 } from "react-icons/fa";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
@@ -131,6 +132,11 @@ const MyDonations = () => {
                     {donation.status === "Verified" && (
                       <span className="badge badge-success gap-1 py-2">
                         <FaCheckCircle size={14} /> Verified
+                      </span>
+                    )}
+                    {donation.status === "Picked Up" && (
+                      <span className="badge badge-info gap-1 py-2">
+                        <FaTruck size={14} /> Picked Up
                       </span>
                     )}
                     {donation.status === "Rejected" && (
