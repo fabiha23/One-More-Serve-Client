@@ -4,10 +4,12 @@ import useAxios from "../../../hooks/useAxios";
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
 import Loading from "../../../Components/Loading";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const MyPickup = () => {
   const { user } = useAuth();
   const axiosInstance = useAxios();
+  const axiosSecure=useAxiosSecure()
 
   // Fetch all requests (Accepted or Picked Up)
   const {
@@ -28,7 +30,7 @@ const MyPickup = () => {
   // Confirm Pickup Mutation
   const confirmPickup = useMutation({
     mutationFn: async (donationId) => {
-      return await axiosInstance.patch(`/donations/status/${donationId}`, {
+      return await axiosSecure.patch(`/donations/status/${donationId}`, {
         status: "Picked Up",
       });
     },

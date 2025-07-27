@@ -5,7 +5,7 @@ import PaymentModal from "./PaymentModal";
 
 const stripePromise = loadStripe(import.meta.env.VITE_payment_key);
 
-const Payment = ({ isOpen, onClose, amount, roleRequestId, onPaymentSuccess }) => {
+const Payment = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
   if (!isOpen) return null; // Important: do not render anything if not open
 
   return (
@@ -14,7 +14,6 @@ const Payment = ({ isOpen, onClose, amount, roleRequestId, onPaymentSuccess }) =
         isOpen={isOpen}
         onClose={onClose}
         amount={amount}
-        roleRequestId={roleRequestId}
         onPaymentSuccess={onPaymentSuccess}
       />
     </Elements>

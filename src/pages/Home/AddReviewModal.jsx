@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
 import { FaStar } from "react-icons/fa";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const AddReviewModal = ({
   isOpen,
@@ -16,8 +16,7 @@ const AddReviewModal = ({
   refetch,
 }) => {
   const { register, handleSubmit, reset } = useForm();
-  const axiosInstance = useAxios();
-
+const axiosSecure=useAxiosSecure()
   // State to track star rating
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
@@ -36,7 +35,7 @@ const AddReviewModal = ({
         restaurantName,
       };
 
-      await axiosInstance.post("/reviews", reviewPayload);
+      await axiosSecure.post("/reviews", reviewPayload);
       Swal.fire("Success", "Review submitted!", "success");
       closeModal();
       reset();

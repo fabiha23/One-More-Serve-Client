@@ -1,17 +1,17 @@
 import { FaShieldAlt, FaEnvelope, FaCrown, FaUserCog, FaServer, FaHistory, FaCalendarAlt } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import useAxios from "../../../hooks/useAxios";
 import Loading from "../../../Components/Loading";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AdminProfile = () => {
   const { user } = useAuth();
-  const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure();
 
   const { data: adminData, isLoading } = useQuery({
     queryKey: ["admin-profile", user?.email],
     queryFn: async () => {
-      const { data } = await axiosInstance.get(`/users?email=${user?.email}`);
+      const { data } = await axiosSecure.get(`/users?email=${user?.email}`);
       return data?.[0] || {};
     },
   });

@@ -4,11 +4,13 @@ import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
 import useAxios from "../../../hooks/useAxios";
 import Loading from "../../../Components/Loading";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const MyRequests = () => {
   const { user } = useAuth();
   const axiosInstance = useAxios();
   const queryClient = useQueryClient();
+  const axiosSecure=useAxiosSecure()
 
   const { data: myRequests = [], isLoading } = useQuery({
     queryKey: ["myDonationRequests", user?.email],
@@ -29,7 +31,7 @@ const MyRequests = () => {
     });
 
     if (confirm.isConfirmed) {
-      await axiosInstance.delete(`/donationRequests/${id}`);
+      await axiosSecure.delete(`/donationRequests/${id}`);
       Swal.fire({
         icon: "success",
         title: "Request canceled",

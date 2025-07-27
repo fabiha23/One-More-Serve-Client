@@ -13,7 +13,7 @@ const ManageDonations = () => {
   const { data: donations = [], refetch, isLoading } = useQuery({
     queryKey: ['donations'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/donations'); // your endpoint
+      const res = await axiosInstance.get('/donations'); 
       return res.data;
     },
   });
@@ -32,7 +32,7 @@ const ManageDonations = () => {
   // Handle rejection (sets status to "Rejected")
   const handleReject = async (donationId) => {
     try {
-      await axiosInstance.patch(`/donations/status/${donationId}`, { status: 'Rejected' });
+      await axiosSecure.patch(`/donations/status/${donationId}`, { status: 'Rejected' });
       Swal.fire('Success', 'Donation rejected successfully', 'success');
       refetch();
     } catch (err) {

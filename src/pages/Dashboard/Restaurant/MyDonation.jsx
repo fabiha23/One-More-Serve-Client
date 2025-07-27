@@ -17,10 +17,12 @@ import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
 import useAxios from "../../../hooks/useAxios";
 import Loading from "../../../Components/Loading";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const MyDonations = () => {
   const { user } = useAuth();
   const axiosInstance = useAxios();
+  const axiosSecure=useAxiosSecure()
   const queryClient = useQueryClient();
 
   // Fetch donations for the current restaurant
@@ -38,7 +40,7 @@ const MyDonations = () => {
   // Delete donation mutation with refetch on success
   const { mutate: deleteDonation, isLoading: isDeleting } = useMutation({
     mutationFn: async (id) => {
-      const { data } = await axiosInstance.delete(`/donations/${id}`);
+      const { data } = await axiosSecure.delete(`/donations/${id}`);
       return data;
     },
     onSuccess: () => {

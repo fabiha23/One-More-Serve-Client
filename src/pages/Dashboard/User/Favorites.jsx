@@ -3,12 +3,12 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import Loading from "../../../Components/Loading";
-import useAxios from "../../../hooks/useAxios";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Favorites = () => {
   const { user } = useAuth();
-  const axiosInstance = useAxios();
+  const axiosSecure=useAxiosSecure()
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ const Favorites = () => {
     queryKey: ["favorites", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosInstance.get(`/favorites?email=${user.email}`);
+      const res = await axiosSecure.get(`/favorites?email=${user.email}`);
       return res.data;
     },
   });
@@ -25,7 +25,7 @@ const Favorites = () => {
   // Mutation to remove a favorite by ID
   const removeFavoriteMutation = useMutation({
     mutationFn: async (favoriteId) => {
-      await axiosInstance.delete(`/favorites/${favoriteId}`);
+      await axiosSecure.delete(`/favorites/${favoriteId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["favorites", user?.email]);

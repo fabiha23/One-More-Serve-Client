@@ -7,8 +7,8 @@ import {
   FaEnvelope,
   FaCalendarAlt,
 } from "react-icons/fa";
-import useAxios from "../../hooks/useAxios";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const RequestDonationModal = ({
   donation,
@@ -18,18 +18,17 @@ const RequestDonationModal = ({
   refetch,
 }) => {
   const { register, handleSubmit, reset } = useForm();
-  const axiosInstance = useAxios();
-
+const axiosSecure=useAxiosSecure()
   const onSubmit = async (data) => {
     try {
-      await axiosInstance.post("/donationRequests", {
+      await axiosSecure.post("/donationRequests", {
         ...data,
         status: "Pending",
         donationId: donation?._id,
         foodType: donation?.foodType,
         charityImage:user?.photoURL
       });
-      await axiosInstance.patch(`/donations/status/${donation._id}`, {
+      await axiosSecure.patch(`/donations/status/${donation._id}`, {
         status: "Requested",
       });
       Swal.fire(

@@ -1,27 +1,7 @@
 import React from 'react';
-import { FaHeart, FaHandsHelping, FaLeaf, FaStore, FaUsers } from 'react-icons/fa';
-import { useQuery } from '@tanstack/react-query';
-import Loading from '../../Components/Loading';
-import useAxios from '../../hooks/useAxios';
+import { FaHeart, FaLeaf, FaHandsHelping, FaStore } from 'react-icons/fa';
 
 const AboutUs = () => {
-    const axiosInstance = useAxios();
-
-    // Fetch partners data
-    const { data: partners, isLoading } = useQuery({
-        queryKey: ['partners'],
-        queryFn: async () => {
-            const { data } = await axiosInstance.get('/users');
-            return data;
-        },
-    });
-
-    if (isLoading) return <Loading />;
-
-    // Filter partners by role
-    const restaurantPartners = partners?.filter(user => user.role === 'restaurant') || [];
-    const charityPartners = partners?.filter(user => user.role === 'charity') || [];
-
     return (
         <div className="max-w-7xl xl:mx-auto xl:px-2 lg:px-6 mx-3 mt-22 text-accent">
             {/* Hero Section */}
@@ -65,57 +45,8 @@ const AboutUs = () => {
                 </div>
             </div>
 
-            {/* Partners Section */}
-            <div className="mb-20">
-                <h2 className="text-3xl font-bold text-center mb-12">Our Trusted Partners</h2>
-                
-                {/* Restaurant Partners */}
-                <div className="mb-16">
-                    <div className="flex items-center mb-6">
-                        <FaStore className="text-2xl mr-3" />
-                        <h3 className="text-2xl font-bold">Food Donors</h3>
-                    </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                        {restaurantPartners.map(partner => (
-                            <div key={partner._id} className="bg-base-200 p-4 rounded-lg text-center">
-                                <div className="w-16 h-16 mx-auto mb-3 bg-white rounded-full overflow-hidden">
-                                    <img 
-                                        src={partner.photoURL || '/default-restaurant.jpg'} 
-                                        alt={partner.name}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                                <p className="font-medium">{partner.name}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Charity Partners */}
-                <div>
-                    <div className="flex items-center mb-6">
-                        <FaHandsHelping className="text-2xl mr-3" />
-                        <h3 className="text-2xl font-bold">Charity Partners</h3>
-                    </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                        {charityPartners.map(partner => (
-                            <div key={partner._id} className="bg-base-200 p-4 rounded-lg text-center">
-                                <div className="w-16 h-16 mx-auto mb-3 bg-white rounded-full overflow-hidden">
-                                    <img 
-                                        src={partner.photoURL || '/default-charity.jpg'} 
-                                        alt={partner.name}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                                <p className="font-medium">{partner.name}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
             {/* Call to Action */}
-            <div className="bg-secondary text-white p-12 rounded-xl text-center">
+            <div className="bg-secondary text-white p-12 rounded-xl text-center mb-20">
                 <h2 className="text-3xl font-bold mb-6">Join Our Movement</h2>
                 <p className="text-xl mb-8 max-w-3xl mx-auto">
                     Whether you're a food business with surplus to donate or a charity looking to receive food, 

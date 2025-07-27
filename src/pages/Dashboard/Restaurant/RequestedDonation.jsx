@@ -5,10 +5,12 @@ import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import Loading from "../../../Components/Loading";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const RequestedDonations = () => {
   const { user } = useAuth();
   const axiosInstance = useAxios();
+  const axiosSecure=useAxiosSecure()
   const queryClient = useQueryClient();
 
   const { data: requests = [], isLoading } = useQuery({
@@ -22,7 +24,7 @@ const RequestedDonations = () => {
 
   const handleStatusUpdate = async (id, newStatus) => {
     try {
-      await axiosInstance.patch(`/donationRequests/${id}`, { status: newStatus });
+      await axiosSecure.patch(`/donationRequests/${id}`, { status: newStatus });
       Swal.fire({
         icon: "success",
         title: `Request ${newStatus}`,

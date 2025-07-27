@@ -1,15 +1,14 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import useAxios from "../../hooks/useAxios";
 import Loading from "../../Components/Loading";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const ReviewSection = ({ donationId }) => {
-  const axiosInstance = useAxios();
-
+const axiosSecure=useAxiosSecure()
   const { data: reviews = [], isLoading } = useQuery({
     queryKey: ["reviews", donationId],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/reviews/${donationId}`);
+      const res = await axiosSecure.get(`/reviews/${donationId}`);
       return res.data;
     },
   });

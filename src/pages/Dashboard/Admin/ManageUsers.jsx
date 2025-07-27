@@ -1,23 +1,23 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
-import useAxios from '../../../hooks/useAxios';
 import Loading from '../../../Components/Loading';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const ManageUsers = () => {
-  const axiosInstance = useAxios();
+  const axiosSecure=useAxiosSecure()
 
   const { data: users = [], refetch, isLoading } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/users');
+      const res = await axiosSecure.get('/users');
       return res.data;
     },
   });
 
   const handleMakeRole = async (email, role) => {
     try {
-      await axiosInstance.patch(`/users/role?email=${email}`, { role });
+      await axiosSecure.patch(`/users/role?email=${email}`, { role });
       Swal.fire('Success', `${role} role assigned`, 'success');
       refetch();
     } catch (err) {
@@ -36,7 +36,7 @@ const ManageUsers = () => {
 
     if (result.isConfirmed) {
       try {
-        await axiosInstance.delete(`/users/${userId}`);
+        await axiosSecure.delete(`/users/${userId}`);
         Swal.fire('Deleted!', 'User has been deleted.', 'success');
         refetch();
       } catch (err) {

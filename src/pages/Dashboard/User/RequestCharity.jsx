@@ -3,26 +3,25 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import Loading from "../../../Components/Loading";
 import useAuth from "../../../hooks/useAuth";
-import useAxios from "../../../hooks/useAxios";
 import Payment from "../Payment/Payment";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const RequestCharity = () => {
   const { user } = useAuth();
-  const axiosInstance = useAxios();
+  const axiosSecure=useAxiosSecure()
   const queryClient = useQueryClient();
 
   const [organizationName, setOrganizationName] = useState("");
   const [missionStatement, setMissionStatement] = useState("");
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [newRequestData, setNewRequestData] = useState(null);
-
   const paymentAmount = 25; // fixed amount placeholder
 
   // Fetch existing role request to block duplicates
   const { data: existingRequest, isLoading } = useQuery({
     queryKey: ["charity-role-request", user?.email],
     queryFn: async () => {
-      const { data } = await axiosInstance.get(
+      const { data } = await axiosSecure.get(
         `/roleRequests?email=${user.email}`
       );
       return data;
@@ -32,7 +31,7 @@ const RequestCharity = () => {
 
   const { mutate, isLoading: isPending } = useMutation({
     mutationFn: async (formData) => {
-      const { data } = await axiosInstance.post("/roleRequests", formData);
+      const { data } = await axiosSecure.post("/roleRequests", formData);
       return data;
     },
     onSuccess: () => {
@@ -43,6 +42,7 @@ const RequestCharity = () => {
       });
       queryClient.invalidateQueries({
         queryKey: ["charity-role-request", user?.email],
+        
       });
       setIsPaymentModalOpen(false);
       // reset form
@@ -61,7 +61,7 @@ const RequestCharity = () => {
 
   if (isLoading) return <Loading />;
 
-  if (existingRequest && existingRequest.status === "pending") {
+  if (existingRequest && existingRequest.status !== "Pending") {
     return (
       <div className="p-6 bg-base-100 rounded-lg shadow text-center">
         <h3 className="text-lg font-semibold mb-2">
@@ -177,7 +177,6 @@ const RequestCharity = () => {
         amount={paymentAmount}
         onClose={() => setIsPaymentModalOpen(false)}
         onPaymentSuccess={handlePaymentSuccess}
-        roleRequestId={newRequestData?.id || null}
         isOpen={true}
       />
     )}

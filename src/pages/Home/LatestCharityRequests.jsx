@@ -19,7 +19,7 @@ const LatestCharityRequests = () => {
   return (
     <section className="py-12 px-4 bg-base-200">
       <div className="max-w-5xl mx-auto text-center">
-        <h2 className="text-3xl font-bold text-primary mb-8">
+        <h2 className="text-3xl font-bold text-accent mb-8">
           Latest Charity Requests
         </h2>
 

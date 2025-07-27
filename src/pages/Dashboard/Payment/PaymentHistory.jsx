@@ -1,17 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../hooks/useAuth";
-import useAxios from "../../../hooks/useAxios";
 import Loading from "../../../Components/Loading";
 import { Navigate } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const PaymentHistory = () => {
   const { user, role } = useAuth();
-  const axiosInstance = useAxios();
-
+const axiosSecure=useAxiosSecure()
+  
   const { data: payments = [], isLoading } = useQuery({
     queryKey: ["payment-history", user?.email],
     queryFn: async () => {
-      const { data } = await axiosInstance.get(`/payments?email=${user.email}`);
+      const { data } = await axiosSecure.get(`/payments?email=${user.email}`);
       return data;
     },
     enabled: !!user?.email,
@@ -50,11 +50,7 @@ const PaymentHistory = () => {
                   <td>{payment.paymentMethod}</td>
                   <td>{new Date(payment.createdAt).toLocaleDateString()}</td>
                   <td>
-                    {payment.roleRequestId ? (
-                      <span className="badge badge-success">Linked</span>
-                    ) : (
-                      <span className="badge badge-ghost">None</span>
-                    )}
+                    Charity
                   </td>
                 </tr>
               ))}

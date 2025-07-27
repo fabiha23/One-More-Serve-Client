@@ -1,10 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxios from "../../../hooks/useAxios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const ManageRequests = () => {
   const queryClient = useQueryClient();
   const axiosInstance = useAxios();
+  const axiosSecure=useAxiosSecure()
 
   // Fetch donation requests
   const { data: requests = [], isLoading } = useQuery({
@@ -18,7 +20,7 @@ const ManageRequests = () => {
   // Delete mutation
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
-      const res = await axiosInstance.delete(`/donationRequests/${id}`);
+      const res = await axiosSecure.delete(`/donationRequests/${id}`);
       return res.data;
     },
     onSuccess: () => {
@@ -47,7 +49,7 @@ const ManageRequests = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Manage Charity Requests</h2>
+      <h2 className="text-2xl font-bold mb-4">Manage Donation Requests</h2>
       <div className="overflow-x-auto">
         <table className="table w-full">
           <thead>

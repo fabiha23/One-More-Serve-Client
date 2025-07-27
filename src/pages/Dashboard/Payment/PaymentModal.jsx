@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import Swal from 'sweetalert2';
-import useAxios from '../../../hooks/useAxios';
 import useAuth from '../../../hooks/useAuth';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
-const PaymentModal = ({ isOpen, onClose, amount = 25, roleRequestId, onPaymentSuccess }) => {
+const PaymentModal = ({ isOpen, onClose, amount = 25, onPaymentSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const axiosInstance = useAxios();
+  const axiosSecure=useAxiosSecure()
   const { user } = useAuth();
 
   const [error, setError] = useState('');
@@ -34,9 +34,8 @@ const PaymentModal = ({ isOpen, onClose, amount = 25, roleRequestId, onPaymentSu
 
     try {
       // Step 1: Create Payment Intent on backend
-      const { data } = await axiosInstance.post('/create-payment-intent', {
+      const { data } = await axiosSecure.post('/create-payment-intent', {
         amount: amount * 100, // convert to cents
-        roleRequestId,
       });
 
       const clientSecret = data.clientSecret;
@@ -56,8 +55,7 @@ const PaymentModal = ({ isOpen, onClose, amount = 25, roleRequestId, onPaymentSu
         setError(stripeError.message);
       } else if (paymentIntent.status === 'succeeded') {
         // Step 3: Save payment record
-        await axiosInstance.post('/payments', {
-          roleRequestId,
+        await axiosSecure.post('/payments', {
           email: user.email,
           amount,
           transactionId: paymentIntent.id,

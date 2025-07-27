@@ -1,23 +1,16 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
-import {
-  FaUtensils,
-  FaWeightHanging,
-  FaClock,
-  FaMapMarkerAlt,
-  FaCamera,
-} from "react-icons/fa";
 import { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import Loading from "../../../Components/Loading";
-import useAxios from "../../../hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AddDonation = () => {
   const { user } = useAuth();
   const [isUploadingImage, setIsUploadingImage] = useState(false);
-  const axiosInstance = useAxios();
+  const axiosSecure=useAxiosSecure()
   const {
     register,
     handleSubmit,
@@ -29,7 +22,7 @@ const AddDonation = () => {
   const { mutate: addDonation, isPending } = useMutation({
     mutationKey: ["add-donation"],
     mutationFn: async (donationData) => {
-      const { data } = await axiosInstance.post("/donations", donationData);
+      const { data } = await axiosSecure.post("/donations", donationData);
       return data;
     },
     onSuccess: () => {

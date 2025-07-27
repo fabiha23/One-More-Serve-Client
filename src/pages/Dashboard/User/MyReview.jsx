@@ -3,13 +3,12 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
-import useAxios from "../../../hooks/useAxios";
 import Loading from "../../../Components/Loading";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const MyReview = () => {
   const { user } = useAuth();
-  const axiosInstance=useAxios()
-
+const axiosSecure=useAxiosSecure()
   const {
     data: reviews = [],
     isLoading,
@@ -18,14 +17,14 @@ const MyReview = () => {
     queryKey: ["myReviews", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosInstance.get(`/reviews?reviewrEmail=${user?.email}`);
+      const res = await axiosSecure.get(`/reviews?email=${user?.email}`);
       return res.data;
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
-      const res = await axiosInstance.delete(`/reviews/${id}`);
+      const res = await axiosSecure.delete(`/reviews/${id}`);
       return res.data;
     },
     onSuccess: (data) => {

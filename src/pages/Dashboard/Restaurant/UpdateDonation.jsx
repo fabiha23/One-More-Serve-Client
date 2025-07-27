@@ -1,25 +1,18 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { 
-  FaUtensils, 
-  FaWeightHanging, 
-  FaClock, 
-  FaMapMarkerAlt, 
-  FaCamera 
-} from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import Loading from "../../../Components/Loading";
-import useAxios from "../../../hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const UpdateDonation = () => {
   const { user } = useAuth();
   const { state } = useLocation();
   const navigate = useNavigate();
-  const axiosInstance = useAxios();
+  const axiosSecure=useAxiosSecure()
   const [imageUrl, setImageUrl] = useState("");
   const donation = state?.donation;
 
@@ -50,7 +43,7 @@ const UpdateDonation = () => {
   const { mutate: updateDonation, isPending } = useMutation({
     mutationKey: ["update-donation"],
     mutationFn: async (donationData) => {
-      const { data } = await axiosInstance.put(`/donations/${donation?._id}`, donationData);
+      const { data } = await axiosSecure.put(`/donations/${donation?._id}`, donationData);
       return data;
     },
     onSuccess: () => {

@@ -19,12 +19,14 @@ import Swal from "sweetalert2";
 import AddReviewModal from "./AddReviewModal";
 import ReviewSection from "./ReviewSection";
 import RequestDonationModal from "./RequestDonationModal";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const DonationDetails = () => {
   const [role, isRoleLoading] = useRole();
   const { user } = useAuth();
   const { id } = useParams();
   const axiosInstance = useAxios();
+  const axiosSecure=useAxiosSecure()
   const queryClient = useQueryClient();
 
   const [isRequestModalOpen, setRequestModalOpen] = useState(false);
@@ -38,7 +40,7 @@ const DonationDetails = () => {
   } = useQuery({
     queryKey: ["donationDetails", id],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/donations/${id}`);
+      const res = await axiosSecure.get(`/donations/${id}`);
       return res.data;
     },
     enabled: !!id,
@@ -52,7 +54,7 @@ const DonationDetails = () => {
     queryKey: ["charityInfo", user?.email],
     enabled: !!user?.email && role === "charity",
     queryFn: async () => {
-      const res = await axiosInstance.get(`/roleRequests?email=${user.email}`);
+      const res = await axiosSecure.get(`/roleRequests?email=${user.email}`);
       return res.data;
     },
   });
@@ -66,7 +68,7 @@ const DonationDetails = () => {
     queryKey: ["favorite", id, user?.email],
     enabled: !!user?.email && !!id,
     queryFn: async () => {
-      const res = await axiosInstance.get(
+      const res = await axiosSecure.get(
         `/favorites?donationId=${id}&email=${user.email}`
       );
       return res.data;
@@ -89,7 +91,7 @@ const DonationDetails = () => {
   };
 
   const addFavorite = useMutation({
-    mutationFn: () => axiosInstance.post("/favorites", favoriteData),
+    mutationFn: () => axiosSecure.post("/favorites", favoriteData),
     onSuccess: () => {
       queryClient.invalidateQueries(["favorite", id, user?.email]);
       Swal.fire({
@@ -105,7 +107,7 @@ const DonationDetails = () => {
   });
 
   const removeFavorite = useMutation({
-    mutationFn: () => axiosInstance.delete(`/favorites/${favoriteId}`),
+    mutationFn: () => axiosSecure.delete(`/favorites/${favoriteId}`),
     onSuccess: () => {
       queryClient.invalidateQueries(["favorite", id, user?.email]);
       Swal.fire({
@@ -138,7 +140,7 @@ const DonationDetails = () => {
 
   // ✅ Confirm Pickup mutation
   const markAsPickedUp = useMutation({
-    mutationFn: () => axiosInstance.patch(`/donations/status/${id}`, { status: "Picked Up" }),
+    mutationFn: () => axiosSecure.patch(`/donations/status/${id}`, { status: "Picked Up" }),
     onSuccess: () => {
       queryClient.invalidateQueries(["donationDetails", id]);
       Swal.fire("Success", "Marked as Picked Up", "success");

@@ -4,7 +4,7 @@ import { FaUtensils, FaHandshake, FaHandsHelping } from 'react-icons/fa';
 const HowItWorks = () => {
   return (
     <section className="text-center p-10">
-      <h2 className="text-3xl font-bold mb-8 text-primary">How It Works</h2>
+      <h2 className="text-3xl font-bold mb-8 text-accent">How It Works</h2>
 
       <div className="grid md:grid-cols-3 gap-8">
         {/* Step 1 */}

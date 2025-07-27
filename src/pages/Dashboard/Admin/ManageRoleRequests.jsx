@@ -1,12 +1,12 @@
 import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import useAxios from "../../../hooks/useAxios";
 import Loading from "../../../Components/Loading";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const ManageRoleRequests = () => {
-  const axiosInstance = useAxios();
   const queryClient = useQueryClient();
+  const axiosSecure=useAxiosSecure()
 
   // Fetch all role requests
   const {
@@ -16,7 +16,7 @@ const ManageRoleRequests = () => {
   } = useQuery({
     queryKey: ["roleRequests"],
     queryFn: async () => {
-      const res = await axiosInstance.get("/roleRequests");
+      const res = await axiosSecure.get("/roleRequests");
       return res.data;
     },
   });
@@ -24,10 +24,10 @@ const ManageRoleRequests = () => {
   // Mutation to update role request status
   const updateStatusMutation = useMutation({
     mutationFn: async ({ id, email, status }) => {
-      await axiosInstance.patch(`/roleRequests/${id}`, { status });
+      await axiosSecure.patch(`/roleRequests/${id}`, { status });
 
       if (status === "Approved") {
-        await axiosInstance.patch(`/users/role?email=${email}`, { role: "Charity" });
+        await axiosSecure.patch(`/users/role?email=${email}`, { role: "charity" });
       }
     },
     onSuccess: () => {
@@ -112,7 +112,7 @@ const ManageRoleRequests = () => {
                     </span>
                   </td>
                   <td>
-                    {req.status === "pending" && (
+                    {req.status === "Pending" && (
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleApprove(req._id, req.email)}
@@ -159,7 +159,7 @@ const ManageRoleRequests = () => {
                     </span>
                   </div>
                 </div>
-                {req.status === "pending" && (
+                {req.status === "Pending" && (
                   <div className="card-actions justify-end mt-4">
                     <button
                       onClick={() => handleApprove(req._id, req.userId)}

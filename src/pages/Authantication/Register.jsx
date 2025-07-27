@@ -11,6 +11,7 @@ const Register = () => {
   const { registerUser, updateUserProfile } = useAuth();
   const [error, setError] = useState("");
   const [profilePic, setProfilePic] = useState("");
+    const [isUploadingImage, setIsUploadingImage] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const axiosInstance = useAxios();
@@ -22,6 +23,8 @@ const Register = () => {
     if (!image) return;
     const formData = new FormData();
     formData.append("image", image);
+        setIsUploadingImage(true); // Start uploading
+
     try {
       const uploadUrl = `https://api.imgbb.com/1/upload?key=${
         import.meta.env.VITE_image_upload_key
@@ -31,6 +34,10 @@ const Register = () => {
     } catch (err) {
       console.error(err);
       setError("Image upload failed");
+    }
+    finally{
+          setIsUploadingImage(false); // Start uploading
+
     }
   };
 
@@ -201,8 +208,10 @@ const Register = () => {
             {error && <p className="text-error">{error}</p>}
 
             <button
+                        disabled={isUploadingImage}
+
               type="submit"
-              className="w-full py-3 bg-secondary hover:bg-primary text-primary font-semibold rounded-md transition duration-200 cursor-pointer hover:text-neutral"
+              className="w-full py-3 bg-secondary hover:bg-primary text-primary font-semibold rounded-md transition duration-200 cursor-pointer hover:text-neutral disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-secondary disabled:hover:text-primary"
             >
               Register
             </button>
