@@ -40,7 +40,7 @@ const UpdateDonation = () => {
     }
   }, [donation, setValue]);
 
-  const { mutate: updateDonation, isPending } = useMutation({
+  const { mutate: updateDonation, ispending } = useMutation({
     mutationKey: ["update-donation"],
     mutationFn: async (donationData) => {
       const { data } = await axiosSecure.put(`/donations/${donation?._id}`, donationData);
@@ -100,7 +100,7 @@ const UpdateDonation = () => {
     updateDonation(donationData);
   };
 
-  if (isPending) return <Loading></Loading>;
+  if (ispending) return <Loading></Loading>;
 
   return (
     <>

@@ -26,7 +26,7 @@ const ManageRoleRequests = () => {
     mutationFn: async ({ id, email, status }) => {
       await axiosSecure.patch(`/roleRequests/${id}`, { status });
 
-      if (status === "Approved") {
+      if (status === "approved") {
         await axiosSecure.patch(`/users/role?email=${email}`, { role: "charity" });
       }
     },
@@ -49,7 +49,7 @@ const ManageRoleRequests = () => {
       cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
-        updateStatusMutation.mutate({ id, email, status: "Approved" });
+        updateStatusMutation.mutate({ id, email, status: "approved" });
       }
     });
   };
@@ -64,7 +64,7 @@ const ManageRoleRequests = () => {
       cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
-        updateStatusMutation.mutate({ id, email, status: "Rejected" });
+        updateStatusMutation.mutate({ id, email, status: "rejected" });
       }
     });
   };
@@ -107,12 +107,12 @@ const ManageRoleRequests = () => {
                     </div>
                   </td>
                   <td>
-                    <span className={`badge ${req.status === "pending" ? "badge-warning" : req.status === "Approved" ? "badge-success" : "badge-error"}`}>
+                    <span className={`badge ${req.status === "pending" ? "badge-warning" : req.status === "approved" ? "badge-success" : "badge-error"}`}>
                       {req.status}
                     </span>
                   </td>
                   <td>
-                    {req.status === "Pending" && (
+                    {req.status === "pending" && (
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleApprove(req._id, req.email)}
@@ -154,12 +154,12 @@ const ManageRoleRequests = () => {
                   <p><span className="font-semibold">Transaction ID:</span> {req.transactionId}</p>
                   <div className="flex items-center">
                     <span className="font-semibold mr-2">Status:</span>
-                    <span className={`badge ${req.status === "pending" ? "badge-warning" : req.status === "Approved" ? "badge-success" : "badge-error"}`}>
+                    <span className={`badge ${req.status === "pending" ? "badge-warning" : req.status === "approved" ? "badge-success" : "badge-error"}`}>
                       {req.status}
                     </span>
                   </div>
                 </div>
-                {req.status === "Pending" && (
+                {req.status === "pending" && (
                   <div className="card-actions justify-end mt-4">
                     <button
                       onClick={() => handleApprove(req._id, req.userId)}

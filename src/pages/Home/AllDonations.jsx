@@ -20,7 +20,7 @@ const AllDonations = () => {
     queryKey: ['allDonations'],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        '/donations?status=Verified&status=Requested&status=Picked%20Up'
+        '/donations?status=verified&status=requested&status=picked%20up'
       );
       return res.data;
     },
@@ -32,7 +32,7 @@ const AllDonations = () => {
     setIsSearching(true);
     try {
       const res = await axiosSecure.get(
-        `/donations/search?status=Verified&status=Requested&status=Picked%20Up&city=${searchCity}`
+        `/donations/search?status=verified&status=requested&status=picked%20up&city=${searchCity}`
       );
       setSearchResults(res.data);
     } catch (error) {

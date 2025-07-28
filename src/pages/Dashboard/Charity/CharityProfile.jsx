@@ -202,7 +202,7 @@ const CharityProfile = () => {
                 <div>
                   <p className="text-sm font-medium text-accent/80">501(c)(3) Status</p>
                   <p className="text-accent">
-                    {charityData.certifications.taxExempt ? "Verified" : "Not verified"}
+                    {charityData.certifications.taxExempt ? "verified" : "Not verified"}
                   </p>
                 </div>
               </div>

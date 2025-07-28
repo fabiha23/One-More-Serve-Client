@@ -85,14 +85,14 @@ const FeaturedDonationsSection = () => {
                   <div className="card-actions mt-4 flex justify-between items-center">
                     <span
                       className={`badge ${
-                        (donation.status === "Verified"||donation.status === "Picked Up")
+                        (donation.status === "verified"||donation.status === "picked up")
                           ? "badge-success"
-                          : donation.status === "Requested"
+                          : donation.status === "requested"
                           ? "badge-warning"
                           : "badge-neutral"
                       }`}
                     >
-                      {donation.status === "Verified"
+                      {donation.status === "verified"
                         ? "Available"
                         : donation.status}
                     </span>

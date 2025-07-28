@@ -19,7 +19,7 @@ const AddDonation = () => {
   } = useForm();
   const [imageUrl, setImageUrl] = useState("");
 
-  const { mutate: addDonation, isPending } = useMutation({
+  const { mutate: addDonation, ispending } = useMutation({
     mutationKey: ["add-donation"],
     mutationFn: async (donationData) => {
       const { data } = await axiosSecure.post("/donations", donationData);
@@ -84,12 +84,12 @@ const AddDonation = () => {
       restaurantName: user?.displayName,
       restaurantEmail: user?.email,
       donationImage: imageUrl,
-      status: "Pending",
+      status: "pending",
       createdAt: new Date().toISOString(),
     };
     addDonation(donationData);
   };
-  if (isPending) return <Loading></Loading>;
+  if (ispending) return <Loading></Loading>;
   return (
     <>
       <h2 className="text-base-100 font-semibold text-2xl mb-3 bg-secondary p-4 rounded-lg px-6">

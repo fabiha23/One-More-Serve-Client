@@ -11,7 +11,7 @@ const MyPickup = () => {
   const axiosInstance = useAxios();
   const axiosSecure=useAxiosSecure()
 
-  // Fetch all requests (Accepted or Picked Up)
+  // Fetch all requests (accepted or picked up)
   const {
     data: pickups = [],
     isLoading,
@@ -21,7 +21,7 @@ const MyPickup = () => {
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/donationRequests?charityEmail=${user?.email}&status=Accepted&status=Picked Up`
+        `/donationRequests?charityEmail=${user?.email}&status=accepted&status=picked up`
       );
       return res.data;
     },
@@ -31,7 +31,7 @@ const MyPickup = () => {
   const confirmPickup = useMutation({
     mutationFn: async (donationId) => {
       return await axiosSecure.patch(`/donations/status/${donationId}`, {
-        status: "Picked Up",
+        status: "picked up",
       });
     },
     onSuccess: () => {
@@ -46,7 +46,7 @@ const MyPickup = () => {
   if (isLoading) return <Loading />;
 
   // Filter accepted requests only
-  const acceptedRequests = pickups.filter((p) => p.status === "Accepted");
+  const acceptedRequests = pickups.filter((p) => p.status === "accepted");
   // Check if all are picked up
   const allPickedUp = pickups.length > 0 && acceptedRequests.length === 0;
 

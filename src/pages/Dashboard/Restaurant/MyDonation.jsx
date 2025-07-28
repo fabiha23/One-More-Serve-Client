@@ -11,6 +11,8 @@ import {
   FaTimesCircle,
   FaPlus,
   FaTruck,
+  FaTruckLoading,
+  FaRegQuestionCircle,
 } from "react-icons/fa";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
@@ -18,6 +20,7 @@ import useAuth from "../../../hooks/useAuth";
 import useAxios from "../../../hooks/useAxios";
 import Loading from "../../../Components/Loading";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { FiLoader } from "react-icons/fi";
 
 const MyDonations = () => {
   const { user } = useAuth();
@@ -126,24 +129,29 @@ const MyDonations = () => {
                     {donation.title}
                   </h3>
                   <div className="flex items-center">
-                    {donation.status === "Pending" && (
+                    {donation.status === "pending" && (
                       <span className="badge badge-warning gap-1 py-2">
-                        <FaClock size={14} /> Pending
+                        <FaClock size={14} /> pending
                       </span>
                     )}
-                    {donation.status === "Verified" && (
+                    {donation.status === "verified" && (
                       <span className="badge badge-success gap-1 py-2">
-                        <FaCheckCircle size={14} /> Verified
+                        <FaCheckCircle size={14} /> verified
                       </span>
                     )}
-                    {donation.status === "Picked Up" && (
+                    {donation.status === "picked up" && (
                       <span className="badge badge-info gap-1 py-2">
-                        <FaTruck size={14} /> Picked Up
+                        <FaTruck size={14} /> picked up
                       </span>
                     )}
-                    {donation.status === "Rejected" && (
+                    {donation.status === "rejected" && (
                       <span className="badge badge-error gap-1 py-2">
-                        <FaTimesCircle size={14} /> Rejected
+                        <FaTimesCircle size={14} /> rejected
+                      </span>
+                    )}
+                    {donation.status === "requested" && (
+                      <span className="badge badge-error gap-1 py-2">
+                        <FiLoader size={14} /> requested
                       </span>
                     )}
                   </div>
@@ -183,7 +191,7 @@ const MyDonations = () => {
 
                 {/* Action Buttons */}
                 <div className="flex justify-end space-x-2 mt-4 pt-3 border-t border-gray-200">
-                  {donation.status !== "Rejected" && (
+                  {donation.status !== "rejected" && (
                     <Link
                       to={`/dashboard/update-donation/${donation._id}`}
                       state={{ donation }}

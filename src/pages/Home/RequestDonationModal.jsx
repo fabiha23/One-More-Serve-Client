@@ -23,13 +23,13 @@ const axiosSecure=useAxiosSecure()
     try {
       await axiosSecure.post("/donationRequests", {
         ...data,
-        status: "Pending",
+        status: "pending",
         donationId: donation?._id,
         foodType: donation?.foodType,
         charityImage:user?.photoURL
       });
       await axiosSecure.patch(`/donations/status/${donation._id}`, {
-        status: "Requested",
+        status: "requested",
       });
       Swal.fire(
         "Requested!",

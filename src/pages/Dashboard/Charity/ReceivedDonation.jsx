@@ -13,7 +13,7 @@ const RecievedDonation = () => {
     enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/donationRequests?charityEmail=${user?.email}&status=Picked Up`
+        `/donationRequests?charityEmail=${user?.email}&status=picked up`
       );
       return res.data;
     },
@@ -53,7 +53,7 @@ const RecievedDonation = () => {
               </p>
               <div className="mt-2">
                 <span className="badge badge-success text-white">
-                  Picked Up
+                  picked up
                 </span>
               </div>
             </div>

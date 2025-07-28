@@ -25,13 +25,13 @@ const DonationCard = ({ donation }) => {
         <p className="text-sm text-accent">
           Status:
           <span className={`badge ${
-                        (status === "Verified"||status === "Picked Up")
+                        (status === "verified"||status === "picked up")
                           ? "badge-success"
-                          : donation.status === "Requested"
+                          : donation.status === "requested"
                           ? "badge-warning"
                           : "badge-neutral"
                       }`}>
-            {status === "Verified" ? "Available" : status}
+            {status === "verified" ? "Available" : status}
           </span>
         </p>
         <p className="text-sm">Quantity: {quantity} {quantityUnit}</p>

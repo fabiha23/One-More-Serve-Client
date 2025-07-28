@@ -21,7 +21,7 @@ const HowItWorks = () => {
           <FaHandshake size={40} className="text-secondary mb-4" />
           <h3 className="text-xl font-semibold mb-2">Charities Request</h3>
           <p className="text-accent">
-            Verified charities browse donations and request pickups.
+            verified charities browse donations and request pickups.
           </p>
         </div>
 

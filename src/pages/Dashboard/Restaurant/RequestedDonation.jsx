@@ -66,8 +66,8 @@ const RequestedDonations = () => {
                   <td className="whitespace-nowrap">{req.pickupTime}</td>
                   <td>
                     <span className={`badge ${
-                      req.status === "Pending" ? "badge-warning" :
-                      req.status === "Accepted" ? "badge-success" :
+                      req.status === "pending" ? "badge-warning" :
+                      req.status === "accepted" ? "badge-success" :
                       "badge-error"
                     }`}>
                       {req.status}
@@ -76,16 +76,16 @@ const RequestedDonations = () => {
                   <td>
                     <div className="flex gap-1">
                       <button
-                        onClick={() => handleStatusUpdate(req._id, "Accepted")}
-                        disabled={req.status !== "Pending"}
+                        onClick={() => handleStatusUpdate(req._id, "accepted")}
+                        disabled={req.status !== "pending"}
                         className="btn btn-xs btn-success"
                         title="Accept"
                       >
                         <FaCheck />
                       </button>
                       <button
-                        onClick={() => handleStatusUpdate(req._id, "Rejected")}
-                        disabled={req.status !== "Pending"}
+                        onClick={() => handleStatusUpdate(req._id, "rejected")}
+                        disabled={req.status !== "pending"}
                         className="btn btn-xs btn-error"
                         title="Reject"
                       >

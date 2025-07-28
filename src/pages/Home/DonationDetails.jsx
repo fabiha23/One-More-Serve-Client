@@ -135,15 +135,15 @@ const DonationDetails = () => {
   });
 
   const acceptedRequest = donationRequests.find(
-    (req) => req.status === "Accepted" && req.charityEmail === user?.email
+    (req) => req.status === "accepted" && req.charityEmail === user?.email
   );
 
   // ✅ Confirm Pickup mutation
   const markAsPickedUp = useMutation({
-    mutationFn: () => axiosSecure.patch(`/donations/status/${id}`, { status: "Picked Up" }),
+    mutationFn: () => axiosSecure.patch(`/donations/status/${id}`, { status: "picked up" }),
     onSuccess: () => {
       queryClient.invalidateQueries(["donationDetails", id]);
-      Swal.fire("Success", "Marked as Picked Up", "success");
+      Swal.fire("Success", "Marked as picked up", "success");
     },
   });
 
@@ -204,13 +204,13 @@ const DonationDetails = () => {
                 <DetailItem icon={<FaCalendarAlt />} label="Pickup Window" value={`${donation?.pickupStart ?? "N/A"} ${donation?.pickupEnd || "N/A"}`} />
                 <DetailItem icon={<FaInfoCircle />} label="Status" value={
                   <span className={`badge ${
-                    donation?.status === "Available" || donation?.status === "Verified"
+                    donation?.status === "Available" || donation?.status === "verified"
                       ? "badge-success"
-                      : donation?.status === "Pending"
+                      : donation?.status === "pending"
                       ? "badge-warning"
                       : "badge-info"
                   }`}>
-                    {donation?.status === "Verified" ? "Available" : donation?.status || "Unknown"}
+                    {donation?.status === "verified" ? "Available" : donation?.status || "Unknown"}
                   </span>
                 } />
               </div>
@@ -223,7 +223,7 @@ const DonationDetails = () => {
             </div>
 
             <div className="flex flex-wrap gap-3 mt-auto">
-              {(role === "charity" && donation?.status!=="Picked Up") && (
+              {(role === "charity" && donation?.status!=="picked up") && (
                 <button onClick={() => setRequestModalOpen(true)} className="btn btn-primary">
                   Request Donation
                 </button>

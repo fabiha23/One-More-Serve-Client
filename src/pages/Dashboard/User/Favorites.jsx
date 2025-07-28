@@ -75,7 +75,7 @@ const Favorites = () => {
                   className={`badge ${
                     fav.status === "Available"
                       ? "badge-success"
-                      : fav.status === "Pending"
+                      : fav.status === "pending"
                       ? "badge-warning"
                       : "badge-info"
                   }`}

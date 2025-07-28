@@ -18,10 +18,10 @@ const ManageDonations = () => {
     },
   });
 
-  // Handle verification (sets status to "Verified")
+  // Handle verification (sets status to "verified")
   const handleVerify = async (donationId) => {
     try {
-      await axiosSecure.patch(`/donations/status/${donationId}`, { status: 'Verified' });
+      await axiosSecure.patch(`/donations/status/${donationId}`, { status: 'verified' });
       Swal.fire('Success', 'Donation verified successfully', 'success');
       refetch();
     } catch (err) {
@@ -29,10 +29,10 @@ const ManageDonations = () => {
     }
   };
 
-  // Handle rejection (sets status to "Rejected")
+  // Handle rejection (sets status to "rejected")
   const handleReject = async (donationId) => {
     try {
-      await axiosSecure.patch(`/donations/status/${donationId}`, { status: 'Rejected' });
+      await axiosSecure.patch(`/donations/status/${donationId}`, { status: 'rejected' });
       Swal.fire('Success', 'Donation rejected successfully', 'success');
       refetch();
     } catch (err) {
@@ -69,9 +69,9 @@ const ManageDonations = () => {
               <td>
                 <span
                   className={`badge ${
-                    donation.status === 'Verified'
+                    donation.status === 'verified'
                       ? 'badge-success'
-                      : donation.status === 'Rejected'
+                      : donation.status === 'rejected'
                       ? 'badge-error'
                       : 'badge-warning'
                   }`}
@@ -80,7 +80,7 @@ const ManageDonations = () => {
                 </span>
               </td>
               <td className="text-center space-x-2">
-                {donation.status === 'Pending' ? (
+                {donation.status === 'pending' ? (
                   <>
                     <button
                       onClick={() => handleVerify(donation._id)}

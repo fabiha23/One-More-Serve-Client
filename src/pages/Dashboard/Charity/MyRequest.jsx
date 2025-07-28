@@ -67,16 +67,16 @@ const MyRequests = () => {
 
                 <div className="mt-3 flex justify-between items-center">
                   <span className={`badge ${
-                    req.status === "Accepted"
+                    req.status === "accepted"
                       ? "badge-success"
-                      : req.status === "Rejected"
+                      : req.status === "rejected"
                       ? "badge-error"
                       : "badge-warning"
                   }`}>
                     {req.status}
                   </span>
 
-                  {req.status === "Pending" && (
+                  {req.status === "pending" && (
                     <button
                       onClick={() => handleCancel(req._id)}
                       className="btn btn-xs btn-outline btn-error"
