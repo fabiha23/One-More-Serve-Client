@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IoMenu, IoMoonOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { TbLogout2 } from "react-icons/tb";
 import { FiSun } from "react-icons/fi";
 import useAuth from "../hooks/useAuth";
@@ -9,6 +9,7 @@ import logo from "../assets/logo.png";
 import useRole from "../hooks/UseRole";
 import UserDropdown from "./UserDropdown";
 import useAxios from "../hooks/useAxios";
+import { get } from "react-hook-form";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -18,6 +19,7 @@ const Navbar = () => {
   const [role] = useRole();
   const axiosInstance = useAxios();
   const navigate = useNavigate();
+  const location=useLocation()
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -37,15 +39,28 @@ const Navbar = () => {
     dashboardPath = "/dashboard/restaurant-profile";
   }
 
+  const getLinkClass = ({ isActive }) => {
+
+  const hoverEffect = location.pathname === "/" ? "hover:text-[#E0E5B6] duration-300" : "";
+
+  if (!isActive) {
+    return hoverEffect;
+  }
+
+  const borderColor = location.pathname === "/" ? "border-[#E0E5B6]" : "";
+  const textColor = location.pathname === "/" ? "text-[#E0E5B6]" : "";
+
+  return `border-l-3 pl-1 ${borderColor} ${textColor} ${hoverEffect}`;
+};
+
+
+
+
   const links = (
     <>
       <li>
         <NavLink
-          className={({ isActive }) =>
-            `hover:text-secondary duration-100 ${
-              isActive && "border-l-3 text-secondary pl-1 border-secondary"
-            }`
-          }
+          className={getLinkClass}
           to="/"
         >
           Home
@@ -53,11 +68,7 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink
-          className={({ isActive }) =>
-            `hover:text-secondary duration-100 ${
-              isActive && "border-l-3 text-secondary pl-1 border-secondary"
-            }`
-          }
+          className={getLinkClass}
           to="/all-donations"
         >
           All Donations
@@ -65,11 +76,7 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink
-          className={({ isActive }) =>
-            ` hover:text-secondary duration-100 ${
-              isActive && "border-l-3 text-secondary pl-1 border-secondary"
-            }`
-          }
+          className={getLinkClass}
           to={dashboardPath}
         >
           Dashboard
@@ -77,11 +84,7 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink
-          className={({ isActive }) =>
-            ` hover:text-secondary duration-100 ${
-              isActive && "border-l-3 text-secondary pl-1 border-secondary"
-            }`
-          }
+          className={getLinkClass}
           to="/about-us"
         >
           About Us
@@ -114,13 +117,13 @@ const Navbar = () => {
         <Link to="/">
           <div className="flex gap-1 items-center">
             <img className="w-8" src={logo} alt="" />
-            <h1 className="text-2xl font-bold  gap-2 hidden sm:block text-neutral">
+            <h1 className="text-2xl font-bold  gap-2 hidden sm:block text-white">
               <span>OneMoreServe</span>
             </h1>
           </div>
         </Link>
         <div>
-          <ul className="hidden xl:flex gap-16 text-neutral font-semibold">
+          <ul className="hidden xl:flex gap-16 text-white font-semibold">
             {links}
           </ul>
         </div>
@@ -130,7 +133,7 @@ const Navbar = () => {
               <></>
             ) : (
               <Link to="/login">
-                <button className="text-neutral font-medium mr-1 hover:text-secondary cursor-pointer duration-100 border hover:border-secondary border-neutral px-3 py-1 will-change-transform rounded-sm">
+                <button className="text-white font-medium mr-1 hover:text-secondary cursor-pointer duration-100 border hover:border-secondary border-neutral px-3 py-1 will-change-transform rounded-sm">
                   Login
                 </button>
               </Link>
@@ -144,10 +147,10 @@ const Navbar = () => {
             />
 
             {/* Sun icon (light mode) */}
-            <FiSun className="swap-on w-6 h-6 text-neutral" />
+            <FiSun className="swap-on w-6 h-6 text-white" />
 
             {/* Moon icon (dark mode) */}
-            <IoMoonOutline className="text-neutral swap-off w-6 h-6" />
+            <IoMoonOutline className="text-white swap-off w-6 h-6" />
           </label>
           {user && (
             <div className="relative">
@@ -167,7 +170,7 @@ const Navbar = () => {
               )}{" "}
             </div>
           )}
-          <span className="text-neutral" onClick={() => setOpen(!open)}>
+          <span className="text-white" onClick={() => setOpen(!open)}>
             {open ? (
               <RxCross2 size={32} />
             ) : (

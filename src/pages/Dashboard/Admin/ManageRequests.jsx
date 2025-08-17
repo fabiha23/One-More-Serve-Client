@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxios from "../../../hooks/useAxios";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Loading from "../../../Components/Loading";
 
 const ManageRequests = () => {
   const queryClient = useQueryClient();
@@ -45,7 +46,7 @@ const ManageRequests = () => {
     });
   };
 
-  if (isLoading) return <p className="text-center mt-6">Loading requests...</p>;
+  if (isLoading) return <Loading></Loading>
 
   return (
     <div className="p-4">

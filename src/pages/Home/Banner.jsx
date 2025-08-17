@@ -22,7 +22,7 @@ const Banner = () => {
 
   return (
     <section
-      className="relative h-screen bg-cover bg-center flex items-center justify-center text-neutral overflow-hidden"
+      className="relative h-screen bg-cover bg-center flex items-center justify-center text-white/85 overflow-hidden"
       style={{ backgroundImage: `url(${bannerImg}) `}}
     >
       {/* Dark overlay */}

@@ -32,7 +32,7 @@ const AllDonations = () => {
     setIsSearching(true);
     try {
       const res = await axiosSecure.get(
-        `/donations/search?status=verified&status=requested&status=picked%20up&city=${searchCity}`
+        `/search-by-status?status=verified&status=requested&status=picked%20up&city=${searchCity}`
       );
       setSearchResults(res.data);
     } catch (error) {

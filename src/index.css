@@ -10,27 +10,27 @@
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-  --color-primary: #4b2840; /* Dark Plum for Navbar, Headings */
-  --color-secondary: #a8c3a6; /* Sage for Buttons, Accents */
-  --color-base-100: #ffffff; /* White Base */
-  --color-base-200: #faf9f6; /* Ivory Background */
-  --color-accent: #2b2b2b; /* Dark Text Color */
-  --color-neutral: #e2e8f0; /* Neutral Borders */
-  --color-error: #f43f5e; /* Error */
+  --color-primary: #CCD5AE;   /* Muted Green for Navbar, Headings */
+  --color-secondary: #E0E5B6; /* Soft Sage for Buttons, Accents */
+  --color-base-100: #FEFAE0;  /* Light Cream Base */
+  --color-base-200: #FAEDCE;  /* Warm Beige Background */
+  --color-accent: #2C2C2C;    /* Dark Text Color */
+  --color-neutral: #e2e8f0;   /* Neutral Borders */
+  --color-error: #f43f5e;     /* Error */
 }
+
 
 @plugin "daisyui/theme" {
   name: "dark";
-  default: false;
-
-  --color-primary: #2a1b27; /* Dark Plum for Navbar, Headings */
-  --color-secondary: #9fc8b2; /* Mint for Buttons, Accents */
-  --color-base-100: #2a1b27; /* Plum Background */
---color-base-200: #12001a;
-  --color-accent: #e2e2dc; /* Light Text Color */
-  --color-neutral: #e2e8f0; /* Neutral Borders */
-  --color-error: #f43f5e; /* Error */
+  --color-primary: #8CA68C;   /* Muted green for buttons, headings */
+  --color-secondary: #6B8E6B; /* Supporting accents */
+  --color-base-100: #1C1C1C;  /* Main background */
+  --color-base-200: #2A2A2A;  /* Section/Card background */
+  --color-accent: #FAFAFA;    /* Text color */
+  --color-neutral: #3A3A3A;   /* Borders / dividers */
+  --color-error: #F87171;     /* Error */
 }
+
 
 * {
   font-family: "DM Sans", sans-serif;
