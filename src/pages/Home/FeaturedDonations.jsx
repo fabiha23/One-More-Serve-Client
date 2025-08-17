@@ -32,7 +32,6 @@ const FeaturedDonationsSection = () => {
 
   return (
     <section className="py-10">
-      <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-accent mb-8 text-center">
           Featured Donations
         </h2>
@@ -46,13 +45,13 @@ const FeaturedDonationsSection = () => {
             {featuredDonations.map((donation) => (
               <div
                 key={donation._id}
-                className="card bg-base-100 shadow-lg hover:shadow-xl transition duration-300 border border-neutral rounded-xl overflow-hidden group"
+                className="card bg-base-100 shadow-md hover:shadow-lg transition hover:-translate-y-1 duration-300 border border-neutral rounded-xl overflow-hidden group"
               >
                 <figure className="h-40 relative overflow-hidden">
                   <img
                     src={donation.donationImage}
                     alt={donation.title}
-                    className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover transition duration-500"
                   />
                   <div className="absolute top-2 right-2 badge badge-error gap-1 text-xs px-3 py-2 font-medium border border-base-100">
                     <FaStar className="text-yellow-300" />
@@ -114,7 +113,6 @@ const FeaturedDonationsSection = () => {
             ))}
           </div>
         )}
-      </div>
     </section>
   );
 };

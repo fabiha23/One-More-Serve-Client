@@ -125,7 +125,7 @@ const Navbar = () => {
               </Link>
             )}
           </div>
-          <label className="swap swap-rotate">
+          <label className="swap swap-rotate hover:rotate-360 duration-700">
             <input
               type="checkbox"
               onChange={toggleTheme}
