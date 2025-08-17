@@ -1,4 +1,16 @@
-import { FaStore, FaEnvelope, FaCalendarAlt, FaClock, FaPhone, FaMapMarkerAlt, FaUtensils, FaMotorcycle } from "react-icons/fa";
+import {
+  FaStore,
+  FaEnvelope,
+  FaCalendarAlt,
+  FaClock,
+  FaPhone,
+  FaMapMarkerAlt,
+  FaUtensils,
+  FaMotorcycle,
+  FaCertificate,
+  FaRegClock,
+  FaHistory
+} from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../Components/Loading";
@@ -16,195 +28,223 @@ const RestaurantProfile = () => {
     },
   });
 
-  if (isLoading) return <Loading></Loading>;
+  if (isLoading) return <Loading />;
 
   const restaurantData = Userdata?.[0] || {};
 
   return (
     <div>
-      <h2 className="text-base-100 font-semibold text-2xl mb-3 bg-secondary p-4 rounded-lg">
-        Restaurant Profile
-      </h2>
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-primary to-secondary rounded-xl shadow-lg p-6 mb-6">
+        <h1 className="text-2xl font-bold text-white">Restaurant Profile</h1>
+        <p className="text-white/80 mt-1">Manage your restaurant information</p>
+      </div>
       
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Left Column */}
-        <div className="lg:w-1/2 p-6 bg-base-100 rounded-lg shadow-lg">
-          {/* Restaurant Logo and Name */}
-          <div className="flex items-center mb-8">
-            <div className="w-24 h-24 bg-base-200 rounded-full overflow-hidden shadow-md mr-6">
-              <img
-                src={restaurantData?.photoURL || "/default-restaurant.jpg"}
-                alt={restaurantData?.name}
-                className="object-cover w-full h-full"
-              />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-accent">
-                {restaurantData?.name || "Coming Soon"}
-              </h1>
-              <div className="flex items-center mt-1">
-                <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-sm font-medium">
-                  <FaStore className="mr-1" />
-                  {restaurantData?.role || "Restaurant"}
-                </span>
+      {/* Profile Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Profile Card */}
+        <div className="bg-white rounded-xl shadow-md p-6 lg:col-span-1">
+          <div className="flex flex-col items-center mb-6">
+            <div className="relative mb-4">
+              <div className="w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden">
+                <img
+                  src={restaurantData?.photoURL || "/default-restaurant.jpg"}
+                  alt={restaurantData?.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-1 -right-1 bg-yellow-500 text-white rounded-full p-1 shadow-sm">
+                <FaStore className="text-xs" />
               </div>
             </div>
+            <h2 className="text-xl font-bold text-center text-accent">
+              {restaurantData?.name || "Your Restaurant"}
+            </h2>
+            <span className="badge badge-warning mt-2 gap-1">
+              <FaStore className="text-xs" />
+              {restaurantData?.role || "RESTAURANT"}
+            </span>
           </div>
 
           {/* Contact Information */}
-          <div className="space-y-4 mb-8">
-            <h3 className="text-xl font-semibold text-accent border-b pb-2">
-              Contact Information
-            </h3>
-            
-            <div className="flex items-start">
-              <FaEnvelope className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
+                <FaEnvelope className="text-sm" />
+              </div>
               <div>
-                <p className="text-accent">{restaurantData?.email || "Not provided"}</p>
+                <p className="text-sm font-medium text-accent/70">Email</p>
+                <p className="text-sm text-accent">{restaurantData?.email || "Not provided"}</p>
               </div>
             </div>
 
-            <div className="flex items-start">
-              <FaPhone className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-green-50 rounded-lg text-green-500">
+                <FaPhone className="text-sm" />
+              </div>
               <div>
-                <p className="text-accent">{restaurantData?.phone || "Not provided"}</p>
+                <p className="text-sm font-medium text-accent/70">Phone</p>
+                <p className="text-sm text-accent">{restaurantData?.phone || "Not provided"}</p>
               </div>
             </div>
 
-            <div className="flex items-start">
-              <FaMapMarkerAlt className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-accent">{restaurantData?.address || "Not provided"}</p>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
+                <FaMapMarkerAlt className="text-sm" />
               </div>
-            </div>
-          </div>
-
-          {/* Account Information */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-accent border-b pb-2">
-              Account Information
-            </h3>
-            
-            <div className="flex items-start">
-              <FaCalendarAlt className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
               <div>
-                <p className="text-sm font-medium text-accent/80">Member Since</p>
-                <p className="text-accent">
-                  {restaurantData?.created_at
-                    ? new Date(restaurantData?.created_at).toLocaleDateString()
-                    : "Not available"}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start">
-              <FaCalendarAlt className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-sm font-medium text-accent/80">Last Login</p>
-                <p className="text-accent">
-                  {restaurantData?.last_log_in 
-                    ? new Date(restaurantData.last_log_in).toLocaleString() 
-                    : "Not available"}
+                <p className="text-sm font-medium text-accent/70">Address</p>
+                <p className="text-sm text-accent">
+                  {restaurantData?.address || "Not provided"}
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Column */}
-        <div className="lg:w-1/2 p-6 bg-base-100 rounded-lg shadow-lg">
-          {/* Restaurant Operations */}
-          <div className="space-y-4 mb-8">
-            <h3 className="text-xl font-semibold text-accent border-b pb-2">
-              Restaurant Operations
-            </h3>
-            
-            <div className="flex items-start">
-              <FaClock className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-sm font-medium text-accent/80">Business Hours</p>
-                <p className="text-accent">
-                  {restaurantData?.businessHours || "9:00 AM - 10:00 PM"}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start">
-              <FaUtensils className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-sm font-medium text-accent/80">Cuisine Type</p>
-                <p className="text-accent">
-                  {restaurantData?.cuisineType || "Various"}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start">
-              <FaMotorcycle className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-sm font-medium text-accent/80">Delivery Options</p>
-                <p className="text-accent">
-                  {restaurantData?.deliveryOptions || "Pickup only"}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Food Donation Information */}
-          <div className="space-y-4 mb-8">
-            <h3 className="text-xl font-semibold text-accent border-b pb-2">
-              Food Donation Details
-            </h3>
-            
-            <div className="flex items-start">
-              <FaUtensils className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-sm font-medium text-accent/80">Donation Frequency</p>
-                <p className="text-accent">
-                  {restaurantData?.donationFrequency || "Weekly"}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start">
-              <FaClock className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-sm font-medium text-accent/80">Preferred Pickup Times</p>
-                <p className="text-accent">
-                  {restaurantData?.preferredPickupTimes || "After closing hours"}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start">
-              <FaStore className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-sm font-medium text-accent/80">Food Types Available</p>
-                <p className="text-accent">
-                  {restaurantData?.foodTypesAvailable?.join(", ") || "Prepared meals, Fresh ingredients"}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Certification Information */}
-          {restaurantData?.certifications && (
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-accent border-b pb-2">
-                Certifications
-              </h3>
-              
-              <div className="flex items-start">
-                <FaStore className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
+        {/* Main Content */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Operations Card */}
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <h3 className="text-lg font-semibold text-accent mb-4">Restaurant Operations</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-amber-50 rounded-lg text-amber-500">
+                  <FaClock className="text-sm" />
+                </div>
                 <div>
-                  <p className="text-sm font-medium text-accent/80">Food Safety</p>
-                  <p className="text-accent">
-                    {restaurantData.certifications.foodSafety || "Certified"}
+                  <p className="text-sm font-medium text-accent/70">Business Hours</p>
+                  <p className="text-sm text-accent">
+                    {restaurantData?.businessHours || "9:00 AM - 10:00 PM"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-red-50 rounded-lg text-red-500">
+                  <FaUtensils className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Cuisine Type</p>
+                  <p className="text-sm text-accent">
+                    {restaurantData?.cuisineType || "Various"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
+                  <FaMotorcycle className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Delivery</p>
+                  <p className="text-sm text-accent">
+                    {restaurantData?.deliveryOptions || "Pickup only"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-50 rounded-lg text-green-500">
+                  <FaCertificate className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Certifications</p>
+                  <p className="text-sm text-accent">
+                    {restaurantData?.certifications?.foodSafety || "Food Safety Certified"}
                   </p>
                 </div>
               </div>
             </div>
-          )}
+          </div>
+
+          {/* Donation Card */}
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <h3 className="text-lg font-semibold text-accent mb-4">Donation Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
+                  <FaRegClock className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Donation Frequency</p>
+                  <p className="text-sm text-accent">
+                    {restaurantData?.donationFrequency || "Weekly"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-indigo-50 rounded-lg text-indigo-500">
+                  <FaClock className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Preferred Pickup</p>
+                  <p className="text-sm text-accent">
+                    {restaurantData?.preferredPickupTimes || "After closing hours"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-amber-50 rounded-lg text-amber-500">
+                  <FaUtensils className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Food Types</p>
+                  <p className="text-sm text-accent">
+                    {restaurantData?.foodTypesAvailable?.join(", ") || "Prepared meals, Ingredients"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-50 rounded-lg text-green-500">
+                  <FaStore className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Capacity</p>
+                  <p className="text-sm text-accent">
+                    {restaurantData?.donationCapacity || "5-10 meals daily"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Account Info Card */}
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <h3 className="text-lg font-semibold text-accent mb-4">Account Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
+                  <FaCalendarAlt className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Member Since</p>
+                  <p className="text-sm text-accent">
+                    {restaurantData?.created_at
+                      ? new Date(restaurantData.created_at).toLocaleDateString()
+                      : "Not available"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
+                  <FaHistory className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Last Login</p>
+                  <p className="text-sm text-accent">
+                    {restaurantData?.last_log_in
+                      ? new Date(restaurantData.last_log_in).toLocaleString()
+                      : "Not available"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -59,7 +59,7 @@ const RestaurantMenu = () => {
         <FaChevronRight className="text-accent/40 text-sm group-hover:text-accent/60" />
       </NavLink>
 
-      <NavLink to="donation-stats" className={linkClass}>
+      {/* <NavLink to="donation-stats" className={linkClass}>
         <div className="flex items-center gap-3">
           <div className="p-2 bg-red-100/20 rounded-lg group-hover:bg-red-100/30 transition-colors">
             <FaChartBar className="text-red-400" />
@@ -67,7 +67,7 @@ const RestaurantMenu = () => {
           <span className="font-medium">Donation Statistics</span>
         </div>
         <FaChevronRight className="text-accent/40 text-sm group-hover:text-accent/60" />
-      </NavLink>
+      </NavLink> */}
     </nav>
   );
 };

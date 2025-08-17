@@ -153,7 +153,7 @@ const Navbar = () => {
                   handleSignOut={handleSignOut}
                   openUser={openUser}
                 />
-              )}{" "}
+              )}
             </div>
           )}
           <span className="text-white" onClick={() => setOpen(!open)}>

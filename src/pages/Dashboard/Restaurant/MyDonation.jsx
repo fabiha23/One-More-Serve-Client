@@ -12,7 +12,6 @@ import {
   FaPlus,
   FaTruck,
   FaTruckLoading,
-  FaRegQuestionCircle,
 } from "react-icons/fa";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
@@ -25,7 +24,7 @@ import { FiLoader } from "react-icons/fi";
 const MyDonations = () => {
   const { user } = useAuth();
   const axiosInstance = useAxios();
-  const axiosSecure=useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 
   // Fetch donations for the current restaurant
@@ -35,12 +34,12 @@ const MyDonations = () => {
       const { data } = await axiosInstance.get(
         `/donations?restaurantEmail=${user?.email}`
       );
-      return data;
+      return data.donations;
     },
-    enabled: !!user?.email, // Prevent fetching until user is loaded
+    enabled: !!user?.email,
   });
 
-  // Delete donation mutation with refetch on success
+  // Delete donation mutation
   const { mutate: deleteDonation, isLoading: isDeleting } = useMutation({
     mutationFn: async (id) => {
       const { data } = await axiosSecure.delete(`/donations/${id}`);
@@ -51,8 +50,8 @@ const MyDonations = () => {
         title: "Deleted!",
         text: "Your donation has been deleted.",
         icon: "success",
-        timer: 3000,
-        confirmButtonColor: "#10B981",
+        background: "var(--color-base-100)",
+        confirmButtonColor: "var(--color-primary)",
       });
       queryClient.invalidateQueries({
         queryKey: ["restaurant-donations", user?.email],
@@ -63,7 +62,8 @@ const MyDonations = () => {
         title: "Error!",
         text: error.response?.data?.message || "Something went wrong.",
         icon: "error",
-        confirmButtonColor: "#EF4444",
+        background: "var(--color-base-100)",
+        confirmButtonColor: "var(--color-error)",
       });
     },
   });
@@ -73,9 +73,10 @@ const MyDonations = () => {
       title: "Are you sure?",
       text: "This action cannot be undone.",
       icon: "warning",
+      background: "var(--color-base-100)",
       showCancelButton: true,
-      confirmButtonColor: "#EF4444",
-      cancelButtonColor: "#6B7280",
+      confirmButtonColor: "var(--color-error)",
+      cancelButtonColor: "var(--color-neutral)",
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result?.isConfirmed) {
@@ -84,118 +85,131 @@ const MyDonations = () => {
     });
   };
 
-  if (isLoading)
-    return <Loading></Loading>;
+  if (isLoading) return <Loading />;
 
   return (
-    <div>
-      <h2 className="text-base-100 font-semibold text-2xl mb-3 bg-secondary p-4 rounded-lg px-6">
-        My Donations
-      </h2>
+    <section>
+      <div className="mb-6">
+        <div className="bg-primary/80 rounded-xl shadow-lg p-6 mb-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <h1 className="text-2xl font-bold text-base-100">My Donations</h1>
+            {donations.length > 0 && (
+              <Link
+                to="/dashboard/add-donation"
+                className="btn btn-secondary text-base-100 hover:bg-secondary/90"
+              >
+                <FaPlus className="mr-2" /> Add New Donation
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
 
       {donations.length === 0 ? (
-        <div className="text-center py-12 bg-base-100 rounded-lg shadow">
-          <p className="text-lg text-accent">
-            You haven't added any donations yet
+        <div className="bg-base-100 rounded-xl shadow-sm p-8 text-center border border-neutral">
+          <div className="mx-auto w-24 h-24 bg-secondary rounded-full flex items-center justify-center mb-4">
+            <FaUtensils className="text-accent text-3xl" />
+          </div>
+          <h3 className="text-xl font-medium text-accent mb-2">
+            No donations yet
+          </h3>
+          <p className="text-accent/70 max-w-md mx-auto mb-6">
+            Start by adding your first food donation to help those in need.
           </p>
           <Link
             to="/dashboard/add-donation"
-            className="btn btn-secondary mt-4 text-base-100"
+            className="btn btn-primary text-base-100"
           >
-            <FaPlus className="mr-2" /> Add Your First Donation
+            <FaPlus className="mr-2" /> Add Donation
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {donations.map((donation) => (
             <div
               key={donation._id}
-              className="bg-base-100 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+              className="bg-base-100 rounded-xl shadow-sm overflow-hidden border border-neutral hover:shadow-md transition-all"
             >
               {/* Donation Image */}
-              <div className="h-48 overflow-hidden">
+              <div className="relative h-48 overflow-hidden">
                 <img
                   src={donation.donationImage || "/default-food.jpg"}
                   alt={donation.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                 />
+                <div className="absolute top-3 right-3">
+                  {donation.status === "pending" && (
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                      <FaClock className="mr-1" /> Pending
+                    </span>
+                  )}
+                  {donation.status === "verified" && (
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      <FaCheckCircle className="mr-1" /> Verified
+                    </span>
+                  )}
+                  {donation.status === "picked up" && (
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      <FaTruck className="mr-1" /> Picked Up
+                    </span>
+                  )}
+                  {donation.status === "rejected" && (
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                      <FaTimesCircle className="mr-1" /> Rejected
+                    </span>
+                  )}
+                  {donation.status === "requested" && (
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                      <FiLoader className="mr-1" /> Requested
+                    </span>
+                  )}
+                </div>
               </div>
 
               {/* Donation Details */}
-              <div className="p-4">
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-lg font-semibold text-accent flex items-center">
-                    <FaUtensils className="mr-2 text-accent/80" />
-                    {donation.title}
-                  </h3>
-                  <div className="flex items-center">
-                    {donation.status === "pending" && (
-                      <span className="badge badge-warning gap-1 py-2">
-                        <FaClock size={14} /> pending
-                      </span>
-                    )}
-                    {donation.status === "verified" && (
-                      <span className="badge badge-success gap-1 py-2">
-                        <FaCheckCircle size={14} /> verified
-                      </span>
-                    )}
-                    {donation.status === "picked up" && (
-                      <span className="badge badge-info gap-1 py-2">
-                        <FaTruck size={14} /> picked up
-                      </span>
-                    )}
-                    {donation.status === "rejected" && (
-                      <span className="badge badge-error gap-1 py-2">
-                        <FaTimesCircle size={14} /> rejected
-                      </span>
-                    )}
-                    {donation.status === "requested" && (
-                      <span className="badge badge-error gap-1 py-2">
-                        <FiLoader size={14} /> requested
-                      </span>
-                    )}
-                  </div>
-                </div>
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-accent mb-3 flex items-center">
+                  <FaUtensils className="mr-2 text-primary" />
+                  {donation.title}
+                </h3>
 
-                <div className="space-y-3 text-sm">
+                <div className="space-y-3 text-sm text-accent/80 mb-5">
                   <div className="flex items-center">
-                    <FaBox className="mr-3 text-accent/80 min-w-[16px]" />
-                    <div className="flex flex-wrap items-center gap-x-2">
+                    <FaBox className="mr-2 text-primary" />
+                    <span>
                       <span className="font-medium">Type:</span>
-                      <span>{donation.foodType}</span>
-                      <span className="text-gray-400">•</span>
+                      {donation.foodType}
+                      <span className="mx-2 text-neutral">•</span>
                       <span className="font-medium">Qty:</span>
-                      <span>
-                        {donation.quantity} {donation.quantityUnit}
-                      </span>
-                    </div>
+                      {donation.quantity} {donation.quantityUnit}
+                    </span>
                   </div>
 
                   <div className="flex items-center">
-                    <FaCalendarAlt className="mr-3 text-accent/80 min-w-[16px]" />
-                    <div>
-                      <span className="font-medium">Pickup:</span>{" "}
-                      {new Date(donation.pickupStart).toLocaleDateString()} -{" "}
+                    <FaCalendarAlt className="mr-2 text-primary" />
+                    <span>
+                      <span className="font-medium">Pickup:</span>
+                      {new Date(donation.pickupStart).toLocaleDateString()} -
                       {new Date(donation.pickupEnd).toLocaleDateString()}
-                    </div>
+                    </span>
                   </div>
 
-                  <div className="flex items-start">
-                    <FaMapMarkerAlt className="mr-3 text-accent/80 mt-0.5 min-w-[16px]" />
-                    <div>
-                      <span className="font-medium">Location:</span>{" "}
+                  <div className="flex items-center">
+                    <FaMapMarkerAlt className="mr-2 text-primary" />
+                    <span>
+                      <span className="font-medium">Location:</span>
                       {donation.location}
-                    </div>
+                    </span>
                   </div>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex justify-end space-x-2 mt-4 pt-3 border-t border-gray-200">
+                <div className="flex justify-end space-x-3 pt-4 border-t border-neutral">
                   {donation.status !== "rejected" && (
                     <Link
                       to={`/dashboard/update-donation/${donation._id}`}
                       state={{ donation }}
-                      className="btn btn-sm btn-outline btn-accent"
+                      className="btn btn-sm btn-outline btn-primary"
                     >
                       <FaEdit className="mr-1" /> Edit
                     </Link>
@@ -205,7 +219,13 @@ const MyDonations = () => {
                     className="btn btn-sm btn-outline btn-error"
                     disabled={isDeleting}
                   >
-                    <FaTrash className="mr-1" /> Delete
+                    {isDeleting ? (
+                      <span className="loading loading-spinner"></span>
+                    ) : (
+                      <>
+                        <FaTrash className="mr-1" /> Delete
+                      </>
+                    )}
                   </button>
                 </div>
               </div>
@@ -213,7 +233,7 @@ const MyDonations = () => {
           ))}
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

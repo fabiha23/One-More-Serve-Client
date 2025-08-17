@@ -117,7 +117,7 @@ const MyPickup = () => {
                   <div className="flex items-center">
                     <FaStore className="mr-2 text-accent/60" />
                     <span>
-                      <span className="font-medium">Restaurant:</span>{" "}
+                      <span className="font-medium">Restaurant:</span>
                       {item.restaurantName}
                     </span>
                   </div>
@@ -147,7 +147,7 @@ const MyPickup = () => {
                     <div className="flex items-center">
                       <FaCalendarAlt className="mr-2 text-accent/60" />
                       <span>
-                        <span className="font-medium">Pickup Time:</span>{" "}
+                        <span className="font-medium">Pickup Time:</span>
                         {new Date(item.pickupTime).toLocaleString()}
                       </span>
                     </div>
