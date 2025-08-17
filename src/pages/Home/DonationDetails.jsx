@@ -26,7 +26,7 @@ const DonationDetails = () => {
   const { user } = useAuth();
   const { id } = useParams();
   const axiosInstance = useAxios();
-  const axiosSecure=useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 
   const [isRequestModalOpen, setRequestModalOpen] = useState(false);
@@ -47,10 +47,7 @@ const DonationDetails = () => {
   });
 
   // Fetch charity info
-  const {
-    data: charityRequests = [],
-    isLoading: charityLoading,
-  } = useQuery({
+  const { data: charityRequests = [], isLoading: charityLoading } = useQuery({
     queryKey: ["charityInfo", user?.email],
     enabled: !!user?.email && role === "charity",
     queryFn: async () => {
@@ -61,10 +58,7 @@ const DonationDetails = () => {
   const charityInfo = charityRequests[0] || {};
 
   // Fetch user's favorite status
-  const {
-    data: favorite = [],
-    isLoading: favoriteLoading,
-  } = useQuery({
+  const { data: favorite = [], isLoading: favoriteLoading } = useQuery({
     queryKey: ["favorite", id, user?.email],
     enabled: !!user?.email && !!id,
     queryFn: async () => {
@@ -122,10 +116,7 @@ const DonationDetails = () => {
   });
 
   // ✅ Fetch donation requests for this donation to check for accepted one
-  const {
-    data: donationRequests = [],
-    isLoading: requestsLoading,
-  } = useQuery({
+  const { data: donationRequests = [], isLoading: requestsLoading } = useQuery({
     queryKey: ["donationRequestByDonationId", id],
     enabled: !!id && role === "charity",
     queryFn: async () => {
@@ -140,7 +131,8 @@ const DonationDetails = () => {
 
   // ✅ Confirm Pickup mutation
   const markAsPickedUp = useMutation({
-    mutationFn: () => axiosSecure.patch(`/donations/status/${id}`, { status: "picked up" }),
+    mutationFn: () =>
+      axiosSecure.patch(`/donations/status/${id}`, { status: "picked up" }),
     onSuccess: () => {
       queryClient.invalidateQueries(["donationDetails", id]);
       Swal.fire("Success", "Marked as picked up", "success");
@@ -157,111 +149,162 @@ const DonationDetails = () => {
     return <Loading />;
   if (donationError)
     return (
-      <div className="text-center mt-10 text-red-600">
+      <div className="text-center mt-10 text-error">
         Error loading donation details.
       </div>
     );
 
-  return (
-    <div className="pt-10">
-      <div className="container mx-auto max-w-6xl py-8">
-        <div className="card bg-base-200 shadow-lg rounded-xl p-6 flex flex-col lg:flex-row gap-8">
-          {/* Image Section */}
-          <div className="flex-shrink-0 w-full lg:w-1/2 relative rounded-xl overflow-hidden shadow-lg">
-            <img
-              src={donation?.donationImage}
-              alt={donation?.title}
-              className="w-full h-104 object-cover"
-            />
-            {(role === "user" || role === "charity") && (
-              <button
-                onClick={() =>
-                  isFavorite
-                    ? removeFavorite.mutate()
-                    : addFavorite.mutate()
-                }
-                className="absolute top-4 right-4 btn btn-circle btn-sm btn-ghost bg-white/90"
-              >
-                {isFavorite ? (
-                  <FaHeart className="text-red-500 text-xl" />
-                ) : (
-                  <FaRegHeart className="text-xl" />
-                )}
-              </button>
+    return (
+  <div className="min-h-screen pt-22 bg-base-100 max-w-7xl xl:mx-auto xl:px-2 lg:px-6 mx-3">
+    {/* Main Card */}
+    <div className="bg-base-100 rounded-2xl shadow-lg border border-neutral/70 overflow-hidden">
+      <div className="md:flex">
+        {/* Image Section with fixed aspect ratio */}
+        <div className="md:w-1/2 relative h-80 md:h-auto">
+          <img
+            src={donation?.donationImage}
+            alt={donation?.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
+          <button
+            onClick={() =>
+              isFavorite ? removeFavorite.mutate() : addFavorite.mutate()
+            }
+            className={`absolute top-6 right-6 p-3 rounded-full bg-base-100/90 shadow-md hover:scale-110 transition-transform ${
+              !(role === "user" || role === "charity") 
+                ? "opacity-50 cursor-not-allowed" 
+                : "cursor-pointer"
+            }`}
+            disabled={!(role === "user" || role === "charity")}
+            title={
+              !(role === "user" || role === "charity")
+                ? "Only users and charity can favorite"
+                : ""
+            }
+          >
+            {isFavorite ? (
+              <FaHeart className="text-error text-xl" />
+            ) : (
+              <FaRegHeart className="text-error/70 text-xl" />
             )}
-          </div>
+          </button>
+        </div>
 
-          {/* Details Section */}
-          <div className="w-full lg:w-1/2 flex flex-col justify-between">
-            <div>
-              <h1 className="text-3xl font-bold mb-4">{donation?.title}</h1>
-              <div className="divider my-2"></div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <DetailItem icon={<FaUtensils />} label="Food Type" value={donation?.foodType || "N/A"} />
-                <DetailItem icon={<FaWeightHanging />} label="Quantity" value={`${donation?.quantity ?? "-"} ${donation?.quantityUnit || ""}`} />
-                <DetailItem icon={<FaStore />} label="Restaurant" value={donation?.restaurantName || "N/A"} />
-                <DetailItem icon={<FaMapMarkerAlt />} label="Location" value={donation?.location || "N/A"} />
-                <DetailItem icon={<FaCalendarAlt />} label="Pickup Window" value={`${donation?.pickupStart ?? "N/A"} ${donation?.pickupEnd || "N/A"}`} />
-                <DetailItem icon={<FaInfoCircle />} label="Status" value={
-                  <span className={`badge ${
-                    donation?.status === "Available" || donation?.status === "verified"
-                      ? "badge-success"
-                      : donation?.status === "pending"
-                      ? "badge-warning"
-                      : "badge-info"
-                  }`}>
-                    {donation?.status === "verified" ? "Available" : donation?.status || "Unknown"}
-                  </span>
-                } />
+            {/* Details Section */}
+            <div className="md:w-1/2 p-8">
+              <div className="flex justify-between items-start mb-6">
+                <h1 className="text-3xl font-bold text-accent">
+                  {donation?.title}
+                </h1>
+                <span
+                      className={`px-3 py-1.5 text-xs font-medium rounded-full ${
+                        donation.status === "verified" ||
+                        donation.status === "picked up"
+                          ? "bg-green-100 text-green-800 border border-green-200" 
+                          : donation.status === "requested"
+                          ? "bg-amber-100 text-amber-800 border border-amber-200"
+                          : "bg-gray-100 text-gray-800 border border-gray-200" 
+                      }`}
+                    >
+                      {donation.status === "verified"
+                        ? "Available"
+                        : donation.status.charAt(0).toUpperCase() +
+                          donation.status.slice(1)}
+                    </span>
               </div>
-              <div className="mb-6">
-                <h3 className="font-semibold text-lg mb-2">Description</h3>
-                <p className="text-gray-700">
-                  {donation?.description || "No additional description provided"}
-                </p>
-              </div>
-            </div>
 
-            <div className="flex flex-wrap gap-3 mt-auto">
-              {(role === "charity" && donation?.status!=="picked up") && (
-                <button onClick={() => setRequestModalOpen(true)} className="btn btn-primary">
+              <div className="border-b border-neutral/20 pb-6 mb-6">
+                <p className="text-accent/80">{donation?.description || "No additional description provided"}</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <DetailItem
+                  icon={<FaUtensils className="text-primary" />}
+                  label="Food Type"
+                  value={donation?.foodType || "N/A"}
+                />
+                <DetailItem
+                  icon={<FaWeightHanging className="text-primary" />}
+                  label="Quantity"
+                  value={`${donation?.quantity ?? "-"} ${donation?.quantityUnit || ""}`}
+                />
+                <DetailItem
+                  icon={<FaStore className="text-primary" />}
+                  label="Restaurant"
+                  value={donation?.restaurantName || "N/A"}
+                />
+                <DetailItem
+                  icon={<FaMapMarkerAlt className="text-primary" />}
+                  label="Location"
+                  value={donation?.location || "N/A"}
+                />
+                <DetailItem
+                  icon={<FaCalendarAlt className="text-primary" />}
+                  label="Pickup Window"
+                  value={`${donation?.pickupStart ?? "N/A"} - ${donation?.pickupEnd || "N/A"}`}
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-4">
+                <button
+                  onClick={() => setRequestModalOpen(true)}
+                  className={`px-6 py-2 rounded-lg font-semibold duration-300 active:scale-95 transition-all ${
+                    role !== "charity"
+                      ? "bg-neutral/20 text-accent/50 cursor-not-allowed"
+                      : "bg-primary hover:bg-primary/90 text-accent cursor-pointer"
+                  }`}
+                  disabled={role !== "charity"}
+                  title={role !== "charity" ? "Only charity can request donation" : ""}
+                >
                   Request Donation
                 </button>
-              )}
 
-              {(role === "charity" || role === "user") && (
-                <button onClick={() => setReviewModalOpen(true)} className="btn btn-secondary">
+                <button
+                  onClick={() => setReviewModalOpen(true)}
+                  className={`px-6 py-2 rounded-lg font-semibold duration-300 active:scale-95 transition-all ${
+                    !(role === "charity" || role === "user")
+                      ? "bg-neutral/20 text-accent/50 cursor-not-allowed"
+                      : "bg-secondary hover:bg-secondary/80 text-accent cursor-pointer"
+                  }`}
+                  disabled={!(role === "charity" || role === "user")}
+                  title={
+                    !(role === "charity" || role === "user")
+                      ? "Only charity and users can add reviews"
+                      : ""
+                  }
+                >
                   Add Review
                 </button>
-              )}
 
-              {/* ✅ Confirm Pickup Button */}
-              {role === "charity" && acceptedRequest && (
-                <button
-                  className="btn btn-success"
-                  onClick={() => {
-                    Swal.fire({
-                      title: "Confirm Pickup?",
-                      text: "Are you sure the donation has been picked up?",
-                      icon: "question",
-                      showCancelButton: true,
-                      confirmButtonText: "Yes, confirm",
-                    }).then((res) => {
-                      if (res.isConfirmed) markAsPickedUp.mutate();
-                    });
-                  }}
-                >
-                  Confirm Pickup
-                </button>
-              )}
+                {role === "charity" && acceptedRequest && (
+                  <button
+                    className="px-6 py-2 bg-green-600/80 hover:bg-green-600/90 text-white rounded-lg duration-300 active:scale-95 font-semibold cursor-pointer transition-all"
+                    onClick={() => {
+                      Swal.fire({
+                        title: "Confirm Pickup?",
+                        text: "Are you sure the donation has been picked up?",
+                        icon: "question",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, confirm",
+                      }).then((res) => {
+                        if (res.isConfirmed) markAsPickedUp.mutate();
+                      });
+                    }}
+                  >
+                    Confirm Pickup
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Reviews Section */}
-        <div className="mb-10 mt-12">
+        <div className="mt-12">
           <ReviewSection donationId={id} />
         </div>
+
 
         {/* Modals */}
         {isReviewModalOpen && (
@@ -274,7 +317,9 @@ const DonationDetails = () => {
             donationTitle={donation?.title}
             restaurantName={donation?.restaurantName}
             closeModal={() => setReviewModalOpen(false)}
-            refetch={() => queryClient.invalidateQueries(["donationDetails", id])}
+            refetch={() =>
+              queryClient.invalidateQueries(["donationDetails", id])
+            }
           />
         )}
 
@@ -285,21 +330,22 @@ const DonationDetails = () => {
             donation={donation}
             charityInfo={charityInfo}
             user={user}
-            refetch={() => queryClient.invalidateQueries(["donationDetails", id])}
+            refetch={() =>
+              queryClient.invalidateQueries(["donationDetails", id])
+            }
           />
         )}
       </div>
-    </div>
   );
 };
 
 // DetailItem component
 const DetailItem = ({ icon, label, value }) => (
-  <div className="flex items-start gap-3">
-    <div className="text-primary mt-1">{icon}</div>
+  <div className="flex items-start gap-4">
+    <div className="p-2 bg-primary/10 rounded-full">{icon}</div>
     <div>
-      <p className="font-semibold text-gray-600">{label}</p>
-      <p>{value}</p>
+      <p className="text-sm font-medium text-accent/60">{label}</p>
+      <p className="text-accent/85 font-medium">{value}</p>
     </div>
   </div>
 );

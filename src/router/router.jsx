@@ -47,7 +47,7 @@ export const router = createBrowserRouter([
       },
       {
         path:'donation-details/:id',
-        element:<PrivateRoute><DonationDetails></DonationDetails></PrivateRoute>,
+        element:<DonationDetails></DonationDetails>,
       },
       {
         path:'all-donations',

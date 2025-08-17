@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../Components/Loading";
 import useAxios from "../../hooks/useAxios";
@@ -15,11 +15,11 @@ const AllDonations = () => {
   const [page, setPage] = useState(1);
   const limit = 8; // donations per page
 
-  const {
-    data,
-    isLoading,
-    isError,
-  } = useQuery({
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["allDonations", page],
     queryFn: async () => {
       const res = await axiosInstance.get(

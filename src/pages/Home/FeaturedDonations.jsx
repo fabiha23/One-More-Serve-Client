@@ -16,17 +16,19 @@ const FeaturedDonationsSection = () => {
   const axiosInstance = useAxios();
 
   const { data: featuredDonations = [], isLoading } = useQuery({
-    queryKey: ["featuredDonations"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/donations", {
-        params: {
-          featured: true,
-        },
-      });
+  queryKey: ["featuredDonations"],
+  queryFn: async () => {
+    const res = await axiosInstance.get("/donations", {
+      params: {
+        featured: true,
+        limit: 4
+      },
+    });
 
-      return res.data.slice(0, 4);
-    },
-  });
+    return res.data.donations;
+  },
+});
+
 
   if (isLoading) return <Loading />;
 
