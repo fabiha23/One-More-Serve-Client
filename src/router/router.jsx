@@ -51,7 +51,7 @@ export const router = createBrowserRouter([
       },
       {
         path:'all-donations',
-        element:<PrivateRoute><AllDonations></AllDonations></PrivateRoute>,
+        element:<AllDonations></AllDonations>,
       },
       {
         path: "forbidden",

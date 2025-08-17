@@ -3,11 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import Loading from '../../Components/Loading';
 import useAxios from '../../hooks/useAxios';
 import DonationCard from './DonationCard';
-import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const AllDonations = () => {
   const axiosInstance = useAxios();
-  const axiosSecure=useAxiosSecure()
 
   const [searchCity, setSearchCity] = useState('');
   const [searchResults, setSearchResults] = useState(null);
@@ -31,7 +29,7 @@ const AllDonations = () => {
 
     setIsSearching(true);
     try {
-      const res = await axiosSecure.get(
+      const res = await axiosInstance.get(
         `/search-by-status?status=verified&status=requested&status=picked%20up&city=${searchCity}`
       );
       setSearchResults(res.data);

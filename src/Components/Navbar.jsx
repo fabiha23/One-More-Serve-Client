@@ -9,7 +9,6 @@ import logo from "../assets/logo.png";
 import useRole from "../hooks/UseRole";
 import UserDropdown from "./UserDropdown";
 import useAxios from "../hooks/useAxios";
-import { get } from "react-hook-form";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -19,7 +18,7 @@ const Navbar = () => {
   const [role] = useRole();
   const axiosInstance = useAxios();
   const navigate = useNavigate();
-  const location=useLocation()
+  const location = useLocation();
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -40,53 +39,40 @@ const Navbar = () => {
   }
 
   const getLinkClass = ({ isActive }) => {
+    const hoverEffect =
+      location.pathname === "/" ? "hover:text-[#E0E5B6] duration-300" : "";
 
-  const hoverEffect = location.pathname === "/" ? "hover:text-[#E0E5B6] duration-300" : "";
+    if (!isActive) {
+      return hoverEffect;
+    }
 
-  if (!isActive) {
-    return hoverEffect;
-  }
+    const borderColor = location.pathname === "/" ? "xl:border-[#E0E5B6]" : "";
+    const textColor = location.pathname === "/" ? "xl:text-[#E0E5B6]" : "";
 
-  const borderColor = location.pathname === "/" ? "border-[#E0E5B6]" : "";
-  const textColor = location.pathname === "/" ? "text-[#E0E5B6]" : "";
-
-  return `border-l-3 pl-1 ${borderColor} ${textColor} ${hoverEffect}`;
-};
-
-
-
+    return `border-l-3 pl-1 ${borderColor} ${textColor} ${hoverEffect}`;
+  };
 
   const links = (
     <>
       <li>
-        <NavLink
-          className={getLinkClass}
-          to="/"
-        >
+        <NavLink className={getLinkClass} to="/">
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink
-          className={getLinkClass}
-          to="/all-donations"
-        >
+        <NavLink className={getLinkClass} to="/all-donations">
           All Donations
         </NavLink>
       </li>
+      {user && ( // only show if user is logged in
+        <li>
+          <NavLink className={getLinkClass} to={dashboardPath}>
+            Dashboard
+          </NavLink>
+        </li>
+      )}
       <li>
-        <NavLink
-          className={getLinkClass}
-          to={dashboardPath}
-        >
-          Dashboard
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          className={getLinkClass}
-          to="/about-us"
-        >
+        <NavLink className={getLinkClass} to="/about-us">
           About Us
         </NavLink>
       </li>
@@ -180,7 +166,7 @@ const Navbar = () => {
         </div>
       </div>
       <ul
-        className={`px-8 space-y-7 text-lg font-semibold text-neutral md:w-1/2 h-screen lg:w-1/3 w-2/3 bg-primary top-0 py-10 backdrop-blur-xl xl:hidden absolute ${
+        className={`px-8 space-y-7 text-lg font-semibold text-white md:w-1/2 h-screen lg:w-1/3 w-2/3 bg-primary top-0 py-10 backdrop-blur-xl xl:hidden absolute ${
           open ? "left-0" : "-left-180 "
         } duration-1000`}
       >
@@ -191,3 +177,13 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+{/* <header
+  className={`fixed top-0 left-0 w-full z-50 text-white transition-all duration-300 ${
+    location.pathname === "/" ? "bg-transparent" : "bg-primary"
+  } ${scrolled ? "backdrop-blur-sm bg-primary/30" : ""}`}
+>
+  <div className="max-w-7xl xl:mx-auto xl:px-2 lg:px-6 mx-3">
+    <Navbar />
+  </div>
+</header>; */}
