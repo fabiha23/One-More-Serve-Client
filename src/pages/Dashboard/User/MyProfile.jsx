@@ -1,4 +1,17 @@
-import { FaUser, FaEnvelope, FaCalendarAlt, FaHistory, FaHandsHelping, FaMapMarkerAlt, FaPhone, FaInfoCircle, FaDonate } from "react-icons/fa";
+import {
+  FaUser,
+  FaEnvelope,
+  FaCalendarAlt,
+  FaHistory,
+  FaHandsHelping,
+  FaMapMarkerAlt,
+  FaPhone,
+  FaInfoCircle,
+  FaDonate,
+  FaUtensils,
+  FaBuilding,
+  FaClock
+} from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../Components/Loading";
@@ -16,192 +29,226 @@ const MyProfile = () => {
     },
   });
 
-  if (isLoading) return <Loading></Loading>;
+  if (isLoading) return <Loading />;
 
   const userData = Userdata?.[0] || {};
 
   return (
-    <div>
-           <div className="mb-6">
+    <section>
+      {/* Header Section */}
+      <div className="mb-6">
         <div className="bg-primary/80 rounded-xl shadow-lg p-6 mb-6">
           <h1 className="text-2xl font-bold text-base-100">My Profile</h1>
         </div>
       </div>
       
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Left Column */}
-        <div className="lg:w-1/2 p-6 bg-base-100 rounded-lg shadow-lg">
-          {/* Profile Picture and Name */}
-          <div className="flex items-center mb-8">
-            <div className="w-24 h-24 bg-base-200 rounded-full overflow-hidden shadow-md mr-6">
-              <img
-                src={userData?.photoURL || "/default-user.jpg"}
-                alt={userData?.name}
-                className="object-cover w-full h-full"
-              />
+      {/* Profile Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Profile Card */}
+        <div className="bg-base-100 rounded-xl shadow-md p-6 lg:col-span-1 border border-neutral">
+          <div className="flex flex-col items-center mb-6">
+            <div className="relative mb-4">
+              <div className="w-24 h-24 rounded-full border-4 border-white shadow-md overflow-hidden">
+                <img
+                  src={userData?.photoURL || "/default-user.jpg"}
+                  alt={userData?.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-1 -right-1 bg-secondary text-white rounded-full p-1 shadow-sm">
+                <FaUser className="text-xs" />
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-accent">
-                {userData?.name || "Coming Soon"}
-              </h1>
-            </div>
+            <h2 className="text-xl font-bold text-center text-accent">
+              {userData?.name || "User"}
+            </h2>
+            <span className="badge badge-primary mt-2 gap-1">
+              {userData?.role || "USER"}
+            </span>
           </div>
 
-          {/* Contact Information */}
-          <div className="space-y-4 mb-8">
-            <h3 className="text-xl font-semibold text-accent border-b pb-2">
-              Contact Information
-            </h3>
-            
-            <div className="flex items-start">
-              <FaEnvelope className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-accent">{userData?.email || "Not provided"}</p>
-              </div>
-            </div>
-
-            <div className="flex items-start">
-              <FaPhone className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-accent">{userData?.phone || "Not provided"}</p>
-              </div>
-            </div>
-
-            <div className="flex items-start">
-              <FaMapMarkerAlt className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-accent">{userData?.location || "Not provided"}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Account Information */}
+          {/* Contact Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-accent border-b pb-2">
-              Account Information
-            </h3>
-            
-            <div className="flex items-start">
-              <FaCalendarAlt className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
+                <FaEnvelope className="text-sm" />
+              </div>
               <div>
-                <p className="text-sm font-medium text-accent/80">Member Since</p>
-                <p className="text-accent">
-                  {userData?.created_at
-                    ? new Date(userData?.created_at).toLocaleDateString()
-                    : "Not available"}
-                </p>
+                <p className="text-sm font-medium text-accent/70">Email</p>
+                <p className="text-sm text-accent">{userData?.email || "Not provided"}</p>
               </div>
             </div>
 
-            <div className="flex items-start">
-              <FaHistory className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-green-50 rounded-lg text-green-500">
+                <FaPhone className="text-sm" />
+              </div>
               <div>
-                <p className="text-sm font-medium text-accent/80">Last Login</p>
-                <p className="text-accent">
-                  {userData?.last_log_in 
-                    ? new Date(userData.last_log_in).toLocaleString() 
-                    : "Not available"}
-                </p>
+                <p className="text-sm font-medium text-accent/70">Phone</p>
+                <p className="text-sm text-accent">{userData?.phone || "Not provided"}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
+                <FaMapMarkerAlt className="text-sm" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-accent/70">Location</p>
+                <p className="text-sm text-accent">{userData?.location || "Not provided"}</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Column */}
-        <div className="lg:w-1/2 p-6 bg-base-100 rounded-lg shadow-lg">
-          {/* Humanitarian Information */}
-          <div className="space-y-4 mb-8">
-            <h3 className="text-xl font-semibold text-accent border-b pb-2">
-              Humanitarian Profile
+        {/* Main Content */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Account Information */}
+          <div className="bg-base-100 rounded-xl shadow-md p-6 border border-neutral">
+            <h3 className="text-lg font-semibold text-accent mb-4 flex items-center gap-2">
+              <FaUser className="text-primary" /> Account Information
             </h3>
-            
-            <div className="flex items-start">
-              <FaHandsHelping className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-sm font-medium text-accent/80">Volunteer Status</p>
-                <p className="text-accent">
-                  {userData?.volunteerStatus || "Not currently volunteering"}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start">
-              <FaDonate className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-sm font-medium text-accent/80">Donation History</p>
-                <p className="text-accent">
-                  {userData?.donationCount 
-                    ? `${userData.donationCount} donations made` 
-                    : "No donations yet"}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start">
-              <FaInfoCircle className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-sm font-medium text-accent/80">Preferred Causes</p>
-                <p className="text-accent">
-                  {userData?.preferredCauses?.join(", ") || "Not specified"}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Food Donation Preferences */}
-          <div className="space-y-4 mb-8">
-            <h3 className="text-xl font-semibold text-accent border-b pb-2">
-              Food Donation Preferences
-            </h3>
-            
-            <div className="flex items-start">
-              <FaInfoCircle className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-sm font-medium text-accent/80">Preferred Donation Types</p>
-                <p className="text-accent">
-                  {userData?.donationTypes?.join(", ") || "All types accepted"}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start">
-              <FaInfoCircle className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-sm font-medium text-accent/80">Availability for Pickup</p>
-                <p className="text-accent">
-                  {userData?.pickupAvailability || "Flexible"}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Organization Information (if applicable) */}
-          {userData?.organization && (
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-accent border-b pb-2">
-                Organization Details
-              </h3>
-              
-              <div className="flex items-start">
-                <FaInfoCircle className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-amber-50 rounded-lg text-amber-500">
+                  <FaCalendarAlt className="text-sm" />
+                </div>
                 <div>
-                  <p className="text-sm font-medium text-accent/80">Organization Name</p>
-                  <p className="text-accent">{userData.organization.name}</p>
+                  <p className="text-sm font-medium text-accent/70">Member Since</p>
+                  <p className="text-sm text-accent">
+                    {userData?.created_at
+                      ? new Date(userData.created_at).toLocaleDateString()
+                      : "Not available"}
+                  </p>
                 </div>
               </div>
 
-              <div className="flex items-start">
-                <FaInfoCircle className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
+                  <FaHistory className="text-sm" />
+                </div>
                 <div>
-                  <p className="text-sm font-medium text-accent/80">Organization Type</p>
-                  <p className="text-accent">{userData.organization.type}</p>
+                  <p className="text-sm font-medium text-accent/70">Last Login</p>
+                  <p className="text-sm text-accent">
+                    {userData?.last_log_in
+                      ? new Date(userData.last_log_in).toLocaleString()
+                      : "Not available"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Humanitarian Profile */}
+          <div className="bg-base-100 rounded-xl shadow-md p-6 border border-neutral">
+            <h3 className="text-lg font-semibold text-accent mb-4 flex items-center gap-2">
+              <FaHandsHelping className="text-primary" /> Humanitarian Profile
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-50 rounded-lg text-green-500">
+                  <FaHandsHelping className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Volunteer Status</p>
+                  <p className="text-sm text-accent">
+                    {userData?.volunteerStatus || "Not currently volunteering"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-red-50 rounded-lg text-red-500">
+                  <FaDonate className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Donation History</p>
+                  <p className="text-sm text-accent">
+                    {userData?.donationCount
+                      ? `${userData.donationCount} donations made`
+                      : "No donations yet"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
+                  <FaInfoCircle className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Preferred Causes</p>
+                  <p className="text-sm text-accent">
+                    {userData?.preferredCauses?.join(", ") || "Not specified"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Food Preferences */}
+          <div className="bg-base-100 rounded-xl shadow-md p-6 border border-neutral">
+            <h3 className="text-lg font-semibold text-accent mb-4 flex items-center gap-2">
+              <FaUtensils className="text-primary" /> Food Preferences
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-amber-50 rounded-lg text-amber-500">
+                  <FaUtensils className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Donation Types</p>
+                  <p className="text-sm text-accent">
+                    {userData?.donationTypes?.join(", ") || "All types accepted"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
+                  <FaClock className="text-sm" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-accent/70">Pickup Availability</p>
+                  <p className="text-sm text-accent">
+                    {userData?.pickupAvailability || "Flexible"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Organization Info (if applicable) */}
+          {userData?.organization && (
+            <div className="bg-base-100 rounded-xl shadow-md p-6 border border-neutral">
+              <h3 className="text-lg font-semibold text-accent mb-4 flex items-center gap-2">
+                <FaBuilding className="text-primary" /> Organization
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-green-50 rounded-lg text-green-500">
+                    <FaBuilding className="text-sm" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-accent/70">Name</p>
+                    <p className="text-sm text-accent">{userData.organization.name}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
+                    <FaInfoCircle className="text-sm" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-accent/70">Type</p>
+                    <p className="text-sm text-accent">{userData.organization.type}</p>
+                  </div>
                 </div>
               </div>
             </div>
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -97,7 +97,7 @@ const AddDonation = () => {
       </h2>
       <div className="p-6 bg-base-100 rounded-lg shadow-lg">
         <form onSubmit={handleSubmit(onSubmit)} className=" space-y-4">
-          <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+          <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
             <label className="text-accent font-semibold text-base">
               Donation Title
             </label>
@@ -117,7 +117,7 @@ const AddDonation = () => {
           </fieldset>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+            <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
               <label className="text-accent font-semibold text-base">
                 Food Type
               </label>
@@ -141,7 +141,7 @@ const AddDonation = () => {
               )}
             </fieldset>
 
-            <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+            <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
               <label className="text-accent font-semibold text-base">
                 Quantity
               </label>
@@ -173,7 +173,7 @@ const AddDonation = () => {
               )}
             </fieldset>
 
-            <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+            <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
               <label className="text-accent font-semibold text-base">
                 Pickup Start Time
               </label>
@@ -193,7 +193,7 @@ const AddDonation = () => {
               )}
             </fieldset>
 
-            <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+            <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
               <label className="text-accent font-semibold text-base">
                 Pickup End Time
               </label>
@@ -213,7 +213,7 @@ const AddDonation = () => {
               )}
             </fieldset>
 
-            <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+            <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
               <label className="text-accent font-semibold text-base">
                 Restaurant Name
               </label>
@@ -225,7 +225,7 @@ const AddDonation = () => {
               />
             </fieldset>
 
-            <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+            <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
               <label className="text-accent font-semibold text-base">
                 Restaurant Email
               </label>
@@ -238,7 +238,7 @@ const AddDonation = () => {
             </fieldset>
           </div>
 
-          <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+          <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
             <label className="text-accent font-semibold text-base">
               Pickup Location
             </label>
@@ -266,7 +266,7 @@ const AddDonation = () => {
           </fieldset>
 
           {/* Image upload area REPLACED */}
-          <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+          <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
             <label className="text-accent font-semibold text-base">
               Food Image
             </label>
@@ -319,7 +319,7 @@ const AddDonation = () => {
           <input
             disabled={isUploadingImage}
             type="submit"
-            className={`bg-primary text-base-100 w-full py-2 rounded-md text-lg font-semibold cursor-pointer hover:bg-secondary duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary`}
+            className={`bg-primary text-white w-full py-2 rounded-md text-lg font-semibold cursor-pointer hover:bg-secondary duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary`}
           />
         </form>
       </div>

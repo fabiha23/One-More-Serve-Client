@@ -5,6 +5,7 @@ import Loading from "../../../Components/Loading";
 import useAuth from "../../../hooks/useAuth";
 import Payment from "../Payment/Payment";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { FaHandsHelping, FaRegEdit, FaCheckCircle } from "react-icons/fa";
 
 const RequestCharity = () => {
   const { user } = useAuth();
@@ -38,7 +39,13 @@ const RequestCharity = () => {
       return data;
     },
     onSuccess: () => {
-      Swal.fire("Request Sent", "Your request has been sent for approval.", "success");
+      Swal.fire({
+        title: "Request Sent",
+        text: "Your request has been sent for approval.",
+        icon: "success",
+        background: "#FEFAE0",
+        confirmButtonColor: "#CCD5AE"
+      });
       queryClient.invalidateQueries({
         queryKey: ["charity-role-request", user?.email],
       });
@@ -48,7 +55,13 @@ const RequestCharity = () => {
       setNewRequestData(null);
     },
     onError: (error) => {
-      Swal.fire("Error", error.response?.data?.message || "Something went wrong.", "error");
+      Swal.fire({
+        title: "Error",
+        text: error.response?.data?.message || "Something went wrong.",
+        icon: "error",
+        background: "#FEFAE0",
+        confirmButtonColor: "#CCD5AE"
+      });
     },
   });
 
@@ -57,11 +70,28 @@ const RequestCharity = () => {
   // Block form if pending or approved request exists
   if (pendingRequest || approvedRequest) {
     return (
-      <div className="p-6 bg-base-100 rounded-lg shadow text-center">
-        <h3 className="text-lg font-semibold mb-2">
-          You already have a {pendingRequest ? "pending" : "approved"} Charity Role request.
-        </h3>
-        <p>Please wait for admin approval or contact support for assistance.</p>
+      <div className="max-w-2xl mx-auto p-8 bg-base-100 rounded-xl shadow-md border border-secondary/20">
+        <div className="text-center">
+          <div className="mx-auto w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mb-4">
+            <FaCheckCircle className="text-secondary text-3xl" />
+          </div>
+          <h3 className="text-xl font-semibold text-accent mb-2">
+            {approvedRequest ? "Request Approved" : "Request Pending"}
+          </h3>
+          <p className="text-accent/80 mb-4">
+            {approvedRequest 
+              ? "Your charity role request has been approved. You can now access charity features."
+              : "Your request is currently under review. Please wait for admin approval."}
+          </p>
+          {approvedRequest && (
+            <button 
+              className="btn btn-secondary"
+              onClick={() => window.location.reload()}
+            >
+              Refresh to Access Features
+            </button>
+          )}
+        </div>
       </div>
     );
   }
@@ -75,6 +105,8 @@ const RequestCharity = () => {
         icon: "warning",
         title: "Missing fields",
         text: "Please fill in all required fields.",
+        background: "#FEFAE0",
+        confirmButtonColor: "#CCD5AE"
       });
       return;
     }
@@ -99,75 +131,105 @@ const RequestCharity = () => {
   };
 
   return (
-    <div>
-      <h2 className="text-base-100 font-semibold text-2xl mb-3 bg-secondary p-4 rounded-lg px-6">
-        Request Charity Role
-      </h2>
+    <div className="max-w-4xl mx-auto p-4">
+      <div className="bg-primary/80 rounded-xl shadow-lg p-6 mb-6">
+        <h1 className="text-2xl font-bold text-base-100 flex items-center gap-2">
+          <FaHandsHelping /> Request Charity Role
+        </h1>
+      </div>
 
       {rejectedRequest && (
-        <div className="p-4 bg-red-100 border border-red-300 rounded text-red-700 mb-4">
-          <h3 className="text-lg font-semibold mb-1">
-            Your previous request was rejected.
-          </h3>
-          <p>
-            You can edit the details below and resubmit your Charity Role request.
-          </p>
+        <div className="p-4 bg-red-100 border-l-4 border-red-500 rounded text-red-700 mb-6">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              <FaRegEdit className="h-5 w-5 text-red-700" />
+            </div>
+            <div className="ml-3">
+              <h3 className="text-lg font-semibold mb-1">
+                Your previous request was rejected
+              </h3>
+              <p className="text-sm">
+                You can edit the details below and resubmit your Charity Role request.
+              </p>
+            </div>
+          </div>
         </div>
       )}
 
-      <form className="max-w-md mx-auto p-6 bg-base-100 rounded-lg shadow space-y-4">
-        <div>
-          <label className="label">Name</label>
-          <input
-            type="text"
-            readOnly
-            value={user.displayName}
-            className="input input-bordered w-full"
-          />
-        </div>
-        <div>
-          <label className="label">Email</label>
-          <input
-            type="email"
-            readOnly
-            value={user.email}
-            className="input input-bordered w-full"
-          />
-        </div>
-        <div>
-          <label className="label">Organization Name</label>
-          <input
-            type="text"
-            required
-            value={organizationName}
-            onChange={(e) => setOrganizationName(e.target.value)}
-            className="input input-bordered w-full"
-          />
-        </div>
-        <div>
-          <label className="label">Mission Statement</label>
-          <textarea
-            required
-            value={missionStatement}
-            onChange={(e) => setMissionStatement(e.target.value)}
-            className="textarea textarea-bordered w-full"
-            rows={4}
-          />
-        </div>
-        <div>
-          <label className="label">Payment Amount</label>
-          <p className="text-lg font-semibold">${paymentAmount}</p>
-          <small className="text-gray-500">* Payment processing will be done here.</small>
-        </div>
-        <button
-          type="submit"
-          onClick={handlePayClick}
-          disabled={isPendingSubmit}
-          className="btn btn-primary w-full"
-        >
-          {isPendingSubmit ? "Submitting..." : "Pay"}
-        </button>
-      </form>
+      <div className="bg-base-100 rounded-xl shadow-sm overflow-hidden border border-neutral">
+        <form className="p-6 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-accent mb-1">Name</label>
+              <input
+                type="text"
+                readOnly
+                value={user.displayName}
+                className="input input-bordered w-full bg-base-200"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-accent mb-1">Email</label>
+              <input
+                type="email"
+                readOnly
+                value={user.email}
+                className="input input-bordered w-full bg-base-200"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-accent mb-1">Organization Name *</label>
+            <input
+              type="text"
+              required
+              value={organizationName}
+              onChange={(e) => setOrganizationName(e.target.value)}
+              className="input input-bordered w-full"
+              placeholder="Enter your organization name"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-accent mb-1">Mission Statement *</label>
+            <textarea
+              required
+              value={missionStatement}
+              onChange={(e) => setMissionStatement(e.target.value)}
+              className="textarea textarea-bordered w-full"
+              rows={4}
+              placeholder="Describe your organization's mission and goals"
+            />
+          </div>
+
+          <div className="p-4 bg-secondary/10 rounded-lg border border-secondary/20">
+            <label className="block text-sm font-medium text-accent mb-1">Payment Information</label>
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-lg font-semibold text-secondary">${paymentAmount}</p>
+                <p className="text-xs text-accent/60">One-time verification fee</p>
+              </div>
+              <div className="text-xs text-accent/60">
+                Secure payment processing
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            onClick={handlePayClick}
+            disabled={isPendingSubmit}
+            className="btn btn-primary w-full mt-4"
+          >
+            {isPendingSubmit ? (
+              <span className="loading loading-spinner"></span>
+            ) : (
+              "Proceed to Payment"
+            )}
+          </button>
+        </form>
+      </div>
 
       {isPaymentModalOpen && (
         <Payment

@@ -109,7 +109,7 @@ const UpdateDonation = () => {
       </h2>
       <div className="p-6 bg-base-100 rounded-lg shadow-lg">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+          <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
             <label className="text-accent font-semibold text-base">
               Donation Title
             </label>
@@ -129,7 +129,7 @@ const UpdateDonation = () => {
           </fieldset>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+            <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
               <label className="text-accent font-semibold text-base">
                 Food Type
               </label>
@@ -153,7 +153,7 @@ const UpdateDonation = () => {
               )}
             </fieldset>
 
-            <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+            <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
               <label className="text-accent font-semibold text-base">
                 Quantity
               </label>
@@ -185,7 +185,7 @@ const UpdateDonation = () => {
               )}
             </fieldset>
 
-            <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+            <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
               <label className="text-accent font-semibold text-base">
                 Pickup Start Time
               </label>
@@ -205,7 +205,7 @@ const UpdateDonation = () => {
               )}
             </fieldset>
 
-            <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+            <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
               <label className="text-accent font-semibold text-base">
                 Pickup End Time
               </label>
@@ -225,7 +225,7 @@ const UpdateDonation = () => {
               )}
             </fieldset>
 
-            <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+            <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
               <label className="text-accent font-semibold text-base">
                 Restaurant Name
               </label>
@@ -237,7 +237,7 @@ const UpdateDonation = () => {
               />
             </fieldset>
 
-            <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+            <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
               <label className="text-accent font-semibold text-base">
                 Restaurant Email
               </label>
@@ -250,7 +250,7 @@ const UpdateDonation = () => {
             </fieldset>
           </div>
 
-          <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+          <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
             <label className="text-accent font-semibold text-base">
               Pickup Location
             </label>
@@ -277,7 +277,7 @@ const UpdateDonation = () => {
             )}
           </fieldset>
 
-          <fieldset className="fieldset bg-base-200 p-3 rounded-box">
+          <fieldset className="fieldset bg-base-200/30 p-3 rounded-box">
             <label className="text-accent font-semibold text-base">
               Food Image
             </label>
