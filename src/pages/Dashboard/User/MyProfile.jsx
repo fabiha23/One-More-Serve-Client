@@ -22,9 +22,11 @@ const MyProfile = () => {
 
   return (
     <div>
-      <h2 className="text-base-100 font-semibold text-2xl mb-3 bg-secondary p-4 rounded-lg">
-        My Profile
-      </h2>
+           <div className="mb-6">
+        <div className="bg-primary/80 rounded-xl shadow-lg p-6 mb-6">
+          <h1 className="text-2xl font-bold text-base-100">My Profile</h1>
+        </div>
+      </div>
       
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Left Column */}

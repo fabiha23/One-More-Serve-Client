@@ -1,4 +1,12 @@
-import { FaShieldAlt, FaEnvelope, FaCrown, FaUserCog, FaServer, FaHistory, FaCalendarAlt } from "react-icons/fa";
+import {
+  FaShieldAlt,
+  FaEnvelope,
+  FaCrown,
+  FaUserCog,
+  FaServer,
+  FaHistory,
+  FaCalendarAlt,
+} from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../Components/Loading";
@@ -20,10 +28,12 @@ const AdminProfile = () => {
 
   return (
     <div>
-      <h2 className="text-base-100 font-semibold text-2xl mb-3 bg-secondary p-4 rounded-lg">
-        Admin Profile
-      </h2>
-      
+      <div className="mb-6">
+        <div className="bg-primary/80 rounded-xl shadow-lg p-6 mb-6">
+          <h1 className="text-2xl font-bold text-base-100">Admin Profile</h1>
+        </div>
+      </div>
+
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Left Column */}
         <div className="lg:w-1/2 p-6 bg-base-100 rounded-lg shadow-lg">
@@ -52,12 +62,11 @@ const AdminProfile = () => {
             <h3 className="text-xl font-semibold text-accent border-b pb-2">
               Contact Information
             </h3>
-            
             <div className="flex items-start">
               <FaEnvelope className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
-              <div>
-                <p className="text-accent">{adminData?.email || "Not provided"}</p>
-              </div>
+              <p className="text-accent">
+                {adminData?.email || "Not provided"}
+              </p>
             </div>
           </div>
 
@@ -66,14 +75,15 @@ const AdminProfile = () => {
             <h3 className="text-xl font-semibold text-accent border-b pb-2">
               Account Information
             </h3>
-            
             <div className="flex items-start">
               <FaCalendarAlt className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
               <div>
-                <p className="text-sm font-medium text-accent/80">Member Since</p>
+                <p className="text-sm font-medium text-accent/80">
+                  Member Since
+                </p>
                 <p className="text-accent">
                   {adminData?.created_at
-                    ? new Date(adminData?.created_at).toLocaleDateString()
+                    ? new Date(adminData.created_at).toLocaleDateString()
                     : "Not available"}
                 </p>
               </div>
@@ -84,8 +94,8 @@ const AdminProfile = () => {
               <div>
                 <p className="text-sm font-medium text-accent/80">Last Login</p>
                 <p className="text-accent">
-                  {adminData?.last_log_in 
-                    ? new Date(adminData.last_log_in).toLocaleString() 
+                  {adminData?.last_log_in
+                    ? new Date(adminData.last_log_in).toLocaleString()
                     : "Not available"}
                 </p>
               </div>
@@ -95,60 +105,43 @@ const AdminProfile = () => {
 
         {/* Right Column */}
         <div className="lg:w-1/2 p-6 bg-base-100 rounded-lg shadow-lg">
-          {/* Admin Privileges */}
+          {/* Admin Permissions */}
           <div className="space-y-4 mb-8">
             <h3 className="text-xl font-semibold text-accent border-b pb-2">
-              Admin Privileges
+              Admin Permissions
             </h3>
-            
             <div className="flex items-start">
-              <FaShieldAlt className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
+              <FaUserCog className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
               <div>
-                <p className="text-sm font-medium text-accent/80">Access Level</p>
-                <p className="text-accent font-bold">FULL SYSTEM CONTROL</p>
+                <p className="text-sm font-medium text-accent/80">Role</p>
+                <p className="text-accent">
+                  {adminData?.role || "ADMINISTRATOR"}
+                </p>
               </div>
             </div>
 
             <div className="flex items-start">
-              <FaUserCog className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
+              <FaShieldAlt className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
               <div>
-                <p className="text-sm font-medium text-accent/80">User Management</p>
-                <p className="text-accent">Create, edit, and delete user accounts</p>
+                <p className="text-sm font-medium text-accent/80">
+                  Access Level
+                </p>
+                <p className="text-accent">
+                  {adminData?.accessLevel || "Full Access"}
+                </p>
               </div>
             </div>
 
             <div className="flex items-start">
               <FaServer className="mt-1 mr-3 text-accent/80 min-w-[16px]" />
               <div>
-                <p className="text-sm font-medium text-accent/80">System Configuration</p>
-                <p className="text-accent">Modify all system settings</p>
+                <p className="text-sm font-medium text-accent/80">
+                  Managed Modules
+                </p>
+                <p className="text-accent">
+                  {adminData?.managedModules?.join(", ") || "All modules"}
+                </p>
               </div>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-accent border-b pb-2">
-              Quick Actions
-            </h3>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <button className="btn btn-primary btn-sm">
-                <FaUserCog className="mr-2" />
-                Manage Users
-              </button>
-              <button className="btn btn-secondary btn-sm">
-                <FaServer className="mr-2" />
-                System Settings
-              </button>
-              <button className="btn bg-accent hover:bg-accent/90 text-base-100 btn-sm">
-                <FaHistory className="mr-2" />
-                View Logs
-              </button>
-              <button className="btn btn-outline btn-sm border-accent text-accent">
-                <FaShieldAlt className="mr-2" />
-                Security
-              </button>
             </div>
           </div>
         </div>

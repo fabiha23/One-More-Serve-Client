@@ -1,118 +1,180 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
-import useAxios from '../../../hooks/useAxios'; // your custom axios hook
+import useAxios from '../../../hooks/useAxios';
 import Loading from '../../../Components/Loading';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { FaCheckCircle, FaTimesCircle, FaUtensils, FaStore, FaEnvelope, FaBox } from 'react-icons/fa';
 
 const ManageDonations = () => {
   const axiosInstance = useAxios();
-  const axiosSecure=useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   // Fetch donations
   const { data: donations = [], refetch, isLoading } = useQuery({
     queryKey: ['donations'],
     queryFn: async () => {
       const res = await axiosInstance.get('/donations'); 
-      return res.data;
+      return res.data.donations;
     },
   });
 
-  // Handle verification (sets status to "verified")
+  // Handle verification
   const handleVerify = async (donationId) => {
     try {
       await axiosSecure.patch(`/donations/status/${donationId}`, { status: 'verified' });
-      Swal.fire('Success', 'Donation verified successfully', 'success');
+      Swal.fire({
+        title: 'Success',
+        text: 'Donation verified successfully',
+        icon: 'success',
+        background: '#FEFAE0',
+        confirmButtonColor: '#CCD5AE'
+      });
       refetch();
     } catch (err) {
-      Swal.fire('Error', err.message || 'Failed to verify donation', 'error');
+      Swal.fire({
+        title: 'Error',
+        text: err.message || 'Failed to verify donation',
+        icon: 'error',
+        background: '#FEFAE0',
+        confirmButtonColor: '#f43f5e'
+      });
     }
   };
 
-  // Handle rejection (sets status to "rejected")
+  // Handle rejection
   const handleReject = async (donationId) => {
     try {
       await axiosSecure.patch(`/donations/status/${donationId}`, { status: 'rejected' });
-      Swal.fire('Success', 'Donation rejected successfully', 'success');
+      Swal.fire({
+        title: 'Success',
+        text: 'Donation rejected successfully',
+        icon: 'success',
+        background: '#FEFAE0',
+        confirmButtonColor: '#CCD5AE'
+      });
       refetch();
     } catch (err) {
-      Swal.fire('Error', err.message || 'Failed to reject donation', 'error');
+      Swal.fire({
+        title: 'Error',
+        text: err.message || 'Failed to reject donation',
+        icon: 'error',
+        background: '#FEFAE0',
+        confirmButtonColor: '#f43f5e'
+      });
     }
   };
 
   if (isLoading) return <Loading />;
 
   return (
-    <div className="p-4 overflow-x-auto">
-      <h2 className="text-2xl font-bold mb-4">Manage Donations</h2>
-
-      <table className="table table-zebra w-full">
-        <thead>
-          <tr>
-            <th>Donation Title</th>
-            <th>Food Type</th>
-            <th>Restaurant Name</th>
-            <th>Restaurant Email</th>
-            <th>Quantity</th>
-            <th>Status</th>
-            <th className="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {donations.map((donation) => (
-            <tr key={donation._id}>
-              <td>{donation.title}</td>
-              <td>{donation.foodType}</td>
-              <td>{donation.restaurantName}</td>
-              <td>{donation.restaurantEmail}</td>
-              <td>{donation.quantity}</td>
-              <td>
-                <span
-                  className={`badge ${
-                    donation.status === 'verified'
-                      ? 'badge-success'
-                      : donation.status === 'rejected'
-                      ? 'badge-error'
-                      : 'badge-warning'
-                  }`}
-                >
-                  {donation.status}
-                </span>
-              </td>
-              <td className="text-center space-x-2">
-                {donation.status === 'pending' ? (
-                  <>
-                    <button
-                      onClick={() => handleVerify(donation._id)}
-                      className="btn btn-xs btn-success"
-                    >
-                      Verify
-                    </button>
-                    <button
-                      onClick={() => handleReject(donation._id)}
-                      className="btn btn-xs btn-error"
-                    >
-                      Reject
-                    </button>
-                  </>
-                ) : (
-                  <span className="italic text-gray-500">No actions</span>
-                )}
-              </td>
-            </tr>
-          ))}
-
-          {donations.length === 0 && (
-            <tr>
-              <td colSpan="7" className="text-center p-4">
-                No donations found.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+    <section>
+      <div className="mb-6">
+        <div className="bg-primary/80 rounded-xl shadow-lg p-6 mb-6">
+          <h1 className="text-2xl font-bold text-base-100">Manage Donations</h1>
+        </div>
+      </div>
+      <div className="bg-base-100 rounded-xl shadow-sm overflow-hidden border border-neutral">
+        {donations.length === 0 ? (
+          <div className="p-8 text-center">
+            <div className="mx-auto w-24 h-24 bg-secondary rounded-full flex items-center justify-center mb-4">
+              <FaBox className="text-accent text-3xl" />
+            </div>
+            <h3 className="text-xl font-medium text-accent mb-2">No donations found</h3>
+            <p className="text-accent/70">When restaurants submit donations, they'll appear here for verification.</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-secondary">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-accent uppercase tracking-wider">
+                    <div className="flex items-center">
+                      <FaUtensils className="mr-2" /> Food Item
+                    </div>
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-accent uppercase tracking-wider">
+                    Type
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-accent uppercase tracking-wider">
+                    <div className="flex items-center">
+                      <FaStore className="mr-2" /> Restaurant
+                    </div>
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-accent uppercase tracking-wider">
+                    <div className="flex items-center">
+                      <FaEnvelope className="mr-2" /> Email
+                    </div>
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-accent uppercase tracking-wider">
+                    Quantity
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-accent uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-accent uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-neutral">
+                {donations.map((donation) => (
+                  <tr key={donation._id} className="hover:bg-secondary/10">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-accent">
+                      {donation.title}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-accent">
+                      {donation.foodType}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-accent">
+                      {donation.restaurantName}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-accent">
+                      {donation.restaurantEmail}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-accent">
+                      {donation.quantity}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        donation.status === 'verified'
+                          ? 'bg-primary/30 text-accent border border-primary'
+                          : donation.status === 'rejected'
+                          ? 'bg-error/10 text-error border border-error/20'
+                          : 'bg-secondary/30 text-accent border border-secondary'
+                      }`}>
+                        {donation.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                      {donation.status === 'pending' ? (
+                        <div className="flex justify-center space-x-2">
+                          <button
+                            onClick={() => handleVerify(donation._id)}
+                            className="px-3 py-1 rounded-lg cursor-pointer text-sm font-medium bg-primary text-accent hover:bg-primary/80 transition-colors flex items-center"
+                          >
+                            <FaCheckCircle className="mr-1" /> Verify
+                          </button>
+                          <button
+                            onClick={() => handleReject(donation._id)}
+                            className="px-3 py-1 rounded-lg text-sm cursor-pointer font-medium bg-error/10 text-error hover:bg-error/20 transition-colors flex items-center border border-error/20"
+                          >
+                            <FaTimesCircle className="mr-1" /> Reject
+                          </button>
+                        </div>
+                      ) : (
+                        <span className="text-accent/50 italic">No actions</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </section>
   );
 };
 
-export default ManageDonations;
+export default ManageDonations; 
