@@ -5,11 +5,18 @@ import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
 import Loading from "../../../Components/Loading";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import {
+  FaStore,
+  FaUtensils,
+  FaBox,
+  FaCalendarAlt,
+  FaCheckCircle,
+} from "react-icons/fa";
 
 const MyPickup = () => {
   const { user } = useAuth();
   const axiosInstance = useAxios();
-  const axiosSecure=useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   // Fetch all requests (accepted or picked up)
   const {
@@ -35,11 +42,23 @@ const MyPickup = () => {
       });
     },
     onSuccess: () => {
-      Swal.fire("Success", "Pickup confirmed!", "success");
+      Swal.fire({
+        title: "Success",
+        text: "Pickup confirmed!",
+        icon: "success",
+        background: "#FEFAE0",
+        confirmButtonColor: "#CCD5AE",
+      });
       refetch();
     },
     onError: () => {
-      Swal.fire("Error", "Could not confirm pickup", "error");
+      Swal.fire({
+        title: "Error",
+        text: "Could not confirm pickup",
+        icon: "error",
+        background: "#FEFAE0",
+        confirmButtonColor: "#f43f5e",
+      });
     },
   });
 
@@ -51,56 +70,107 @@ const MyPickup = () => {
   const allPickedUp = pickups.length > 0 && acceptedRequests.length === 0;
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-6">My Pickups</h2>
+    <section>
+      <div className="mb-6">
+        <div className="bg-primary/80 rounded-xl shadow-lg p-6 mb-6">
+          <h1 className="text-2xl font-bold text-base-100">My Requests</h1>
+        </div>
+      </div>
 
       {pickups.length === 0 ? (
-        <p className="text-center text-gray-500">No pickups assigned yet.</p>
+        <div className="bg-base-100 rounded-xl shadow-sm p-8 text-center border border-neutral">
+          <div className="mx-auto w-24 h-24 bg-secondary rounded-full flex items-center justify-center mb-4">
+            <FaBox className="text-accent text-3xl" />
+          </div>
+          <h3 className="text-xl font-medium text-accent mb-2">
+            No pickups assigned
+          </h3>
+          <p className="text-accent/70 max-w-md mx-auto">
+            When restaurants accept your donation requests, they'll appear here
+            for pickup.
+          </p>
+        </div>
       ) : allPickedUp ? (
-        <p className="text-center text-blue-600 font-semibold">
-          Your requests have been picked up. You can see them in the Received Donations page.
-        </p>
+        <div className="bg-base-100 rounded-xl shadow-sm p-6 text-center border border-primary">
+          <FaCheckCircle className="mx-auto text-primary text-4xl mb-3" />
+          <h3 className="text-xl font-medium text-accent mb-2">
+            All pickups completed
+          </h3>
+          <p className="text-accent/70">
+            Your requests have been picked up. You can see them in the Received
+            Donations page.
+          </p>
+        </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {acceptedRequests.map((item) => (
             <div
               key={item._id}
-              className="bg-base-100 border border-base-300 p-4 rounded-xl shadow-sm"
+              className="bg-base-100 rounded-xl shadow-sm overflow-hidden border border-neutral hover:shadow-md transition-all"
             >
-              <h3 className="text-lg font-semibold mb-1">
-                {item.donationTitle}
-              </h3>
-              <p className="text-sm text-gray-700">
-                <strong>Restaurant:</strong> {item.restaurantName}
-              </p>
-              <p className="text-sm text-gray-700">
-                <strong>Location:</strong> {item.restaurantLocation || "N/A"}
-              </p>
-              <p className="text-sm text-gray-700">
-                <strong>Food Type:</strong> {item.foodType}
-              </p>
-              <p className="text-sm text-gray-700">
-                <strong>Quantity:</strong> {item.quantity || "N/A"}
-              </p>
-              <p className="text-sm text-gray-700">
-                <strong>Pickup Time:</strong>{" "}
-                {new Date(item.pickupTime).toLocaleString()}
-              </p>
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-accent mb-3">
+                  {item.donationTitle}
+                </h3>
 
-              <div className="mt-2 flex items-center justify-between">
-                <span className="badge badge-warning">Assigned</span>
-                <button
-                  onClick={() => confirmPickup.mutate(item.donationId)}
-                  className="btn btn-sm btn-success text-white"
-                >
-                  Confirm Pickup
-                </button>
+                <div className="space-y-3 text-sm text-accent/80 mb-5">
+                  <div className="flex items-center">
+                    <FaStore className="mr-2 text-accent/60" />
+                    <span>
+                      <span className="font-medium">Restaurant:</span>{" "}
+                      {item.restaurantName}
+                    </span>
+                  </div>
+                  {item.restaurantLocation && (
+                    <div className="flex items-center">
+                      <span className="font-medium mr-1">Location:</span>
+                      {item.restaurantLocation}
+                    </div>
+                  )}
+                  <div className="flex items-center">
+                    <FaUtensils className="mr-2 text-accent/60" />
+                    <span>
+                      <span className="font-medium">Food Type:</span>
+                      {item.foodType}
+                    </span>
+                  </div>
+                  {item.quantity && (
+                    <div className="flex items-center">
+                      <FaBox className="mr-2 text-accent/60" />
+                      <span>
+                        <span className="font-medium">Quantity:</span>
+                        {item.quantity}
+                      </span>
+                    </div>
+                  )}
+                  {item.pickupTime && (
+                    <div className="flex items-center">
+                      <FaCalendarAlt className="mr-2 text-accent/60" />
+                      <span>
+                        <span className="font-medium">Pickup Time:</span>{" "}
+                        {new Date(item.pickupTime).toLocaleString()}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex justify-between items-center pt-4 border-t border-neutral">
+                  <span className=" text-xs font-medium text-accent">
+                    Ready for Pickup
+                  </span>
+                  <button
+                    onClick={() => confirmPickup.mutate(item.donationId)}
+                    className="px-4 py-2 rounded-lg cursor-pointer text-sm font-medium bg-primary text-accent hover:bg-primary/80 transition-colors"
+                  >
+                    Confirm Pickup
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

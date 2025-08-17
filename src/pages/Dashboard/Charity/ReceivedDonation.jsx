@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../hooks/useAxios";
 import useAuth from "../../../hooks/useAuth";
 import Loading from "../../../Components/Loading";
+import { FaStore, FaUtensils, FaCalendarCheck, FaBoxOpen } from "react-icons/fa";
 
 const RecievedDonation = () => {
   const { user } = useAuth();
@@ -22,45 +23,65 @@ const RecievedDonation = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div>
-      <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">
-        My Recieved Donations
-      </h2>
+    <section>
+      <div className="mb-6">
+        <div className="bg-primary/80 rounded-xl shadow-lg p-6 mb-6">
+          <h1 className="text-2xl font-bold text-base-100">My Requests</h1>
+        </div>
+      </div>
+
 
       {pickups.length === 0 ? (
-        <div className="text-center text-gray-500 mt-8">
-          No picked up donations yet.
+        <div className="bg-base-100 rounded-xl shadow-sm p-8 text-center border border-neutral">
+          <div className="mx-auto w-24 h-24 bg-secondary rounded-full flex items-center justify-center mb-4">
+            <FaBoxOpen className="text-accent text-3xl" />
+          </div>
+          <h3 className="text-xl font-medium text-accent mb-2">No donations received yet</h3>
+          <p className="text-accent/70 max-w-md mx-auto">
+            When you collect food donations from restaurants, they'll appear here.
+          </p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {pickups.map((item) => (
             <div
               key={item._id}
-              className="bg-base-100 shadow-md rounded-xl p-4 border border-base-200"
+              className="bg-base-100 rounded-xl shadow-sm overflow-hidden border border-neutral hover:shadow-md transition-all"
             >
-              <h3 className="text-lg font-semibold mb-1">
-                {item.donationTitle}
-              </h3>
-              <p className="text-sm text-gray-600">
-                <strong>Restaurant:</strong> {item.restaurantName}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Food Type:</strong> {item.foodType}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Pickup Time:</strong>{" "}
-                {new Date(item.pickupTime).toLocaleString()}
-              </p>
-              <div className="mt-2">
-                <span className="badge badge-success text-white">
-                  picked up
-                </span>
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-accent mb-3">{item.donationTitle}</h3>
+                
+                <div className="space-y-3 text-sm text-accent/80 mb-5">
+                  <div className="flex items-center">
+                    <FaStore className="mr-2 text-accent/60" />
+                    <span><span className="font-medium">Restaurant:</span> {item.restaurantName}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <FaUtensils className="mr-2 text-accent/60" />
+                    <span><span className="font-medium">Food Type:</span> {item.foodType}</span>
+                  </div>
+                  {item.quantity && (
+                    <div className="flex items-center">
+                      <span className="font-medium mr-1">Quantity:</span> {item.quantity}
+                    </div>
+                  )}
+                  <div className="flex items-center">
+                    <FaCalendarCheck className="mr-2 text-accent/60" />
+                    <span><span className="font-medium">Collected:</span> {new Date(item.pickupTime).toLocaleString()}</span>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-neutral">
+                  <span className=" text-xs font-medium text-accent">
+                    Successfully Collected
+                  </span>
+                </div>
               </div>
             </div>
           ))}
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

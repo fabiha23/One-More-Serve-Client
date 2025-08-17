@@ -3,10 +3,11 @@ import useAuth from "../../../hooks/useAuth";
 import Loading from "../../../Components/Loading";
 import { Navigate } from "react-router";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { FaHistory, FaMoneyBillWave, FaCreditCard, FaCalendarAlt, FaHandsHelping } from "react-icons/fa";
 
 const PaymentHistory = () => {
   const { user, role } = useAuth();
-const axiosSecure=useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
   
   const { data: payments = [], isLoading } = useQuery({
     queryKey: ["payment-history", user?.email],
@@ -24,41 +25,81 @@ const axiosSecure=useAxiosSecure()
   if (isLoading) return <Loading />;
 
   return (
-    <div>
-      <h2 className="text-base-100 font-semibold text-2xl mb-3 bg-secondary p-4 rounded-lg px-6">
-        Transaction History
-      </h2>
+    <section>
+      <div className="mb-6">
+        <div className="bg-primary/80 rounded-xl shadow-lg p-6 mb-6">
+          <h1 className="text-2xl font-bold text-base-100">My Requests</h1>
+        </div>
+      </div>
       {payments.length === 0 ? (
-        <p className="text-center text-gray-500">No transactions found.</p>
+        <div className="bg-[#FEFAE0] rounded-xl shadow-sm p-8 text-center border border-[#e2e8f0]">
+          <div className="mx-auto w-24 h-24 bg-[#E0E5B6] rounded-full flex items-center justify-center mb-4">
+            <FaMoneyBillWave className="text-[#2C2C2C] text-3xl" />
+          </div>
+          <h3 className="text-xl font-medium text-[#2C2C2C] mb-2">No transactions found</h3>
+          <p className="text-[#2C2C2C]/70 max-w-md mx-auto">
+            When you make payments for charity services, they'll appear here.
+          </p>
+        </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="table table-zebra w-full">
-            <thead>
-              <tr>
-                <th>Transaction ID</th>
-                <th>Amount Paid</th>
-                <th>Payment Method</th>
-                <th>Request Date</th>
-                <th>Linked Role Request</th>
-              </tr>
-            </thead>
-            <tbody>
-              {payments.map((payment) => (
-                <tr key={payment._id}>
-                  <td className="font-mono">{payment.transactionId}</td>
-                  <td>${payment.amount}</td>
-                  <td>{payment.paymentMethod}</td>
-                  <td>{new Date(payment.createdAt).toLocaleDateString()}</td>
-                  <td>
-                    Charity
-                  </td>
+        <div className="bg-[#FEFAE0] rounded-xl shadow-sm overflow-hidden border border-[#e2e8f0]">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-[#E0E5B6]">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#2C2C2C] uppercase tracking-wider">
+                    <div className="flex items-center">
+                      <FaCreditCard className="mr-2" /> Transaction
+                    </div>
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#2C2C2C] uppercase tracking-wider">
+                    <div className="flex items-center">
+                      <FaMoneyBillWave className="mr-2" /> Amount
+                    </div>
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#2C2C2C] uppercase tracking-wider">
+                    Method
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#2C2C2C] uppercase tracking-wider">
+                    <div className="flex items-center">
+                      <FaCalendarAlt className="mr-2" /> Date
+                    </div>
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[#2C2C2C] uppercase tracking-wider">
+                    <div className="flex items-center">
+                      <FaHandsHelping className="mr-2" /> For
+                    </div>
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-[#e2e8f0]">
+                {payments.map((payment) => (
+                  <tr key={payment._id} className="hover:bg-[#E0E5B6]/10">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-[#2C2C2C]">
+                      {payment.transactionId}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[#2C2C2C]">
+                      ${payment.amount}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[#2C2C2C]">
+                      {payment.paymentMethod}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[#2C2C2C]">
+                      {new Date(payment.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[#2C2C2C]">
+                      <span className="px-2 py-1 rounded-full text-xs bg-[#CCD5AE]/30 text-[#2C2C2C]">
+                        Charity
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
-    </div>
+    </section>
   );
 };
 
