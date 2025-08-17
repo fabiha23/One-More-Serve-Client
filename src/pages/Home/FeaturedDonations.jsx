@@ -101,7 +101,7 @@ const FeaturedDonationsSection = () => {
 
                     <Link
                       to={`/donation-details/${donation._id}`}
-                      className="relative bg-primary text-accent text-sm font-semibold py-1 px-5 rounded-lg hover:bg-primary/85 transition-all duration-300 active:scale-[0.90] hover:scale-103 border border-primary/20 overflow-hidden group inline-flex items-center justify-center gap-2 will-change-transform"
+                      className="relative bg-primary text-accent text-sm font-semibold py-1 px-5 rounded-lg hover:bg-secondary transition-all duration-300 active:scale-[0.90] hover:scale-103 border border-primary/20 overflow-hidden group inline-flex items-center justify-center gap-2 will-change-transform"
                     >
                       <span>Details</span>
                       <FaArrowRight className=" w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />

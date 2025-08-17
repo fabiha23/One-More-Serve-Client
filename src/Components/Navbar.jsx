@@ -40,14 +40,14 @@ const Navbar = () => {
 
   const getLinkClass = ({ isActive }) => {
     const hoverEffect =
-      location.pathname === "/" ? "hover:text-[#E0E5B6] duration-300" : "";
+      location.pathname === "/" ? "hover:text-[#CCD5AE] duration-300" : "";
 
     if (!isActive) {
       return hoverEffect;
     }
 
-    const borderColor = location.pathname === "/" ? "xl:border-[#E0E5B6]" : "";
-    const textColor = location.pathname === "/" ? "xl:text-[#E0E5B6]" : "";
+    const borderColor = location.pathname === "/" ? "xl:border-[#CCD5AE]" : "";
+    const textColor = location.pathname === "/" ? "xl:text-[#CCD5AE]" : "";
 
     return `border-l-3 pl-1 ${borderColor} ${textColor} ${hoverEffect}`;
   };
@@ -119,7 +119,7 @@ const Navbar = () => {
               <></>
             ) : (
               <Link to="/login">
-                <button className="text-white font-medium mr-1 hover:text-secondary cursor-pointer duration-100 border hover:border-secondary border-neutral px-3 py-1 will-change-transform rounded-sm">
+                <button className={`text-white font-medium mr-1 cursor-pointer border  border-white px-3 py-1 duration-300 will-change-transform rounded-sm ${location.pathname==='/'?'hover:border-primary hover:text-primary ':'hover:border-white hover:text-white '}`}>
                   Login
                 </button>
               </Link>
