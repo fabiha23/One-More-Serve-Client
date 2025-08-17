@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
+import { FaUserCircle, FaSignOutAlt, FaTimes } from "react-icons/fa";
 import { AiOutlineBars } from "react-icons/ai";
 import useAuth from "../hooks/useAuth";
 import UserMenu from "../pages/Dashboard/User/UserMenu";
@@ -15,93 +15,119 @@ import useAxios from "../hooks/useAxios";
 
 const Sidebar = () => {
   const { user, signOutUser } = useAuth();
-  const [role, isRoleLoading] = useRole();
+  const [role] = useRole();
   const [isOpen, setIsOpen] = useState(false);
-  const axiosInstance=useAxios();
-  const navigate =useNavigate()
-
-  // if (isRoleLoading) return <Loading />;
+  const axiosInstance = useAxios();
+  const navigate = useNavigate();
 
   const handleToggle = () => setIsOpen(!isOpen);
 
   const handleSignOut = () => {
-  signOutUser()
-    .then(() => {
-      console.log("Signed out from Firebase");
-      return axiosInstance.get("/logout"); // Logout from backend
-    })
-    .then((res) => {
-      if (res.status === 200) {
-        console.log("Backend logout successful");
-        navigate("/");
-      } else {
-        console.log("Backend logout failed");
-      }
-    })
-    .catch((error) => {
-      console.error("Logout error:", error);
-    });
-};
+    signOutUser()
+      .then(() => {
+        return axiosInstance.get("/logout");
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        console.error("Logout error:", error);
+      });
+  };
 
   return (
     <>
       {/* Mobile Navbar */}
-      <div className="flex justify-between items-center lg:hidden p-4 shadow bg-base-100">
-        <Link to="/">
-          <img className="w-8" src={logo} alt="" />
+      <div className="flex justify-between items-center lg:hidden p-4 bg-gradient-to-r from-primary/10 to-secondary/10 backdrop-blur-sm border-b border-neutral/20 ">
+        <Link to="/" className="flex items-center gap-2">
+          <img className="w-8 h-8" src={logo} alt="Logo" />
+          <span className="text-xl font-bold text-accent">OneMoreServe</span>
         </Link>
-        <button onClick={handleToggle} className="text-primary">
-          <AiOutlineBars className="w-6 h-6" />
+        <button 
+          onClick={handleToggle} 
+          className="text-accent p-2 rounded-lg hover:bg-primary/20 transition-all"
+        >
+          {isOpen ? (
+            <FaTimes className="w-5 h-5" />
+          ) : (
+            <AiOutlineBars className="w-5 h-5" />
+          )}
         </button>
       </div>
 
       {/* Sidebar */}
       <div
-        className={`z-10 lg:fixed flex flex-col justify-between min-w-64 min-h-screen p-4 shadow-lg shadow-accent transition-transform duration-200 ease-in-out bg-base-200 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 absolute lg:static`}
+        className={`fixed lg:relative z-50 flex flex-col justify-between w-72 h-screen p-6 bg-gradient-to-b from-base-100 to-base-200 border-r border-neutral/20 shadow-xl transition-all duration-300 ease-in-out top-0 ${
+          isOpen ? "left-0" : "-left-full"
+        } lg:left-0`}
       >
-        <div>
-          <Link to="/" className="hidden lg:flex items-center gap-1">
-            <img className="w-8 mb-6" src={logo} alt="" />
-            <h2 className="text-2xl font-bold text-secondary mb-6 cursor-pointer">
+
+        <div className="space-y-4">
+          {/* Logo/Brand */}
+          <Link to="/" className="lg:flex items-center gap-1 hidden">
+            <img className="w-8 h-8" src={logo} alt="Logo" />
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               OneMoreServe
             </h2>
           </Link>
 
-          <div className="flex gap-2 items-center mb-6">
-            {user?.photoURL ? (
-              <img
-                src={user.photoURL}
-                alt="User Avatar"
-                className="w-8 h-8 rounded-full"
-              />
-            ) : (
-              <FaUserCircle className="w-8 h-8 text-primary" />
-            )}
-            <h3 className="text-lg font-bold text-accent">
-              {user?.displayName || "Guest User"}
-            </h3>
+          {/* User Profile */}
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-base-200 border border-neutral/10 shadow-sm">
+            <div className="relative">
+              {user?.photoURL ? (
+                <img
+                  src={user.photoURL}
+                  alt="User"
+                  className="w-12 h-12 rounded-full object-cover border-2 border-primary/30"
+                />
+              ) : (
+                <FaUserCircle className="w-12 h-12 text-primary/80" />
+              )}
+              <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-base-200"></div>
+            </div>
+            <div>
+              <h3 className="font-semibold text-accent">
+                {user?.displayName || "Guest"}
+              </h3>
+              <p className="text-xs text-accent/60">
+                {role ? `${role.charAt(0).toUpperCase() + role.slice(1)}` : "User"}
+              </p>
+            </div>
           </div>
 
-          {role === "user" && <UserMenu />}
-          {role === "charity" && <CharityMenu />}
-          {role === "admin" && <AdminMenu />}
-          {role === "restaurant" && <RestaurantMenu />}
+          {/* Navigation Menu */}
+          <div className="space-y-1">
+            {role === "user" && <UserMenu />}
+            {role === "charity" && <CharityMenu />}
+            {role === "admin" && <AdminMenu />}
+            {role === "restaurant" && <RestaurantMenu />}
+          </div>
         </div>
-        <div className="flex justify-between">
-          <Link to="/">
-            <button className="flex items-center gap-1 text-lg cursor-pointer text-accent hover:underline font-semibold">
-              <TiHome size={21} /> Home
-            </button>
-          </Link>
-          <button
-            onClick={handleSignOut}
-            className="flex items-center gap-1 text-lg cursor-pointer text-error hover:underline font-semibold"
-          >
-            <FaSignOutAlt /> Logout
-          </button>
-        </div>
+
+        {/* Bottom Actions */}
+        <div className="mt-auto space-y-2 border-t border-neutral/10 pt-4">
+  <Link
+    to="/"
+    className="flex items-center gap-3 p-3 rounded-xl text-accent hover:bg-primary/5 transition-all group"
+  >
+    <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+      <TiHome className="w-5 h-5 text-primary" />
+    </div>
+    <span className="font-medium">Return Home</span>
+  </Link>
+  
+  <button
+    onClick={handleSignOut}
+    className="flex items-center gap-3 w-full p-3 rounded-xl text-error hover:bg-error/5 transition-all group"
+  >
+    <div className="p-2 bg-error/10 rounded-lg group-hover:bg-error/20 transition-colors">
+      <FaSignOutAlt className="w-5 h-5 text-error" />
+    </div>
+    <span className="font-medium">Sign Out</span>
+  </button>
+</div>
       </div>
     </>
   );
