@@ -44,7 +44,7 @@ const SocialLogin = () => {
 
   return (
     <div>
-      <div className="flex items-center my-6">
+      <div className="flex items-center my-4">
         <div className="flex-1 border-t border-neutral/20"></div>
         <span className="px-3 text-neutral/70 text-sm">or continue with</span>
         <div className="flex-1 border-t border-neutral/20"></div>

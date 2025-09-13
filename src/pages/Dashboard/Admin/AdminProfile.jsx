@@ -33,30 +33,30 @@ const AdminProfile = () => {
     <div>
       {/* Header Section */}
       <div className="bg-gradient-to-r from-primary to-secondary rounded-xl shadow-lg p-6 mb-6">
-        <h1 className="text-2xl font-bold text-white">Admin Profile</h1>
+        <h1 className="text-2xl font-bold text-base-100">Admin Profile</h1>
       </div>
       
       {/* Profile Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Card */}
-        <div className="bg-white rounded-xl shadow-md p-6 lg:col-span-1">
+        <div className="bg-base-100 rounded-xl shadow-md p-6 lg:col-span-1">
           <div className="flex flex-col items-center mb-6">
             <div className="relative mb-4">
-              <div className="w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden">
+              <div className="w-20 h-20 rounded-full border-4 border-base-100 shadow-md overflow-hidden">
                 <img
                   src={adminData?.photoURL || "/default-admin.png"}
                   alt={adminData?.name}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-1 -right-1 bg-blue-500 text-white rounded-full p-1 shadow-sm">
+              <div className="absolute -bottom-1 -right-1 bg-primary text-base-100 rounded-full p-1 shadow-sm">
                 <FaCrown className="text-xs" />
               </div>
             </div>
             <h2 className="text-xl font-bold text-center text-accent">
               {adminData?.name || "System Administrator"}
             </h2>
-            <span className="badge badge-secondary mt-2 gap-1">
+            <span className="badge badge-secondary text-white mt-2 gap-1">
               <FaShieldAlt className="text-xs" />
               {adminData?.role || "ADMINISTRATOR"}
             </span>
@@ -65,7 +65,7 @@ const AdminProfile = () => {
           {/* Quick Info */}
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
+              <div className="p-2 rounded-lg bg-base-200 text-primary">
                 <FaEnvelope className="text-sm" />
               </div>
               <div>
@@ -75,7 +75,7 @@ const AdminProfile = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
+              <div className="p-2 rounded-lg bg-base-200 text-secondary">
                 <FaKey className="text-sm" />
               </div>
               <div>
@@ -87,7 +87,7 @@ const AdminProfile = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-50 rounded-lg text-green-500">
+              <div className="p-2 rounded-lg bg-base-200 text-primary">
                 <FaCalendarAlt className="text-sm" />
               </div>
               <div>
@@ -105,11 +105,11 @@ const AdminProfile = () => {
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Permissions Card */}
-          <div className="bg-white rounded-xl shadow-md p-6">
+          <div className="bg-base-100 rounded-xl shadow-md p-6">
             <h3 className="text-lg font-semibold text-accent mb-4">Admin Permissions</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-red-50 rounded-lg text-red-500">
+                <div className="p-2 rounded-lg bg-base-200 text-error">
                   <FaLock className="text-sm" />
                 </div>
                 <div>
@@ -121,7 +121,7 @@ const AdminProfile = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-amber-50 rounded-lg text-amber-500">
+                <div className="p-2 rounded-lg bg-base-200 text-primary">
                   <FaUserCog className="text-sm" />
                 </div>
                 <div>
@@ -133,7 +133,7 @@ const AdminProfile = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-indigo-50 rounded-lg text-indigo-500">
+                <div className="p-2 rounded-lg bg-base-200 text-secondary">
                   <FaServer className="text-sm" />
                 </div>
                 <div>
@@ -145,7 +145,7 @@ const AdminProfile = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-50 rounded-lg text-green-500">
+                <div className="p-2 rounded-lg bg-base-200 text-primary">
                   <FaChartLine className="text-sm" />
                 </div>
                 <div>
@@ -159,11 +159,11 @@ const AdminProfile = () => {
           </div>
 
           {/* Activity Card */}
-          <div className="bg-white rounded-xl shadow-md p-6">
+          <div className="bg-base-100 rounded-xl shadow-md p-6">
             <h3 className="text-lg font-semibold text-accent mb-4">Recent Activity</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
+                <div className="p-2 rounded-lg bg-base-200 text-primary">
                   <FaHistory className="text-sm" />
                 </div>
                 <div>
@@ -177,7 +177,7 @@ const AdminProfile = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
+                <div className="p-2 rounded-lg bg-base-200 text-secondary">
                   <FaCalendarAlt className="text-sm" />
                 </div>
                 <div>

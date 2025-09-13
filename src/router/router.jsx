@@ -35,6 +35,7 @@ import AboutUs from "../pages/Home/AboutUs";
 import PageNotFound from "../pages/Status/PageNotFound";
 import Forbidden from "../pages/Status/Forbidden";
 import DonationStats from "../pages/Dashboard/Restaurant/DonationStats";
+import TermsCondition from "../pages/Home/TermsConditions";
 
 export const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
       {
         path: "about-us",
         Component: AboutUs,
+      },
+      {
+        path: "terms",
+        Component: TermsCondition,
       },
     ],
   },

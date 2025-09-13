@@ -6,12 +6,14 @@ import useAuth from "../../hooks/useAuth";
 import SocialLogin from "./SocialLogin";
 import axios from "axios";
 import useAxios from "../../hooks/useAxios";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 
 const Register = () => {
   const { registerUser, updateUserProfile } = useAuth();
   const [error, setError] = useState("");
   const [profilePic, setProfilePic] = useState("");
-    const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
   const navigate = useNavigate();
   const location = useLocation();
   const axiosInstance = useAxios();
@@ -23,7 +25,7 @@ const Register = () => {
     if (!image) return;
     const formData = new FormData();
     formData.append("image", image);
-        setIsUploadingImage(true); // Start uploading
+    setIsUploadingImage(true); // Start uploading
 
     try {
       const uploadUrl = `https://api.imgbb.com/1/upload?key=${
@@ -36,8 +38,7 @@ const Register = () => {
       setError("Image upload failed");
     }
     finally{
-          setIsUploadingImage(false); // Start uploading
-
+      setIsUploadingImage(false); // Start uploading
     }
   };
 
@@ -106,9 +107,10 @@ const Register = () => {
 
   return (
     <div
-      className="relative flex justify-center items-center min-h-screen px-4 bg-cover bg-center"
+      className="relative flex py-4 justify-center items-center min-h-screen px-4 bg-cover bg-center"
       style={{ backgroundImage: `url(${registerBanner})` }}
     >
+      <title>Register</title>
       <div className="absolute inset-0 bg-black/50 backdrop-blur-xs"></div>
       <div className="relative z-10 w-full max-w-md bg-neutral/10 backdrop-blur-sm rounded-xl shadow-xl border border-neutral overflow-hidden">
         <div className="p-8">
@@ -143,17 +145,24 @@ const Register = () => {
               />
             </div>
 
-            <div>
+            <div className="relative">
               <label className="block text-neutral/80 text-sm font-medium mb-1">
                 Password
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
-                className="w-full px-4 py-2.5 bg-neutral/10 border border-neutral/20 rounded-lg text-neutral placeholder-neutral/50 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-2.5 bg-neutral/10 border border-neutral/20 rounded-lg text-neutral placeholder-neutral/50 focus:outline-none focus:ring-2 focus:ring-primary/50 pr-10"
                 placeholder="Enter your password"
                 required
               />
+              <button
+                type="button"
+                className="absolute right-3 top-9 cursor-pointer text-neutral/70 hover:text-neutral"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
             </div>
 
             <div>
@@ -208,10 +217,9 @@ const Register = () => {
             {error && <p className="text-error">{error}</p>}
 
             <button
-                        disabled={isUploadingImage}
-
+              disabled={isUploadingImage}
               type="submit"
-              className="w-full py-3 bg-secondary hover:bg-primary text-primary font-semibold rounded-md transition duration-200 cursor-pointer hover:text-neutral disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-secondary disabled:hover:text-primary"
+              className="w-full py-3 hover:bg-secondary bg-primary text-white font-semibold rounded-md transition duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-secondary"
             >
               Register
             </button>
@@ -219,7 +227,7 @@ const Register = () => {
 
           <SocialLogin />
 
-          <p className="text-center mt-6 text-neutral/80 text-sm">
+          <p className="text-center mt-4 text-neutral/80 text-sm">
             Already have an account?
             <Link
               to="/login"
@@ -230,7 +238,7 @@ const Register = () => {
             </Link>
           </p>
 
-          <div className="text-center mt-4">
+          <div className="text-center mt-3">
             <Link
               to="/"
               className="text-neutral/70 hover:text-neutral text-sm inline-flex items-center duration-200"

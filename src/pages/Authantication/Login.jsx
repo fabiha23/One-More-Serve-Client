@@ -5,10 +5,12 @@ import Swal from 'sweetalert2';
 import loginBanner from '../../assets/banner1.jpg'; // Replace with your image path
 import useAuth from '../../hooks/useAuth';
 import SocialLogin from './SocialLogin';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 
 const Login = () => {
     const { loginUser } = useAuth();
     const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false); // State for password visibility
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -71,15 +73,22 @@ const Login = () => {
                             />
                         </div>
                         
-                        <div>
+                        <div className="relative">
                             <label className="block text-neutral/80 text-sm font-medium mb-1">Password</label>
                             <input
-                                type="password"
-                                className="w-full px-4 py-2.5 bg-neutral/10 border border-neutral/20 rounded-lg text-neutral placeholder-neutral/50 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                                type={showPassword ? "text" : "password"}
+                                className="w-full px-4 py-2.5 bg-neutral/10 border border-neutral/20 rounded-lg text-neutral placeholder-neutral/50 focus:outline-none focus:ring-2 focus:ring-primary/50 pr-10"
                                 placeholder="Enter your password"
                                 name="password"
                                 required
                             />
+                            <button
+                                type="button"
+                                className="absolute right-3 top-9 text-neutral/70 hover:text-neutral cursor-pointer"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
                             <div className="flex justify-end mt-1">
                                 <button type="button" className="text-neutral/70 hover:text-neutral text-xs">
                                     Forgot password?
@@ -91,7 +100,7 @@ const Login = () => {
                         
                         <button 
                             type="submit" 
-                            className="w-full py-3 bg-secondary hover:bg-primary text-primary font-semibold rounded-md transition duration-200 cursor-pointer hover:text-neutral"
+                            className="w-full py-3 hover:bg-secondary bg-primary text-white font-semibold rounded-md transition duration-200 cursor-pointer"
                         >
                             Login
                         </button>

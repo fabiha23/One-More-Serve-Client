@@ -1,4 +1,12 @@
-import { FaHandsHelping, FaEnvelope, FaPhone, FaMapMarkerAlt, FaUsers, FaDonate, FaClock } from "react-icons/fa";
+import { 
+  FaHandsHelping, 
+  FaEnvelope, 
+  FaPhone, 
+  FaMapMarkerAlt, 
+  FaUsers, 
+  FaDonate, 
+  FaClock 
+} from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../Components/Loading";
@@ -24,23 +32,23 @@ const CharityProfile = () => {
     <div>
       {/* Header Section */}
       <div className="bg-gradient-to-r from-primary to-secondary rounded-xl shadow-lg p-6 mb-6">
-        <h1 className="text-2xl font-bold text-white">Charity Profile</h1>
+        <h1 className="text-2xl font-bold text-base-100">Charity Profile</h1>
       </div>
       
       {/* Profile Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Card */}
-        <div className="bg-white rounded-xl shadow-md p-6 lg:col-span-1">
+        <div className="bg-base-100 rounded-xl shadow-md p-6 lg:col-span-1">
           <div className="flex flex-col items-center mb-6">
             <div className="relative mb-4">
-              <div className="w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden">
+              <div className="w-20 h-20 rounded-full border-4 border-base-100 shadow-md overflow-hidden">
                 <img
                   src={charityData?.photoURL || "/default-charity.jpg"}
                   alt={charityData?.name}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full p-1 shadow-sm">
+              <div className="absolute -bottom-1 -right-1 bg-primary text-base-100 rounded-full p-1 shadow-sm">
                 <FaHandsHelping className="text-xs" />
               </div>
             </div>
@@ -55,7 +63,7 @@ const CharityProfile = () => {
           {/* Quick Info */}
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
+              <div className="p-2 bg-base-200 rounded-lg text-primary">
                 <FaEnvelope className="text-sm" />
               </div>
               <div>
@@ -65,7 +73,7 @@ const CharityProfile = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-50 rounded-lg text-green-500">
+              <div className="p-2 bg-base-200 rounded-lg text-secondary">
                 <FaPhone className="text-sm" />
               </div>
               <div>
@@ -75,7 +83,7 @@ const CharityProfile = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
+              <div className="p-2 bg-base-200 rounded-lg text-primary">
                 <FaMapMarkerAlt className="text-sm" />
               </div>
               <div>
@@ -91,7 +99,7 @@ const CharityProfile = () => {
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* About Card */}
-          <div className="bg-white rounded-xl shadow-md p-6">
+          <div className="bg-base-100 rounded-xl shadow-md p-6">
             <h3 className="text-lg font-semibold text-accent mb-4">About Us</h3>
             <p className="text-accent/90">
               {charityData?.missionStatement || 
@@ -100,11 +108,11 @@ const CharityProfile = () => {
           </div>
 
           {/* Donation Info Card */}
-          <div className="bg-white rounded-xl shadow-md p-6">
+          <div className="bg-base-100 rounded-xl shadow-md p-6">
             <h3 className="text-lg font-semibold text-accent mb-4">Donation Details</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-amber-50 rounded-lg text-amber-500">
+                <div className="p-2 bg-base-200 rounded-lg text-primary">
                   <FaDonate className="text-sm" />
                 </div>
                 <div>
@@ -116,7 +124,7 @@ const CharityProfile = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-50 rounded-lg text-green-500">
+                <div className="p-2 bg-base-200 rounded-lg text-secondary">
                   <FaUsers className="text-sm" />
                 </div>
                 <div>
@@ -130,11 +138,11 @@ const CharityProfile = () => {
           </div>
 
           {/* Service Info Card */}
-          <div className="bg-white rounded-xl shadow-md p-6">
+          <div className="bg-base-100 rounded-xl shadow-md p-6">
             <h3 className="text-lg font-semibold text-accent mb-4">Service Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
+                <div className="p-2 bg-base-200 rounded-lg text-primary">
                   <FaClock className="text-sm" />
                 </div>
                 <div>
@@ -146,7 +154,7 @@ const CharityProfile = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-red-50 rounded-lg text-red-500">
+                <div className="p-2 bg-base-200 rounded-lg text-error">
                   <FaHandsHelping className="text-sm" />
                 </div>
                 <div>

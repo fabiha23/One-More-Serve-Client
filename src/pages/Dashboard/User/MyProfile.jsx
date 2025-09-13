@@ -37,25 +37,25 @@ const MyProfile = () => {
     <section>
       {/* Header Section */}
       <div className="mb-6">
-        <div className="bg-primary/80 rounded-xl shadow-lg p-6 mb-6">
+        <div className="bg-primary rounded-xl shadow-lg p-6 mb-6">
           <h1 className="text-2xl font-bold text-base-100">My Profile</h1>
         </div>
       </div>
-      
+
       {/* Profile Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Card */}
         <div className="bg-base-100 rounded-xl shadow-md p-6 lg:col-span-1 border border-neutral">
           <div className="flex flex-col items-center mb-6">
             <div className="relative mb-4">
-              <div className="w-24 h-24 rounded-full border-4 border-white shadow-md overflow-hidden">
+              <div className="w-24 h-24 rounded-full border-4 border-base-100 shadow-md overflow-hidden">
                 <img
                   src={userData?.photoURL || "/default-user.jpg"}
                   alt={userData?.name}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-1 -right-1 bg-secondary text-white rounded-full p-1 shadow-sm">
+              <div className="absolute -bottom-1 -right-1 bg-secondary text-base-100 rounded-full p-1 shadow-sm">
                 <FaUser className="text-xs" />
               </div>
             </div>
@@ -70,7 +70,7 @@ const MyProfile = () => {
           {/* Contact Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
+              <div className="p-2 bg-base-200 rounded-lg text-primary">
                 <FaEnvelope className="text-sm" />
               </div>
               <div>
@@ -80,7 +80,7 @@ const MyProfile = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-50 rounded-lg text-green-500">
+              <div className="p-2 bg-base-200 rounded-lg text-primary">
                 <FaPhone className="text-sm" />
               </div>
               <div>
@@ -90,7 +90,7 @@ const MyProfile = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
+              <div className="p-2 bg-base-200 rounded-lg text-primary">
                 <FaMapMarkerAlt className="text-sm" />
               </div>
               <div>
@@ -110,7 +110,7 @@ const MyProfile = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-amber-50 rounded-lg text-amber-500">
+                <div className="p-2 bg-base-200 rounded-lg text-primary">
                   <FaCalendarAlt className="text-sm" />
                 </div>
                 <div>
@@ -124,7 +124,7 @@ const MyProfile = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
+                <div className="p-2 bg-base-200 rounded-lg text-primary">
                   <FaHistory className="text-sm" />
                 </div>
                 <div>
@@ -146,7 +146,7 @@ const MyProfile = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-50 rounded-lg text-green-500">
+                <div className="p-2 bg-base-200 rounded-lg text-primary">
                   <FaHandsHelping className="text-sm" />
                 </div>
                 <div>
@@ -158,7 +158,7 @@ const MyProfile = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-red-50 rounded-lg text-red-500">
+                <div className="p-2 bg-base-200 rounded-lg text-primary">
                   <FaDonate className="text-sm" />
                 </div>
                 <div>
@@ -172,7 +172,7 @@ const MyProfile = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
+                <div className="p-2 bg-base-200 rounded-lg text-primary">
                   <FaInfoCircle className="text-sm" />
                 </div>
                 <div>
@@ -192,7 +192,7 @@ const MyProfile = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-amber-50 rounded-lg text-amber-500">
+                <div className="p-2 bg-base-200 rounded-lg text-primary">
                   <FaUtensils className="text-sm" />
                 </div>
                 <div>
@@ -204,7 +204,7 @@ const MyProfile = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
+                <div className="p-2 bg-base-200 rounded-lg text-primary">
                   <FaClock className="text-sm" />
                 </div>
                 <div>
@@ -225,7 +225,7 @@ const MyProfile = () => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-green-50 rounded-lg text-green-500">
+                  <div className="p-2 bg-base-200 rounded-lg text-primary">
                     <FaBuilding className="text-sm" />
                   </div>
                   <div>
@@ -235,7 +235,7 @@ const MyProfile = () => {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
+                  <div className="p-2 bg-base-200 rounded-lg text-primary">
                     <FaInfoCircle className="text-sm" />
                   </div>
                   <div>

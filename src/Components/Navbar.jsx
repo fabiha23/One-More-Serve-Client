@@ -14,16 +14,19 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [openUser, setOpenUser] = useState(false);
   const { user, signOutUser } = useAuth();
-  const [theme, setTheme] = useState("light");
-  const [role] = useRole();
+const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+  });  const [role] = useRole();
   const axiosInstance = useAxios();
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
+    // apply theme to html root
     document.documentElement.setAttribute("data-theme", theme);
+    // save theme to localStorage
+    localStorage.setItem("theme", theme);
   }, [theme]);
-
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };

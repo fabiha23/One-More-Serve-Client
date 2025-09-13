@@ -39,7 +39,7 @@ const RestaurantProfile = () => {
         <h1 className="text-2xl font-bold text-white">Restaurant Profile</h1>
         <p className="text-white/80 mt-1">Manage your restaurant information</p>
       </div>
-      
+
       {/* Profile Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Card */}
@@ -66,7 +66,7 @@ const RestaurantProfile = () => {
             </span>
           </div>
 
-          {/* Contact Information */}
+          {/* Quick Info */}
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
@@ -74,7 +74,9 @@ const RestaurantProfile = () => {
               </div>
               <div>
                 <p className="text-sm font-medium text-accent/70">Email</p>
-                <p className="text-sm text-accent">{restaurantData?.email || "Not provided"}</p>
+                <p className="text-sm text-accent">
+                  {restaurantData?.email || "Not provided"}
+                </p>
               </div>
             </div>
 
@@ -84,7 +86,9 @@ const RestaurantProfile = () => {
               </div>
               <div>
                 <p className="text-sm font-medium text-accent/70">Phone</p>
-                <p className="text-sm text-accent">{restaurantData?.phone || "Not provided"}</p>
+                <p className="text-sm text-accent">
+                  {restaurantData?.phone || "Not provided"}
+                </p>
               </div>
             </div>
 
@@ -106,143 +110,109 @@ const RestaurantProfile = () => {
         <div className="lg:col-span-2 space-y-6">
           {/* Operations Card */}
           <div className="bg-white rounded-xl shadow-md p-6">
-            <h3 className="text-lg font-semibold text-accent mb-4">Restaurant Operations</h3>
+            <h3 className="text-lg font-semibold text-accent mb-4">
+              Restaurant Operations
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-amber-50 rounded-lg text-amber-500">
-                  <FaClock className="text-sm" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-accent/70">Business Hours</p>
-                  <p className="text-sm text-accent">
-                    {restaurantData?.businessHours || "9:00 AM - 10:00 PM"}
-                  </p>
-                </div>
-              </div>
+              <InfoItem
+                icon={<FaClock className="text-sm" />}
+                color="bg-amber-50 text-amber-500"
+                label="Business Hours"
+                value={restaurantData?.businessHours || "9:00 AM - 10:00 PM"}
+              />
 
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-red-50 rounded-lg text-red-500">
-                  <FaUtensils className="text-sm" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-accent/70">Cuisine Type</p>
-                  <p className="text-sm text-accent">
-                    {restaurantData?.cuisineType || "Various"}
-                  </p>
-                </div>
-              </div>
+              <InfoItem
+                icon={<FaUtensils className="text-sm" />}
+                color="bg-red-50 text-red-500"
+                label="Cuisine Type"
+                value={restaurantData?.cuisineType || "Various"}
+              />
 
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
-                  <FaMotorcycle className="text-sm" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-accent/70">Delivery</p>
-                  <p className="text-sm text-accent">
-                    {restaurantData?.deliveryOptions || "Pickup only"}
-                  </p>
-                </div>
-              </div>
+              <InfoItem
+                icon={<FaMotorcycle className="text-sm" />}
+                color="bg-blue-50 text-blue-500"
+                label="Delivery"
+                value={restaurantData?.deliveryOptions || "Pickup only"}
+              />
 
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-50 rounded-lg text-green-500">
-                  <FaCertificate className="text-sm" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-accent/70">Certifications</p>
-                  <p className="text-sm text-accent">
-                    {restaurantData?.certifications?.foodSafety || "Food Safety Certified"}
-                  </p>
-                </div>
-              </div>
+              <InfoItem
+                icon={<FaCertificate className="text-sm" />}
+                color="bg-green-50 text-green-500"
+                label="Certifications"
+                value={
+                  restaurantData?.certifications?.foodSafety ||
+                  "Food Safety Certified"
+                }
+              />
             </div>
           </div>
 
           {/* Donation Card */}
           <div className="bg-white rounded-xl shadow-md p-6">
-            <h3 className="text-lg font-semibold text-accent mb-4">Donation Information</h3>
+            <h3 className="text-lg font-semibold text-accent mb-4">
+              Donation Information
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
-                  <FaRegClock className="text-sm" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-accent/70">Donation Frequency</p>
-                  <p className="text-sm text-accent">
-                    {restaurantData?.donationFrequency || "Weekly"}
-                  </p>
-                </div>
-              </div>
+              <InfoItem
+                icon={<FaRegClock className="text-sm" />}
+                color="bg-purple-50 text-purple-500"
+                label="Donation Frequency"
+                value={restaurantData?.donationFrequency || "Weekly"}
+              />
 
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-indigo-50 rounded-lg text-indigo-500">
-                  <FaClock className="text-sm" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-accent/70">Preferred Pickup</p>
-                  <p className="text-sm text-accent">
-                    {restaurantData?.preferredPickupTimes || "After closing hours"}
-                  </p>
-                </div>
-              </div>
+              <InfoItem
+                icon={<FaClock className="text-sm" />}
+                color="bg-indigo-50 text-indigo-500"
+                label="Preferred Pickup"
+                value={restaurantData?.preferredPickupTimes || "After closing hours"}
+              />
 
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-amber-50 rounded-lg text-amber-500">
-                  <FaUtensils className="text-sm" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-accent/70">Food Types</p>
-                  <p className="text-sm text-accent">
-                    {restaurantData?.foodTypesAvailable?.join(", ") || "Prepared meals, Ingredients"}
-                  </p>
-                </div>
-              </div>
+              <InfoItem
+                icon={<FaUtensils className="text-sm" />}
+                color="bg-amber-50 text-amber-500"
+                label="Food Types"
+                value={
+                  restaurantData?.foodTypesAvailable?.join(", ") ||
+                  "Prepared meals, Ingredients"
+                }
+              />
 
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-50 rounded-lg text-green-500">
-                  <FaStore className="text-sm" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-accent/70">Capacity</p>
-                  <p className="text-sm text-accent">
-                    {restaurantData?.donationCapacity || "5-10 meals daily"}
-                  </p>
-                </div>
-              </div>
+              <InfoItem
+                icon={<FaStore className="text-sm" />}
+                color="bg-green-50 text-green-500"
+                label="Capacity"
+                value={restaurantData?.donationCapacity || "5-10 meals daily"}
+              />
             </div>
           </div>
 
           {/* Account Info Card */}
           <div className="bg-white rounded-xl shadow-md p-6">
-            <h3 className="text-lg font-semibold text-accent mb-4">Account Information</h3>
+            <h3 className="text-lg font-semibold text-accent mb-4">
+              Account Information
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-50 rounded-lg text-blue-500">
-                  <FaCalendarAlt className="text-sm" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-accent/70">Member Since</p>
-                  <p className="text-sm text-accent">
-                    {restaurantData?.created_at
-                      ? new Date(restaurantData.created_at).toLocaleDateString()
-                      : "Not available"}
-                  </p>
-                </div>
-              </div>
+              <InfoItem
+                icon={<FaCalendarAlt className="text-sm" />}
+                color="bg-blue-50 text-blue-500"
+                label="Member Since"
+                value={
+                  restaurantData?.created_at
+                    ? new Date(restaurantData.created_at).toLocaleDateString()
+                    : "Not available"
+                }
+              />
 
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-50 rounded-lg text-purple-500">
-                  <FaHistory className="text-sm" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-accent/70">Last Login</p>
-                  <p className="text-sm text-accent">
-                    {restaurantData?.last_log_in
-                      ? new Date(restaurantData.last_log_in).toLocaleString()
-                      : "Not available"}
-                  </p>
-                </div>
-              </div>
+              <InfoItem
+                icon={<FaHistory className="text-sm" />}
+                color="bg-purple-50 text-purple-500"
+                label="Last Login"
+                value={
+                  restaurantData?.last_log_in
+                    ? new Date(restaurantData.last_log_in).toLocaleString()
+                    : "Not available"
+                }
+              />
             </div>
           </div>
         </div>
@@ -250,5 +220,15 @@ const RestaurantProfile = () => {
     </div>
   );
 };
+
+const InfoItem = ({ icon, color, label, value }) => (
+  <div className="flex items-center gap-3">
+    <div className={`p-2 rounded-lg ${color}`}>{icon}</div>
+    <div>
+      <p className="text-sm font-medium text-accent/70">{label}</p>
+      <p className="text-sm text-accent">{value}</p>
+    </div>
+  </div>
+);
 
 export default RestaurantProfile;
