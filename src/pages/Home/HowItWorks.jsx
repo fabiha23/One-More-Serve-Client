@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { FaUtensils, FaHandshake, FaHandsHelping } from "react-icons/fa";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const steps = [
   {
@@ -26,6 +30,27 @@ const steps = [
 ];
 
 const HowItWorks = () => {
+  const cardsRef = useRef([]);
+
+  useEffect(() => {
+    if (cardsRef.current.length > 0) {
+      gsap.fromTo(
+        cardsRef.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: cardsRef.current[0].parentNode, // the grid container
+            start: "top 130%",
+          },
+        }
+      );
+    }
+  }, []);
+
   return (
     <section className="text-center py-10">
       <h2 className="text-3xl font-bold mb-8 text-accent">How It Works</h2>
@@ -34,6 +59,7 @@ const HowItWorks = () => {
         {steps.map((step, index) => (
           <div
             key={index}
+            ref={(el) => (cardsRef.current[index] = el)}
             className="flex flex-col items-center p-6 border border-neutral rounded-lg shadow hover:shadow-lg transition group relative overflow-hidden bg-base-100"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

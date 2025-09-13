@@ -9,7 +9,7 @@ const MainLayout = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 30;
+      const isScrolled = window.scrollY > 100;
       if (isScrolled !== scrolled) {
         setScrolled(isScrolled);
       }

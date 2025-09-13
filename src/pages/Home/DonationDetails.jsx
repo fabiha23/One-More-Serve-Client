@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -9,7 +9,7 @@ import {
   FaWeightHanging,
   FaHeart,
   FaRegHeart,
-  FaInfoCircle,
+  FaComment,
 } from "react-icons/fa";
 import useAxios from "../../hooks/useAxios";
 import Loading from "../../Components/Loading";
@@ -20,6 +20,8 @@ import AddReviewModal from "./AddReviewModal";
 import ReviewSection from "./ReviewSection";
 import RequestDonationModal from "./RequestDonationModal";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import ChatModal from "./ChatModal";
+import { socket } from "../../socket";
 
 const DonationDetails = () => {
   const [role, isRoleLoading] = useRole();
@@ -29,7 +31,7 @@ const DonationDetails = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-
+  const [isChatOpen, setChatOpen] = useState(false);
   const [isRequestModalOpen, setRequestModalOpen] = useState(false);
   const [isReviewModalOpen, setReviewModalOpen] = useState(false);
 
@@ -46,6 +48,19 @@ const DonationDetails = () => {
     },
     enabled: !!id,
   });
+
+  //joning room in chat
+  const roomId = `chat-${donation?._id}`;
+  useEffect(() => {
+    if (!roomId) return;
+    socket.emit("joinRoom", { roomId });
+    console.log("Joined room:", roomId);
+
+    return () => {
+      socket.emit("leaveRoom", { roomId });
+      console.log("Left room:", roomId);
+    };
+  }, [roomId]);
 
   // Fetch charity info
   const { data: charityRequests = [], isLoading: charityLoading } = useQuery({
@@ -171,7 +186,9 @@ const DonationDetails = () => {
             <button
               onClick={() => {
                 if (!user) {
-                  navigate("/login", { state: { from: `/donation-details/${id}` } }); // redirect guest
+                  navigate("/login", {
+                    state: { from: `/donation-details/${id}` },
+                  }); // redirect guest
                 } else if (role === "user" || role === "charity") {
                   isFavorite ? removeFavorite.mutate() : addFavorite.mutate(); // toggle favorite
                 }
@@ -280,7 +297,9 @@ const DonationDetails = () => {
               <button
                 onClick={() => {
                   if (!user) {
-                    navigate("/login", { state: { from: `/donation-details/${id}` } }); // redirect guest users with return URL
+                    navigate("/login", {
+                      state: { from: `/donation-details/${id}` },
+                    }); // redirect guest users with return URL
                   } else if (role === "charity" || role === "user") {
                     setReviewModalOpen(true); // open modal for logged-in charity or user
                   }
@@ -294,6 +313,20 @@ const DonationDetails = () => {
               >
                 {!user ? "Login to Add Review" : "Add Review"}
               </button>
+
+              {/* Floating Chat Button */}
+              {(role === "charity" || role === "restaurant") && (
+                <button
+                  onClick={() => setChatOpen(true)}
+                  className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 cursor-pointer text-white px-4 py-2 rounded-full shadow-lg z-50 transition-all transform hover:scale-110 duration-300 hover:shadow-xl flex items-center gap-2"
+                  title="Open Chat"
+                  aria-label="Open chat"
+                >
+                  <FaComment className="text-xl" />
+                  {role === "charity" && donation?.restaurantName}
+                  {role === "restaurant" && "Chat with Charities"}
+                </button>
+              )}
 
               {role === "charity" && acceptedRequest && (
                 <button
@@ -337,6 +370,15 @@ const DonationDetails = () => {
           refetch={() => queryClient.invalidateQueries(["donationDetails", id])}
         />
       )}
+      <ChatModal
+        isOpen={isChatOpen}
+        onClose={() => setChatOpen(false)}
+        roomId={roomId}
+        currentUser={user?.email}
+        chatWith={
+          role === "charity" ? donation.restaurantName : "All Charities"
+        }
+      />
 
       {isRequestModalOpen && (
         <RequestDonationModal
