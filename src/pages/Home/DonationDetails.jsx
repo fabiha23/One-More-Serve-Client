@@ -10,6 +10,7 @@ import {
   FaHeart,
   FaRegHeart,
   FaComment,
+  FaArrowRight,
 } from "react-icons/fa";
 import useAxios from "../../hooks/useAxios";
 import Loading from "../../Components/Loading";
@@ -315,19 +316,51 @@ const DonationDetails = () => {
               </button>
 
               {/* Floating Chat Button */}
-              {(role === "charity" || role === "restaurant") && (
-                <button
-                  onClick={() => setChatOpen(true)}
-                  className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 cursor-pointer text-white px-4 py-2 rounded-full shadow-lg z-50 transition-all transform hover:scale-110 duration-300 hover:shadow-xl flex items-center gap-2"
-                  title="Open Chat"
-                  aria-label="Open chat"
-                >
-                  <FaComment className="text-xl" />
-                  {role === "charity" && donation?.restaurantName}
-                  {role === "restaurant" && "Chat with Charities"}
-                </button>
-              )}
-
+              <button
+  onClick={() => {
+    if (role === "charity" || role === "restaurant") {
+      setChatOpen(true);
+    } else if (!role) {
+      navigate("/login");
+    }
+  }}
+  disabled={role === "user" || role === "admin"}
+  className={`fixed bottom-6 right-6 px-5 py-3 rounded-full shadow-lg z-50 transition-all duration-300 flex items-center gap-3 group
+    ${
+      role === "charity" || role === "restaurant"
+        ? "bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white cursor-pointer hover:shadow-xl transform hover:scale-105"
+        : !role
+        ? "bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white cursor-pointer hover:shadow-xl transform hover:scale-105"
+        : "bg-gradient-to-r from-gray-300 to-gray-400 text-gray-500 cursor-not-allowed transform scale-95"
+    }`}
+  title="Open Chat"
+  aria-label="Open chat"
+>
+  <div className="relative">
+    <FaComment className="text-xl" />
+    {(role === "charity" || role === "restaurant") && (
+      <span className="absolute -top-1 -right-1 h-3 w-3">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+      </span>
+    )}
+  </div>
+  
+  <span className="text-sm font-medium whitespace-nowrap">
+    {role === "charity" && (donation?.restaurantName || "Chat Available")}
+    {role === "restaurant" && "Chat with Charities"}
+    {role === "user" || role === "admin"
+      ? "Chat for Charity/Restaurant Only"
+      : null}
+    {!role && "Login to Chat"}
+  </span>
+  
+  {(role === "charity" || role === "restaurant" || !role) && (
+    <span className="group-hover:translate-x-1 transition-transform duration-200">
+      <FaArrowRight className="text-sm" />
+    </span>
+  )}
+</button>
               {role === "charity" && acceptedRequest && (
                 <button
                   className="px-6 py-2 bg-green-600/80 hover:bg-green-600/90 text-white rounded-lg duration-300 active:scale-95 font-semibold cursor-pointer transition-all"
